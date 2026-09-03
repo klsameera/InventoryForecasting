@@ -1,0 +1,104 @@
+- generic [ref=f35e3]:
+  - complementary "Main navigation" [ref=f35e4]:
+    - link "Laravel" [ref=f35e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f35e13]:
+      - generic [ref=f35e14]:
+        - generic [ref=f35e15]: Overview
+        - navigation [ref=f35e16]:
+          - link "Dashboard" [ref=f35e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f35e24]:
+        - generic [ref=f35e25]: Catalog
+        - navigation [ref=f35e26]:
+          - link "Products" [ref=f35e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f35e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f35e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f35e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f35e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f35e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f35e60]:
+        - generic [ref=f35e61]: Inventory
+        - navigation [ref=f35e62]:
+          - link "Inventory" [ref=f35e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Stock movements" [ref=f35e75] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f35e80] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Warehouses" [ref=f35e86] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f35e91]:
+        - generic [ref=f35e92]: Account
+        - navigation [ref=f35e93]:
+          - link "Profile" [ref=f35e94] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f35e99] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f35e104]:
+    - banner [ref=f35e105]:
+      - button "Collapse navigation" [ref=f35e106] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f35e110] [cursor=pointer]
+      - button "Percival Denesik qa@example.test" [ref=f35e114] [cursor=pointer]:
+        - generic [ref=f35e115]: PD
+        - generic [ref=f35e116]:
+          - generic [ref=f35e117]: Percival Denesik
+          - generic [ref=f35e118]: qa@example.test
+    - main [ref=f35e121]:
+      - generic [ref=f35e123]:
+        - generic [ref=f35e124]: Catalog
+        - heading "New SKU" [level=1] [ref=f35e125]
+        - paragraph [ref=f35e126]: A sellable, stock-tracked unit for a product or variant.
+      - generic [ref=f35e130]:
+        - generic [ref=f35e131]:
+          - generic [ref=f35e133]:
+            - generic [ref=f35e135]:
+              - text: Product
+              - generic [ref=f35e136]: "*"
+            - combobox "Product" [ref=f35e137]:
+              - option "Select a product" [disabled]
+              - option "Skechers Go Walk" [selected]
+          - generic [ref=f35e139]:
+            - generic [ref=f35e140]: Variant
+            - combobox "Variant" [ref=f35e142]:
+              - option "No variant" [selected]
+              - option "Size 42"
+            - paragraph [ref=f35e143]: Leave unselected for a simple product.
+        - generic [ref=f35e144]:
+          - generic [ref=f35e146]:
+            - generic [ref=f35e148]:
+              - text: SKU code
+              - generic [ref=f35e149]: "*"
+            - textbox "SKU code" [ref=f35e150]:
+              - /placeholder: SK-2026-881
+          - generic [ref=f35e152]:
+            - generic [ref=f35e153]: Barcode
+            - textbox "Barcode" [ref=f35e155]
+        - generic [ref=f35e156]:
+          - generic [ref=f35e158]:
+            - generic [ref=f35e160]:
+              - text: Cost price
+              - generic [ref=f35e161]: "*"
+            - spinbutton "Cost price" [ref=f35e162]: "0"
+          - generic [ref=f35e164]:
+            - generic [ref=f35e166]:
+              - text: Selling price
+              - generic [ref=f35e167]: "*"
+            - spinbutton "Selling price" [ref=f35e168]: "0"
+        - generic [ref=f35e169]:
+          - generic [ref=f35e171]:
+            - generic [ref=f35e172]: First stock date
+            - textbox "First stock date" [ref=f35e174]
+          - generic [ref=f35e176]:
+            - generic [ref=f35e177]: Last stock date
+            - textbox "Last stock date" [ref=f35e179]
+        - generic [ref=f35e181]:
+          - checkbox "Active" [checked] [ref=f35e182] [cursor=pointer]
+          - generic [ref=f35e183] [cursor=pointer]: Active
+        - button "Create SKU" [ref=f35e185] [cursor=pointer]

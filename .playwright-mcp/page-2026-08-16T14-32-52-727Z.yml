@@ -1,0 +1,130 @@
+- generic [ref=f36e3]:
+  - complementary "Main navigation" [ref=f36e4]:
+    - link "Laravel" [ref=f36e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f36e13]:
+      - generic [ref=f36e14]:
+        - generic [ref=f36e15]: Overview
+        - navigation [ref=f36e16]:
+          - link "Dashboard" [ref=f36e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f36e24]:
+        - generic [ref=f36e25]: Catalog
+        - navigation [ref=f36e26]:
+          - link "Products" [ref=f36e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f36e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f36e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f36e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f36e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f36e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f36e60]:
+        - generic [ref=f36e61]: Inventory
+        - navigation [ref=f36e62]:
+          - link "Inventory" [ref=f36e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f36e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f36e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f36e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f36e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f36e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f36e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f36e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f36e115]:
+        - generic [ref=f36e116]: Purchasing
+        - navigation [ref=f36e117]:
+          - link "Purchase orders" [ref=f36e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f36e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f36e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f36e134]:
+        - generic [ref=f36e135]: Sales
+        - navigation [ref=f36e136]:
+          - link "Sales orders" [ref=f36e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f36e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f36e148]:
+        - generic [ref=f36e149]: Forecasting
+        - navigation [ref=f36e150]:
+          - link "Forecasts" [ref=f36e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f36e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f36e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f36e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f36e172]:
+        - generic [ref=f36e173]: Advanced intelligence
+        - navigation [ref=f36e174]:
+          - link "Supplier performance" [ref=f36e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f36e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f36e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f36e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f36e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f36e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f36e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f36e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f36e225]:
+        - generic [ref=f36e226]: Account
+        - navigation [ref=f36e227]:
+          - link "Profile" [ref=f36e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f36e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f36e238]:
+    - banner [ref=f36e239]:
+      - button "Collapse navigation" [ref=f36e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f36e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f36e248] [cursor=pointer]:
+        - generic [ref=f36e249]: MB
+        - generic [ref=f36e250]:
+          - generic [ref=f36e251]: Marilou Brakus
+          - generic [ref=f36e252]: qa@example.com
+    - main [ref=f36e255]:
+      - generic [ref=f36e257]:
+        - generic [ref=f36e258]: Advanced intelligence
+        - heading "Successor candidates" [level=1] [ref=f36e259]
+        - paragraph [ref=f36e260]: A declining or end-of-life product paired with a newer, same-brand product in the same category — a heuristic built from real forecast-maturity classifications, not an explicit 'replaces' link this catalog doesn't track.
+      - generic [ref=f36e261]:
+        - generic [ref=f36e262]:
+          - searchbox "Search by SKU or product…" [ref=f36e264]
+          - combobox "Filter by category" [ref=f36e265]:
+            - option "All categories" [selected]
+            - option "QA P10 Category"
+          - generic [ref=f36e266]:
+            - button "Clear" [disabled]
+        - generic [ref=f36e267]:
+          - paragraph [ref=f36e272]: No successor candidates found
+          - paragraph [ref=f36e273]: No declining or end-of-life product shares a category and brand with a newer product.
+        - generic [ref=f36e275]:
+          - generic [ref=f36e276]: No results
+          - generic [ref=f36e277]:
+            - text: Rows
+            - combobox "Rows" [ref=f36e278]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

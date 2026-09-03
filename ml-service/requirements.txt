@@ -1,0 +1,24 @@
+# Serving dependencies for the FastAPI forecasting service.
+#
+# torch and pytorch-forecasting are required at *serve* time as well as
+# train time: the deepar/tft algorithms load a persisted checkpoint from
+# ml-service/models/ and run inference in-process. The two statistical
+# baselines (ewma, seasonal_naive) need none of this and keep working if
+# the neural checkpoints are absent — see app/forecasting/neural.py.
+#
+# CPU-only torch is deliberate. The trained models here cover a few hundred
+# series; a GPU build would multiply install size for no benefit. Install
+# with:
+#   pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+httpx==0.28.1
+pytest==8.3.4
+
+numpy==1.26.4
+pandas==2.2.3
+torch==2.2.2
+pytorch-forecasting==1.0.0
+pytorch-lightning==2.2.1

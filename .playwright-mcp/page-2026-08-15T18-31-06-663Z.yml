@@ -1,0 +1,49 @@
+- generic [ref=f2e3]:
+  - complementary "Main navigation" [ref=f2e4]:
+    - link "Laravel" [ref=f2e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f2e13]:
+      - generic [ref=f2e14]:
+        - generic [ref=f2e15]: Overview
+        - navigation [ref=f2e16]:
+          - link "Dashboard" [ref=f2e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f2e24]:
+        - generic [ref=f2e25]: Account
+        - navigation [ref=f2e26]:
+          - link "Profile" [ref=f2e27] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f2e32] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f2e37]:
+    - banner [ref=f2e38]:
+      - button "Collapse navigation" [ref=f2e39] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f2e43] [cursor=pointer]
+      - button "Percival Denesik qa@example.test" [ref=f2e47] [cursor=pointer]:
+        - generic [ref=f2e48]: PD
+        - generic [ref=f2e49]:
+          - generic [ref=f2e50]: Percival Denesik
+          - generic [ref=f2e51]: qa@example.test
+    - main [ref=f2e54]:
+      - generic [ref=f2e56]:
+        - generic [ref=f2e57]: Catalog
+        - heading "Edit undefined" [level=1] [ref=f2e58]
+        - paragraph [ref=f2e59]: Update this warehouse's details.
+      - generic [ref=f2e63]:
+        - generic [ref=f2e64]:
+          - generic [ref=f2e66]:
+            - text: Name
+            - generic [ref=f2e67]: "*"
+          - textbox "Name" [ref=f2e68]
+        - generic [ref=f2e69]:
+          - generic [ref=f2e71]:
+            - text: Code
+            - generic [ref=f2e72]: "*"
+          - textbox "Code" [ref=f2e73]
+        - generic [ref=f2e74]:
+          - generic [ref=f2e75]: Address
+          - textbox "Address" [ref=f2e77]
+        - generic [ref=f2e79]:
+          - checkbox "Active" [ref=f2e80] [cursor=pointer]
+          - generic [ref=f2e81] [cursor=pointer]: Active
+        - button "Save changes" [ref=f2e83] [cursor=pointer]

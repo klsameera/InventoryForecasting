@@ -1,0 +1,105 @@
+- generic [ref=f8e3]:
+  - complementary "Main navigation" [ref=f8e4]:
+    - link "Laravel" [ref=f8e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f8e13]:
+      - generic [ref=f8e14]:
+        - generic [ref=f8e15]: Overview
+        - navigation [ref=f8e16]:
+          - link "Dashboard" [ref=f8e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f8e24]:
+        - generic [ref=f8e25]: Catalog
+        - navigation [ref=f8e26]:
+          - link "Products" [ref=f8e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f8e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f8e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f8e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f8e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f8e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f8e60]:
+        - generic [ref=f8e61]: Inventory
+        - navigation [ref=f8e62]:
+          - link "Inventory" [ref=f8e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f8e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f8e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f8e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f8e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f8e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f8e105]:
+        - generic [ref=f8e106]: Purchasing
+        - navigation [ref=f8e107]:
+          - link "Purchase orders" [ref=f8e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f8e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f8e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f8e124]:
+        - generic [ref=f8e125]: Sales
+        - navigation [ref=f8e126]:
+          - link "Sales orders" [ref=f8e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f8e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f8e138]:
+        - generic [ref=f8e139]: Account
+        - navigation [ref=f8e140]:
+          - link "Profile" [ref=f8e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f8e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f8e151]:
+    - banner [ref=f8e152]:
+      - button "Collapse navigation" [ref=f8e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f8e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f8e161] [cursor=pointer]:
+        - generic [ref=f8e162]: QT
+        - generic [ref=f8e163]:
+          - generic [ref=f8e164]: QA Tester
+          - generic [ref=f8e165]: qa@example.test
+    - main [ref=f8e168]:
+      - generic [ref=f8e169]:
+        - generic [ref=f8e170]:
+          - generic [ref=f8e171]: Purchasing
+          - heading "PO-000001" [level=1] [ref=f8e172]
+          - paragraph [ref=f8e173]: "Supplier: Northwind Footwear Co · Warehouse: Main DC"
+        - generic [ref=f8e175]:
+          - generic [ref=f8e176]: Approved
+          - button "Mark as ordered" [ref=f8e178] [cursor=pointer]
+          - button "Cancel order" [ref=f8e179] [cursor=pointer]
+      - generic [ref=f8e180]:
+        - heading "Line items" [level=2] [ref=f8e183]
+        - generic [ref=f8e184]:
+          - table [ref=f8e186]:
+            - rowgroup [ref=f8e187]:
+              - row [ref=f8e188]:
+                - columnheader "SKU" [ref=f8e189]
+                - columnheader "Product" [ref=f8e190]
+                - columnheader "Ordered" [ref=f8e191]
+                - columnheader "Received" [ref=f8e192]
+                - columnheader "Unit cost" [ref=f8e193]
+                - columnheader "Line total" [ref=f8e194]
+            - rowgroup [ref=f8e195]:
+              - row [ref=f8e196]:
+                - cell "TR-001" [ref=f8e197]
+                - cell "Trail Runner" [ref=f8e198]
+                - cell "100" [ref=f8e199]
+                - cell "0" [ref=f8e200]
+                - cell "20.00" [ref=f8e201]
+                - cell "2000.00" [ref=f8e202]
+          - paragraph [ref=f8e203]:
+            - text: Subtotal 2000.00 + tax 0.00 = total
+            - strong [ref=f8e204]: "2000.00"

@@ -1,0 +1,247 @@
+- generic [ref=f4e3]:
+  - complementary "Main navigation" [ref=f4e4]:
+    - link "Laravel" [ref=f4e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f4e13]:
+      - generic [ref=f4e14]:
+        - generic [ref=f4e15]: Overview
+        - navigation [ref=f4e16]:
+          - link "Dashboard" [ref=f4e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f4e24]:
+        - generic [ref=f4e25]: Catalog
+        - navigation [ref=f4e26]:
+          - link "Products" [ref=f4e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f4e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f4e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f4e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f4e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f4e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f4e60]:
+        - generic [ref=f4e61]: Inventory
+        - navigation [ref=f4e62]:
+          - link "Inventory" [ref=f4e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f4e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f4e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f4e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f4e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f4e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f4e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f4e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f4e115]:
+        - generic [ref=f4e116]: Purchasing
+        - navigation [ref=f4e117]:
+          - link "Purchase orders" [ref=f4e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f4e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f4e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f4e134]:
+        - generic [ref=f4e135]: Sales
+        - navigation [ref=f4e136]:
+          - link "Sales orders" [ref=f4e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f4e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f4e148]:
+        - generic [ref=f4e149]: Forecasting
+        - navigation [ref=f4e150]:
+          - link "Forecasts" [ref=f4e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f4e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f4e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f4e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f4e172]:
+        - generic [ref=f4e173]: Account
+        - navigation [ref=f4e174]:
+          - link "Profile" [ref=f4e175] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f4e180] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f4e185]:
+    - banner [ref=f4e186]:
+      - button "Collapse navigation" [ref=f4e187] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f4e191] [cursor=pointer]
+      - button "Miss Antonina Wisoky qa@example.com" [ref=f4e195] [cursor=pointer]:
+        - generic [ref=f4e196]: MW
+        - generic [ref=f4e197]:
+          - generic [ref=f4e198]: Miss Antonina Wisoky
+          - generic [ref=f4e199]: qa@example.com
+    - main [ref=f4e202]:
+      - generic [ref=f4e203]:
+        - generic [ref=f4e204]:
+          - generic [ref=f4e205]: Forecasting
+          - heading "Purchase recommendations" [level=1] [ref=f4e206]
+          - paragraph [ref=f4e207]: What to buy, how much to reduce, what to clear, or what to transfer between warehouses instead — from forecast, stock, supplier terms and ageing/overstock risk. Requires a completed forecast for a SKU before it can be recommended.
+        - generic [ref=f4e209]:
+          - link "Central allocation" [ref=f4e210] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+          - button "Generate recommendations" [ref=f4e215] [cursor=pointer]
+      - generic [ref=f4e221]:
+        - generic [ref=f4e222]:
+          - searchbox "Search by SKU…" [ref=f4e224]
+          - combobox "Filter by warehouse" [ref=f4e225]:
+            - option "All warehouses" [selected]
+            - option "QA Colombo"
+            - option "QA Kandy"
+          - combobox "Filter by SKU" [ref=f4e226]:
+            - option "All SKUs" [selected]
+            - option "QA-P9-CENTRAL-002"
+            - option "QA-P9-TRANSFER-001"
+          - combobox "Filter by status" [ref=f4e227]:
+            - option "All statuses" [selected]
+            - option "New"
+            - option "Reviewed"
+            - option "Accepted"
+            - option "Modified"
+            - option "Rejected"
+            - option "Completed"
+          - combobox "Filter by recommendation type" [ref=f4e228]:
+            - option "All types" [selected]
+            - option "Purchase"
+            - option "Reduce purchase"
+            - option "Do not reorder"
+            - option "Transfer stock"
+            - option "Clearance"
+          - combobox "Filter by stockout risk" [ref=f4e229]:
+            - option "Any stockout risk" [selected]
+            - option "Critical"
+            - option "Moderate"
+            - option "None"
+          - combobox "Filter by overstock risk" [ref=f4e230]:
+            - option "Any overstock risk" [selected]
+            - option "Critical"
+            - option "Moderate"
+            - option "None"
+          - generic [ref=f4e231]:
+            - button "Clear" [disabled]
+        - table [ref=f4e233]:
+          - rowgroup [ref=f4e234]:
+            - row [ref=f4e235]:
+              - columnheader "SKU" [ref=f4e236]
+              - columnheader "Warehouse" [ref=f4e237]
+              - columnheader "Type" [ref=f4e238]
+              - columnheader "Current" [ref=f4e239]
+              - columnheader "Incoming" [ref=f4e240]
+              - columnheader "30d Forecast" [ref=f4e241]
+              - columnheader "Recommended" [ref=f4e242]
+              - columnheader "By" [ref=f4e243]
+              - columnheader "Risks" [ref=f4e244]
+              - columnheader "Status" [ref=f4e245]
+              - columnheader "Actions" [ref=f4e246]
+          - rowgroup [ref=f4e247]:
+            - row [ref=f4e248]:
+              - cell [ref=f4e249]:
+                - generic [ref=f4e250]:
+                  - paragraph [ref=f4e251]: QA-P9-TRANSFER-001
+                  - paragraph [ref=f4e252]: QA Phase9 Product
+              - cell [ref=f4e253]:
+                - paragraph [ref=f4e255]: QA Colombo
+              - cell "Clearance" [ref=f4e256]
+              - cell "2000" [ref=f4e259]
+              - cell "0" [ref=f4e260]
+              - cell "30" [ref=f4e261]
+              - cell [ref=f4e262]:
+                - paragraph [ref=f4e264]: "0"
+              - cell "2026-08-16" [ref=f4e265]
+              - cell [ref=f4e266]:
+                - generic [ref=f4e267]:
+                  - generic [ref=f4e268]: "Overstock: Critical"
+                  - generic [ref=f4e270]: "Ageing: 96/100"
+              - cell "New" [ref=f4e272]
+              - cell [ref=f4e275]:
+                - generic [ref=f4e276]:
+                  - button "Accept recommendation" [ref=f4e277] [cursor=pointer]
+                  - button "Modify" [ref=f4e280] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f4e281] [cursor=pointer]
+            - row [ref=f4e285]:
+              - cell [ref=f4e286]:
+                - generic [ref=f4e287]:
+                  - paragraph [ref=f4e288]: QA-P9-TRANSFER-001
+                  - paragraph [ref=f4e289]: QA Phase9 Product
+              - cell [ref=f4e290]:
+                - generic [ref=f4e291]:
+                  - paragraph [ref=f4e292]: QA Kandy
+                  - paragraph [ref=f4e293]: from QA Colombo
+              - cell "Transfer stock" [ref=f4e294]
+              - cell "100" [ref=f4e297]
+              - cell "0" [ref=f4e298]
+              - cell "300" [ref=f4e299]
+              - cell [ref=f4e300]:
+                - paragraph [ref=f4e302]: "310"
+              - cell "2026-08-16" [ref=f4e303]
+              - 'cell "Stockout: Critical" [ref=f4e304]'
+              - cell "New" [ref=f4e308]
+              - cell [ref=f4e311]:
+                - generic [ref=f4e312]:
+                  - button "Accept recommendation" [ref=f4e313] [cursor=pointer]
+                  - button "Modify" [ref=f4e316] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f4e317] [cursor=pointer]
+            - row [ref=f4e321]:
+              - cell [ref=f4e322]:
+                - generic [ref=f4e323]:
+                  - paragraph [ref=f4e324]: QA-P9-CENTRAL-002
+                  - paragraph [ref=f4e325]: QA Phase9 Product
+              - cell [ref=f4e326]:
+                - paragraph [ref=f4e328]: QA Colombo
+              - cell "Purchase" [ref=f4e329]
+              - cell "10" [ref=f4e332]
+              - cell "0" [ref=f4e333]
+              - cell "300" [ref=f4e334]
+              - cell [ref=f4e335]:
+                - paragraph [ref=f4e337]: "250"
+              - cell "2026-08-16" [ref=f4e338]
+              - 'cell "Stockout: Critical" [ref=f4e339]'
+              - cell "New" [ref=f4e343]
+              - cell [ref=f4e346]:
+                - generic [ref=f4e347]:
+                  - button "Accept recommendation" [ref=f4e348] [cursor=pointer]
+                  - button "Modify" [ref=f4e351] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f4e352] [cursor=pointer]
+            - row [ref=f4e356]:
+              - cell [ref=f4e357]:
+                - generic [ref=f4e358]:
+                  - paragraph [ref=f4e359]: QA-P9-CENTRAL-002
+                  - paragraph [ref=f4e360]: QA Phase9 Product
+              - cell [ref=f4e361]:
+                - paragraph [ref=f4e363]: QA Kandy
+              - cell "Purchase" [ref=f4e364]
+              - cell "10" [ref=f4e367]
+              - cell "0" [ref=f4e368]
+              - cell "300" [ref=f4e369]
+              - cell [ref=f4e370]:
+                - paragraph [ref=f4e372]: "250"
+              - cell "2026-08-16" [ref=f4e373]
+              - 'cell "Stockout: Critical" [ref=f4e374]'
+              - cell "New" [ref=f4e378]
+              - cell [ref=f4e381]:
+                - generic [ref=f4e382]:
+                  - button "Accept recommendation" [ref=f4e383] [cursor=pointer]
+                  - button "Modify" [ref=f4e386] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f4e387] [cursor=pointer]
+        - generic [ref=f4e392]:
+          - generic [ref=f4e393]: Showing 1–4 of 4
+          - generic [ref=f4e394]:
+            - text: Rows
+            - combobox "Rows" [ref=f4e395]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

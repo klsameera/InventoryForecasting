@@ -1,0 +1,779 @@
+- generic [ref=f40e3]:
+  - complementary "Main navigation" [ref=f40e4]:
+    - link "Laravel" [ref=f40e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f40e13]:
+      - generic [ref=f40e14]:
+        - generic [ref=f40e15]: Overview
+        - navigation [ref=f40e16]:
+          - link "Dashboard" [ref=f40e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f40e24]:
+        - generic [ref=f40e25]: Catalog
+        - navigation [ref=f40e26]:
+          - link "Products" [ref=f40e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f40e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f40e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f40e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f40e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f40e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f40e60]:
+        - generic [ref=f40e61]: Inventory
+        - navigation [ref=f40e62]:
+          - link "Inventory" [ref=f40e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f40e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f40e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f40e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f40e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f40e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f40e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f40e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f40e115]:
+        - generic [ref=f40e116]: Purchasing
+        - navigation [ref=f40e117]:
+          - link "Purchase orders" [ref=f40e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f40e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f40e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f40e134]:
+        - generic [ref=f40e135]: Sales
+        - navigation [ref=f40e136]:
+          - link "Sales orders" [ref=f40e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f40e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f40e148]:
+        - generic [ref=f40e149]: Forecasting
+        - navigation [ref=f40e150]:
+          - link "Forecasts" [ref=f40e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f40e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f40e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f40e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f40e172]:
+        - generic [ref=f40e173]: Advanced intelligence
+        - navigation [ref=f40e174]:
+          - link "Supplier performance" [ref=f40e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f40e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f40e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f40e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f40e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f40e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f40e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f40e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f40e225]:
+        - generic [ref=f40e226]: Account
+        - navigation [ref=f40e227]:
+          - link "Profile" [ref=f40e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f40e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f40e238]:
+    - banner [ref=f40e239]:
+      - button "Collapse navigation" [ref=f40e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f40e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f40e248] [cursor=pointer]:
+        - generic [ref=f40e249]: MB
+        - generic [ref=f40e250]:
+          - generic [ref=f40e251]: Marilou Brakus
+          - generic [ref=f40e252]: qa@example.com
+    - main [ref=f40e255]:
+      - generic [ref=f40e256]:
+        - generic [ref=f40e257]:
+          - generic [ref=f40e258]: Forecasting
+          - heading "Purchase recommendations" [level=1] [ref=f40e259]
+          - paragraph [ref=f40e260]: What to buy, how much to reduce, what to clear, or what to transfer between warehouses instead — from forecast, stock, supplier terms and ageing/overstock risk. Requires a completed forecast for a SKU before it can be recommended.
+        - generic [ref=f40e262]:
+          - link "Central allocation" [ref=f40e263] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+          - button "Generate recommendations" [ref=f40e268] [cursor=pointer]
+      - generic [ref=f40e274]:
+        - generic [ref=f40e275]:
+          - searchbox "Search by SKU…" [ref=f40e277]
+          - combobox "Filter by warehouse" [ref=f40e278]:
+            - option "All warehouses" [selected]
+            - option "Dambulla Regional Warehouse"
+            - option "Galle Regional Warehouse"
+            - option "Jaffna Regional Warehouse"
+            - option "Kadolkale Warehouse - Buy Abans Team"
+            - option "Kotikawatta Warehouse"
+            - option "Vavuniya Regional Warehouse"
+          - combobox "Filter by SKU" [ref=f40e279]:
+            - option "All SKUs" [selected]
+            - option "ABACSTLG30CR"
+            - option "ABACSTLG36CR"
+            - option "ABCKRC100G01"
+            - option "ABCKRC80G01"
+            - option "ABCKRCT40"
+            - option "ABFNIN600TII"
+            - option "ABFNIN750TII"
+            - option "ABFNIN750TWII"
+            - option "ABFNMFYD207"
+            - option "ABFR750XN"
+            - option "ABFRCH400AEL"
+            - option "ABFRCH923XN"
+            - option "ABFRDPCB260AEL"
+            - option "ABFRDPCB360AEL"
+            - option "ABKMLB9001B"
+            - option "ABMG3550MGWS"
+            - option "ABRFURFR180J"
+            - option "ABVCEV800"
+            - option "ABVCWDRY7730L"
+            - option "ABWG10LSQT"
+            - option "ABWG15LSQT"
+            - option "ABWG30LCYT"
+            - option "ABWG50LCYT"
+            - option "ABWGWHDSZF20LJ15Y6U"
+            - option "ABWHDSZF20LJ30Y6A"
+            - option "ABWHDSZF20LJ50Y6A"
+            - option "DTFNIN50TS"
+            - option "DZACLD200ACR"
+            - option "ELVC930"
+            - option "ELVCZ1230"
+            - option "ELWM705HQWA"
+            - option "ELWMDRY754H3WB"
+            - option "EMIACSG302"
+            - option "EMIACSG353"
+            - option "FDSTNM5126WS"
+            - option "HKPMCITATION200BLKEU"
+            - option "HKPMCITATION200GRYEU"
+            - option "HLAFRFBXK12321"
+            - option "HLAFRFBXK12321WS"
+            - option "HLMG06021WS"
+            - option "HRFRCH350DMS5"
+            - option "HRFRCH719HSEP"
+            - option "HRFRCH719W"
+            - option "HRFRCHHFC788DMS5"
+            - option "HWACL151"
+            - option "HWACL20AE"
+            - option "HWACL30XC"
+            - option "HWACL604AE"
+            - option "IGDRYIGT10RCDW"
+            - option "IGMOMJF31GDCX3"
+            - option "INIRZYGTJ01KL"
+            - option "JBLPMBOOMBOX2SQUAD"
+            - option "JBLPMPARTYBOX1000EU"
+            - option "JBLPMPARTYBOX100EU"
+            - option "JBLPMPARTYBOX310EU"
+            - option "JBLPMPARTYBOX710EU"
+            - option "JBLPMPARTYBOXGOBUK"
+            - option "JBLSPPBSTAGE320"
+            - option "JPMGFRUTTICA"
+            - option "JPPREMIUM"
+            - option "LGACINQ09JA3BD"
+            - option "LGACINQ12JA17C"
+            - option "LGACINQ12JA3FB"
+            - option "LGACINQ18JL3BD"
+            - option "LGACINQ18KL2FA"
+            - option "LGACINQ18KL3FA"
+            - option "LGACINQ24K22FA"
+            - option "LGACINQ24K23BD"
+            - option "LGHSVCA9TULTRA"
+            - option "LGHVCA9KPRO"
+            - option "LGMO2043DB"
+            - option "LGMO2044DB"
+            - option "LGMO2595DIS"
+            - option "LGMO2846SL"
+            - option "LGMO3965BGS"
+            - option "LGMO6565DIS"
+            - option "LGMO7636GIS"
+            - option "LGMOMJEN326TL"
+            - option "LGMOMS3636GIS"
+            - option "LGRF6011NSNBS"
+            - option "LGRF6012PZPN3"
+            - option "LGRF6018MTBK"
+            - option "LGRF6181DSDGS"
+            - option "LGRFB4059PZPS"
+            - option "LGRFDDM5097PZ"
+            - option "LGRFGSB6432WB"
+            - option "LGRFGSL6172PZ"
+            - option "LGRFGSX6172NS"
+            - option "LGRFQ6011MC"
+            - option "LGVCVR66900TWVV"
+            - option "LGWD2719RVTV"
+            - option "LGWDRV1329AD5S"
+            - option "LGWM1329AN7S"
+            - option "LGWMDRYTDC8066S"
+            - option "LGWMFAU1408S4W"
+            - option "LGWMFAU1450S2K"
+            - option "LGWMFAUFL1007S5W"
+            - option "LGWMINW069FD2M"
+            - option "LGWMINWS069FD2FS"
+            - option "LGWPUWW170EP"
+            - option "LPBDAFRY400B5"
+            - option "LPBDAFRYAF200B5"
+            - option "LPBDIRSTGST2000B5WS"
+            - option "LPBDJEJE250B5"
+            - option "LPICHMAAVC10"
+            - option "LPIMVCJUGVC20"
+            - option "LPINIRYD012V"
+            - option "LPPUWFWFILTERG"
+            - option "LPPUWFWFILTERS"
+            - option "LPUNWPUCLASSICG2"
+            - option "LPUNWPUPMUVG2"
+            - option "LPUNWPUULTIMARO"
+            - option "LPWPPAK9100BL"
+            - option "LPWPPAK9101W"
+            - option "MARSPWOBURN3BK"
+            - option "MBFNPD16GAPCYRD"
+            - option "MBFNPD16GAPSFGY"
+            - option "MBFNPD16GUPCYRD"
+            - option "MBFNPD16GUPSFGY"
+            - option "MIACLMAC200R"
+            - option "MIACLMAC200RW"
+            - option "MIAFRY98"
+            - option "MICKRC100"
+            - option "MICKRC42"
+            - option "MICKRC56"
+            - option "MICKRC78"
+            - option "MIFNPD16J15R"
+            - option "MIWHC30A"
+            - option "MIWHC50A"
+            - option "MIWHC80A"
+            - option "MRMG640151"
+            - option "OMAFRYOMAF2254J"
+            - option "PLAFRY9216"
+            - option "PLAFRYHD9721"
+            - option "PLIRST392020"
+            - option "PLIRST51449"
+            - option "PLIRST523"
+            - option "PNCKRCSRGA321"
+            - option "PNCKRCSRGA421"
+            - option "PNCKRCSRGA721"
+            - option "RHAFRY26510"
+            - option "RHIRST2804056"
+            - option "RHSTPOP2164473"
+            - option "RHSTPOP2164474"
+            - option "SFDIR2913GS"
+            - option "SFHMSF1364SMWS"
+            - option "SFIRSTSF2910GS"
+            - option "SFMTGSF5855MG"
+            - option "SFVCW891VC"
+          - combobox "Filter by status" [ref=f40e280]:
+            - option "All statuses" [selected]
+            - option "New"
+            - option "Reviewed"
+            - option "Accepted"
+            - option "Modified"
+            - option "Rejected"
+            - option "Completed"
+          - combobox "Filter by recommendation type" [ref=f40e281]:
+            - option "All types" [selected]
+            - option "Purchase"
+            - option "Reduce purchase"
+            - option "Do not reorder"
+            - option "Transfer stock"
+            - option "Clearance"
+          - combobox "Filter by stockout risk" [ref=f40e282]:
+            - option "Any stockout risk" [selected]
+            - option "Critical"
+            - option "Moderate"
+            - option "None"
+          - combobox "Filter by overstock risk" [ref=f40e283]:
+            - option "Any overstock risk" [selected]
+            - option "Critical"
+            - option "Moderate"
+            - option "None"
+          - generic [ref=f40e284]:
+            - button "Clear" [disabled]
+        - table [ref=f40e286]:
+          - rowgroup [ref=f40e287]:
+            - row [ref=f40e288]:
+              - columnheader "SKU" [ref=f40e289]
+              - columnheader "Warehouse" [ref=f40e290]
+              - columnheader "Type" [ref=f40e291]
+              - columnheader "Current" [ref=f40e292]
+              - columnheader "Incoming" [ref=f40e293]
+              - columnheader "30d Forecast" [ref=f40e294]
+              - columnheader "Recommended" [ref=f40e295]
+              - columnheader "By" [ref=f40e296]
+              - columnheader "Risks" [ref=f40e297]
+              - columnheader "Status" [ref=f40e298]
+              - columnheader "Actions" [ref=f40e299]
+          - rowgroup [ref=f40e300]:
+            - row [ref=f40e301]:
+              - cell [ref=f40e302]:
+                - generic [ref=f40e303]:
+                  - paragraph [ref=f40e304]: LGRFGSX6172NS
+                  - paragraph [ref=f40e305]: LG 674L Insta - View Refrigerator Noble Steel
+              - cell [ref=f40e306]:
+                - paragraph [ref=f40e308]: Kadolkale Warehouse - Buy Abans Team
+              - cell "Purchase" [ref=f40e309]
+              - cell "2" [ref=f40e312]
+              - cell "4" [ref=f40e313]
+              - cell "2" [ref=f40e314]
+              - cell [ref=f40e315]:
+                - paragraph [ref=f40e317]: "2"
+              - cell "2026-08-16" [ref=f40e318]
+              - 'cell "Stockout: Critical" [ref=f40e319]'
+              - cell "New" [ref=f40e323]
+              - cell [ref=f40e326]:
+                - generic [ref=f40e327]:
+                  - button "Accept recommendation" [ref=f40e328] [cursor=pointer]
+                  - button "Modify" [ref=f40e331] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e332] [cursor=pointer]
+            - row [ref=f40e336]:
+              - cell [ref=f40e337]:
+                - generic [ref=f40e338]:
+                  - paragraph [ref=f40e339]: LGRFGSX6172NS
+                  - paragraph [ref=f40e340]: LG 674L Insta - View Refrigerator Noble Steel
+              - cell [ref=f40e341]:
+                - paragraph [ref=f40e343]: Galle Regional Warehouse
+              - cell "Purchase" [ref=f40e344]
+              - cell "2" [ref=f40e347]
+              - cell "0" [ref=f40e348]
+              - cell "2" [ref=f40e349]
+              - cell [ref=f40e350]:
+                - paragraph [ref=f40e352]: "4"
+              - cell "2026-08-16" [ref=f40e353]
+              - 'cell "Stockout: Critical" [ref=f40e354]'
+              - cell "New" [ref=f40e358]
+              - cell [ref=f40e361]:
+                - generic [ref=f40e362]:
+                  - button "Accept recommendation" [ref=f40e363] [cursor=pointer]
+                  - button "Modify" [ref=f40e366] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e367] [cursor=pointer]
+            - row [ref=f40e371]:
+              - cell [ref=f40e372]:
+                - generic [ref=f40e373]:
+                  - paragraph [ref=f40e374]: LGRF6012PZPN3
+                  - paragraph [ref=f40e375]: LG 601L Refrigerator - Platinum Silver
+              - cell [ref=f40e376]:
+                - paragraph [ref=f40e378]: Kadolkale Warehouse - Buy Abans Team
+              - cell "Purchase" [ref=f40e379]
+              - cell "3" [ref=f40e382]
+              - cell "1" [ref=f40e383]
+              - cell "2" [ref=f40e384]
+              - cell [ref=f40e385]:
+                - paragraph [ref=f40e387]: "2"
+              - cell "2026-08-16" [ref=f40e388]
+              - 'cell "Stockout: Moderate" [ref=f40e389]'
+              - cell "New" [ref=f40e393]
+              - cell [ref=f40e396]:
+                - generic [ref=f40e397]:
+                  - button "Accept recommendation" [ref=f40e398] [cursor=pointer]
+                  - button "Modify" [ref=f40e401] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e402] [cursor=pointer]
+            - row [ref=f40e406]:
+              - cell [ref=f40e407]:
+                - generic [ref=f40e408]:
+                  - paragraph [ref=f40e409]: LGRF6012PZPN3
+                  - paragraph [ref=f40e410]: LG 601L Refrigerator - Platinum Silver
+              - cell [ref=f40e411]:
+                - paragraph [ref=f40e413]: Dambulla Regional Warehouse
+              - cell "Reduce purchase" [ref=f40e414]
+              - cell "3" [ref=f40e417]
+              - cell "1" [ref=f40e418]
+              - cell "1" [ref=f40e419]
+              - cell [ref=f40e420]:
+                - paragraph [ref=f40e422]: "1"
+              - cell "2026-08-16" [ref=f40e423]
+              - cell [ref=f40e424]:
+                - generic [ref=f40e425]:
+                  - generic [ref=f40e426]: "Stockout: Moderate"
+                  - generic [ref=f40e428]: "Overstock: Moderate"
+              - cell "New" [ref=f40e430]
+              - cell [ref=f40e433]:
+                - generic [ref=f40e434]:
+                  - button "Accept recommendation" [ref=f40e435] [cursor=pointer]
+                  - button "Modify" [ref=f40e438] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e439] [cursor=pointer]
+            - row [ref=f40e443]:
+              - cell [ref=f40e444]:
+                - generic [ref=f40e445]:
+                  - paragraph [ref=f40e446]: LGRFDDM5097PZ
+                  - paragraph [ref=f40e447]: LG 506L Inverter Refrigerator - Platinum Silver
+              - cell [ref=f40e448]:
+                - paragraph [ref=f40e450]: Kadolkale Warehouse - Buy Abans Team
+              - cell "Reduce purchase" [ref=f40e451]
+              - cell "1" [ref=f40e454]
+              - cell "0" [ref=f40e455]
+              - cell "0" [ref=f40e456]
+              - cell [ref=f40e457]:
+                - paragraph [ref=f40e459]: "1"
+              - cell "2026-08-16" [ref=f40e460]
+              - cell [ref=f40e461]:
+                - generic [ref=f40e462]:
+                  - generic [ref=f40e463]: "Stockout: Moderate"
+                  - generic [ref=f40e465]: "Overstock: Moderate"
+              - cell "New" [ref=f40e467]
+              - cell [ref=f40e470]:
+                - generic [ref=f40e471]:
+                  - button "Accept recommendation" [ref=f40e472] [cursor=pointer]
+                  - button "Modify" [ref=f40e475] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e476] [cursor=pointer]
+            - row [ref=f40e480]:
+              - cell [ref=f40e481]:
+                - generic [ref=f40e482]:
+                  - paragraph [ref=f40e483]: LGRFDDM5097PZ
+                  - paragraph [ref=f40e484]: LG 506L Inverter Refrigerator - Platinum Silver
+              - cell [ref=f40e485]:
+                - generic [ref=f40e486]:
+                  - paragraph [ref=f40e487]: Galle Regional Warehouse
+                  - paragraph [ref=f40e488]: from Dambulla Regional Warehouse
+              - cell "Transfer stock" [ref=f40e489]
+              - cell "1" [ref=f40e492]
+              - cell "0" [ref=f40e493]
+              - cell "0" [ref=f40e494]
+              - cell [ref=f40e495]:
+                - paragraph [ref=f40e497]: "2"
+              - cell "2026-08-16" [ref=f40e498]
+              - cell [ref=f40e499]:
+                - generic [ref=f40e500]:
+                  - generic [ref=f40e501]: "Stockout: Moderate"
+                  - generic [ref=f40e503]: "Overstock: Moderate"
+              - cell "New" [ref=f40e505]
+              - cell [ref=f40e508]:
+                - generic [ref=f40e509]:
+                  - button "Accept recommendation" [ref=f40e510] [cursor=pointer]
+                  - button "Modify" [ref=f40e513] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e514] [cursor=pointer]
+            - row [ref=f40e518]:
+              - cell [ref=f40e519]:
+                - generic [ref=f40e520]:
+                  - paragraph [ref=f40e521]: LGRFDDM5097PZ
+                  - paragraph [ref=f40e522]: LG 506L Inverter Refrigerator - Platinum Silver
+              - cell [ref=f40e523]:
+                - paragraph [ref=f40e525]: Dambulla Regional Warehouse
+              - cell "Do not reorder" [ref=f40e526]
+              - cell "3" [ref=f40e529]
+              - cell "0" [ref=f40e530]
+              - cell "0" [ref=f40e531]
+              - cell [ref=f40e532]:
+                - paragraph [ref=f40e534]: "0"
+              - cell "2026-08-16" [ref=f40e535]
+              - cell [ref=f40e536]:
+                - generic [ref=f40e537]:
+                  - generic [ref=f40e538]: "Overstock: Critical"
+                  - generic [ref=f40e540]: "Ageing: 50/100"
+              - cell "New" [ref=f40e542]
+              - cell [ref=f40e545]:
+                - generic [ref=f40e546]:
+                  - button "Accept recommendation" [ref=f40e547] [cursor=pointer]
+                  - button "Modify" [ref=f40e550] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e551] [cursor=pointer]
+            - row [ref=f40e555]:
+              - cell [ref=f40e556]:
+                - generic [ref=f40e557]:
+                  - paragraph [ref=f40e558]: LGRFDDM5097PZ
+                  - paragraph [ref=f40e559]: LG 506L Inverter Refrigerator - Platinum Silver
+              - cell [ref=f40e560]:
+                - paragraph [ref=f40e562]: Kotikawatta Warehouse
+              - cell "Do not reorder" [ref=f40e563]
+              - cell "1" [ref=f40e566]
+              - cell "0" [ref=f40e567]
+              - cell "0" [ref=f40e568]
+              - cell [ref=f40e569]:
+                - paragraph [ref=f40e571]: "0"
+              - cell "2026-08-16" [ref=f40e572]
+              - 'cell "Overstock: Critical" [ref=f40e573]'
+              - cell "New" [ref=f40e577]
+              - cell [ref=f40e580]:
+                - generic [ref=f40e581]:
+                  - button "Accept recommendation" [ref=f40e582] [cursor=pointer]
+                  - button "Modify" [ref=f40e585] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e586] [cursor=pointer]
+            - row [ref=f40e590]:
+              - cell [ref=f40e591]:
+                - generic [ref=f40e592]:
+                  - paragraph [ref=f40e593]: ABFRCH400AEL
+                  - paragraph [ref=f40e594]: ABANS 400L Chest Freezer
+              - cell [ref=f40e595]:
+                - paragraph [ref=f40e597]: Jaffna Regional Warehouse
+              - cell "Purchase" [ref=f40e598]
+              - cell "5" [ref=f40e601]
+              - cell "0" [ref=f40e602]
+              - cell "2" [ref=f40e603]
+              - cell [ref=f40e604]:
+                - paragraph [ref=f40e606]: "9"
+              - cell "2026-08-16" [ref=f40e607]
+              - 'cell "Stockout: Moderate" [ref=f40e608]'
+              - cell "New" [ref=f40e612]
+              - cell [ref=f40e615]:
+                - generic [ref=f40e616]:
+                  - button "Accept recommendation" [ref=f40e617] [cursor=pointer]
+                  - button "Modify" [ref=f40e620] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e621] [cursor=pointer]
+            - row [ref=f40e625]:
+              - cell [ref=f40e626]:
+                - generic [ref=f40e627]:
+                  - paragraph [ref=f40e628]: LGWMINWS069FD2FS
+                  - paragraph [ref=f40e629]: LG Ultra Large Capacity Turbo Washer
+              - cell [ref=f40e630]:
+                - paragraph [ref=f40e632]: Dambulla Regional Warehouse
+              - cell "Purchase" [ref=f40e633]
+              - cell "1" [ref=f40e636]
+              - cell "0" [ref=f40e637]
+              - cell "1" [ref=f40e638]
+              - cell [ref=f40e639]:
+                - paragraph [ref=f40e641]: "4"
+              - cell "2026-08-16" [ref=f40e642]
+              - 'cell "Stockout: Moderate" [ref=f40e643]'
+              - cell "New" [ref=f40e647]
+              - cell [ref=f40e650]:
+                - generic [ref=f40e651]:
+                  - button "Accept recommendation" [ref=f40e652] [cursor=pointer]
+                  - button "Modify" [ref=f40e655] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e656] [cursor=pointer]
+            - row [ref=f40e660]:
+              - cell [ref=f40e661]:
+                - generic [ref=f40e662]:
+                  - paragraph [ref=f40e663]: ABACSTLG30CR
+                  - paragraph [ref=f40e664]: ABANS 30000 BTU Air Conditioner - R410A Fix Speed
+              - cell [ref=f40e665]:
+                - paragraph [ref=f40e667]: Kadolkale Warehouse - Buy Abans Team
+              - cell "Purchase" [ref=f40e668]
+              - cell "8" [ref=f40e671]
+              - cell "0" [ref=f40e672]
+              - cell "4" [ref=f40e673]
+              - cell [ref=f40e674]:
+                - paragraph [ref=f40e676]: "4"
+              - cell "2026-08-16" [ref=f40e677]
+              - 'cell "Stockout: Moderate" [ref=f40e678]'
+              - cell "New" [ref=f40e682]
+              - cell [ref=f40e685]:
+                - generic [ref=f40e686]:
+                  - button "Accept recommendation" [ref=f40e687] [cursor=pointer]
+                  - button "Modify" [ref=f40e690] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e691] [cursor=pointer]
+            - row [ref=f40e695]:
+              - cell [ref=f40e696]:
+                - generic [ref=f40e697]:
+                  - paragraph [ref=f40e698]: ABACSTLG30CR
+                  - paragraph [ref=f40e699]: ABANS 30000 BTU Air Conditioner - R410A Fix Speed
+              - cell [ref=f40e700]:
+                - paragraph [ref=f40e702]: Jaffna Regional Warehouse
+              - cell "Do not reorder" [ref=f40e703]
+              - cell "3" [ref=f40e706]
+              - cell "0" [ref=f40e707]
+              - cell "1" [ref=f40e708]
+              - cell [ref=f40e709]:
+                - paragraph [ref=f40e711]: "0"
+              - cell "2026-08-16" [ref=f40e712]
+              - 'cell "Overstock: Moderate" [ref=f40e713]'
+              - cell "New" [ref=f40e717]
+              - cell [ref=f40e720]:
+                - generic [ref=f40e721]:
+                  - button "Accept recommendation" [ref=f40e722] [cursor=pointer]
+                  - button "Modify" [ref=f40e725] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e726] [cursor=pointer]
+            - row [ref=f40e730]:
+              - cell [ref=f40e731]:
+                - generic [ref=f40e732]:
+                  - paragraph [ref=f40e733]: LGACINQ18KL2FA
+                  - paragraph [ref=f40e734]: LG 18000 BTU Air Conditioner Dual Cool STD Plus R32 Inverter With Wi-Fi
+              - cell [ref=f40e735]:
+                - paragraph [ref=f40e737]: Kadolkale Warehouse - Buy Abans Team
+              - cell "Do not reorder" [ref=f40e738]
+              - cell "18" [ref=f40e741]
+              - cell "0" [ref=f40e742]
+              - cell "6" [ref=f40e743]
+              - cell [ref=f40e744]:
+                - paragraph [ref=f40e746]: "0"
+              - cell "2026-08-16" [ref=f40e747]
+              - 'cell "Overstock: Moderate" [ref=f40e748]'
+              - cell "New" [ref=f40e752]
+              - cell [ref=f40e755]:
+                - generic [ref=f40e756]:
+                  - button "Accept recommendation" [ref=f40e757] [cursor=pointer]
+                  - button "Modify" [ref=f40e760] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e761] [cursor=pointer]
+            - row [ref=f40e765]:
+              - cell [ref=f40e766]:
+                - generic [ref=f40e767]:
+                  - paragraph [ref=f40e768]: LGACINQ18KL3FA
+                  - paragraph [ref=f40e769]: LG 18000BTU Antivirus & Wi-Fi Inverter Air Conditioner
+              - cell [ref=f40e770]:
+                - paragraph [ref=f40e772]: Kadolkale Warehouse - Buy Abans Team
+              - cell "Purchase" [ref=f40e773]
+              - cell "15" [ref=f40e776]
+              - cell "0" [ref=f40e777]
+              - cell "8" [ref=f40e778]
+              - cell [ref=f40e779]:
+                - paragraph [ref=f40e781]: "4"
+              - cell "2026-08-16" [ref=f40e782]
+              - 'cell "Stockout: Moderate" [ref=f40e783]'
+              - cell "New" [ref=f40e787]
+              - cell [ref=f40e790]:
+                - generic [ref=f40e791]:
+                  - button "Accept recommendation" [ref=f40e792] [cursor=pointer]
+                  - button "Modify" [ref=f40e795] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e796] [cursor=pointer]
+            - row [ref=f40e800]:
+              - cell [ref=f40e801]:
+                - generic [ref=f40e802]:
+                  - paragraph [ref=f40e803]: JBLPMBOOMBOX2SQUAD
+                  - paragraph [ref=f40e804]: JBL Boombox 2 Speaker - Squad
+              - cell [ref=f40e805]:
+                - paragraph [ref=f40e807]: Kadolkale Warehouse - Buy Abans Team
+              - cell "Purchase" [ref=f40e808]
+              - cell "5" [ref=f40e811]
+              - cell "0" [ref=f40e812]
+              - cell "3" [ref=f40e813]
+              - cell [ref=f40e814]:
+                - paragraph [ref=f40e816]: "3"
+              - cell "2026-08-16" [ref=f40e817]
+              - 'cell "Stockout: Moderate" [ref=f40e818]'
+              - cell "New" [ref=f40e822]
+              - cell [ref=f40e825]:
+                - generic [ref=f40e826]:
+                  - button "Accept recommendation" [ref=f40e827] [cursor=pointer]
+                  - button "Modify" [ref=f40e830] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e831] [cursor=pointer]
+            - row [ref=f40e835]:
+              - cell [ref=f40e836]:
+                - generic [ref=f40e837]:
+                  - paragraph [ref=f40e838]: ABFR750XN
+                  - paragraph [ref=f40e839]: ABANS 677L Chest Freezer
+              - cell [ref=f40e840]:
+                - paragraph [ref=f40e842]: Jaffna Regional Warehouse
+              - cell "Purchase" [ref=f40e843]
+              - cell "7" [ref=f40e846]
+              - cell "0" [ref=f40e847]
+              - cell "6" [ref=f40e848]
+              - cell [ref=f40e849]:
+                - paragraph [ref=f40e851]: "12"
+              - cell "2026-08-16" [ref=f40e852]
+              - 'cell "Stockout: Moderate" [ref=f40e853]'
+              - cell "New" [ref=f40e857]
+              - cell [ref=f40e860]:
+                - generic [ref=f40e861]:
+                  - button "Accept recommendation" [ref=f40e862] [cursor=pointer]
+                  - button "Modify" [ref=f40e865] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e866] [cursor=pointer]
+            - row [ref=f40e870]:
+              - cell [ref=f40e871]:
+                - generic [ref=f40e872]:
+                  - paragraph [ref=f40e873]: JBLPMPARTYBOX310EU
+                  - paragraph [ref=f40e874]: JBL Partybox 310 Speaker
+              - cell [ref=f40e875]:
+                - paragraph [ref=f40e877]: Dambulla Regional Warehouse
+              - cell "Purchase" [ref=f40e878]
+              - cell "3" [ref=f40e881]
+              - cell "0" [ref=f40e882]
+              - cell "3" [ref=f40e883]
+              - cell [ref=f40e884]:
+                - paragraph [ref=f40e886]: "3"
+              - cell "2026-08-16" [ref=f40e887]
+              - 'cell "Stockout: Moderate" [ref=f40e888]'
+              - cell "New" [ref=f40e892]
+              - cell [ref=f40e895]:
+                - generic [ref=f40e896]:
+                  - button "Accept recommendation" [ref=f40e897] [cursor=pointer]
+                  - button "Modify" [ref=f40e900] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e901] [cursor=pointer]
+            - row [ref=f40e905]:
+              - cell [ref=f40e906]:
+                - generic [ref=f40e907]:
+                  - paragraph [ref=f40e908]: HKPMCITATION200BLKEU
+                  - paragraph [ref=f40e909]: Harman Kardon Citation 200 Speaker - Black
+              - cell [ref=f40e910]:
+                - paragraph [ref=f40e912]: Kadolkale Warehouse - Buy Abans Team
+              - cell "Purchase" [ref=f40e913]
+              - cell "3" [ref=f40e916]
+              - cell "0" [ref=f40e917]
+              - cell "4" [ref=f40e918]
+              - cell [ref=f40e919]:
+                - paragraph [ref=f40e921]: "6"
+              - cell "2026-08-16" [ref=f40e922]
+              - 'cell "Stockout: Moderate" [ref=f40e923]'
+              - cell "New" [ref=f40e927]
+              - cell [ref=f40e930]:
+                - generic [ref=f40e931]:
+                  - button "Accept recommendation" [ref=f40e932] [cursor=pointer]
+                  - button "Modify" [ref=f40e935] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e936] [cursor=pointer]
+            - row [ref=f40e940]:
+              - cell [ref=f40e941]:
+                - generic [ref=f40e942]:
+                  - paragraph [ref=f40e943]: HKPMCITATION200BLKEU
+                  - paragraph [ref=f40e944]: Harman Kardon Citation 200 Speaker - Black
+              - cell [ref=f40e945]:
+                - paragraph [ref=f40e947]: Kotikawatta Warehouse
+              - cell "Purchase" [ref=f40e948]
+              - cell "2" [ref=f40e951]
+              - cell "0" [ref=f40e952]
+              - cell "2" [ref=f40e953]
+              - cell [ref=f40e954]:
+                - paragraph [ref=f40e956]: "6"
+              - cell "2026-08-16" [ref=f40e957]
+              - 'cell "Stockout: Moderate" [ref=f40e958]'
+              - cell "New" [ref=f40e962]
+              - cell [ref=f40e965]:
+                - generic [ref=f40e966]:
+                  - button "Accept recommendation" [ref=f40e967] [cursor=pointer]
+                  - button "Modify" [ref=f40e970] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e971] [cursor=pointer]
+            - row [ref=f40e975]:
+              - cell [ref=f40e976]:
+                - generic [ref=f40e977]:
+                  - paragraph [ref=f40e978]: SFIRSTSF2910GS
+                  - paragraph [ref=f40e979]: SANFORD Garment Steamer - Pink & White
+              - cell [ref=f40e980]:
+                - paragraph [ref=f40e982]: Kadolkale Warehouse - Buy Abans Team
+              - cell "Do not reorder" [ref=f40e983]
+              - cell "32" [ref=f40e986]
+              - cell "0" [ref=f40e987]
+              - cell "2" [ref=f40e988]
+              - cell [ref=f40e989]:
+                - paragraph [ref=f40e991]: "0"
+              - cell "2026-08-16" [ref=f40e992]
+              - cell [ref=f40e993]:
+                - generic [ref=f40e994]:
+                  - generic [ref=f40e995]: "Overstock: Critical"
+                  - generic [ref=f40e997]: "Ageing: 60/100"
+              - cell "New" [ref=f40e999]
+              - cell [ref=f40e1002]:
+                - generic [ref=f40e1003]:
+                  - button "Accept recommendation" [ref=f40e1004] [cursor=pointer]
+                  - button "Modify" [ref=f40e1007] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f40e1008] [cursor=pointer]
+        - generic [ref=f40e1012]:
+          - generic [ref=f40e1013]:
+            - generic [ref=f40e1014]: Showing 1–20 of 153
+            - generic [ref=f40e1015]:
+              - text: Rows
+              - combobox "Rows" [ref=f40e1016]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+          - navigation "Pagination" [ref=f40e1017]:
+            - list [ref=f40e1018]:
+              - listitem [ref=f40e1019]:
+                - button "Previous page" [disabled] [ref=f40e1020]
+              - listitem [ref=f40e1023]:
+                - button "1" [ref=f40e1024] [cursor=pointer]
+              - listitem [ref=f40e1025]:
+                - button "2" [ref=f40e1026] [cursor=pointer]
+              - listitem [ref=f40e1027]: …
+              - listitem [ref=f40e1028]:
+                - button "8" [ref=f40e1029] [cursor=pointer]
+              - listitem [ref=f40e1030]:
+                - button "Next page" [ref=f40e1031] [cursor=pointer]

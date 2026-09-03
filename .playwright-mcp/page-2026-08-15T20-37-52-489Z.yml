@@ -1,0 +1,99 @@
+- generic [ref=f1e3]:
+  - complementary "Main navigation" [ref=f1e4]:
+    - link "Laravel" [ref=f1e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f1e13]:
+      - generic [ref=f1e14]:
+        - generic [ref=f1e15]: Overview
+        - navigation [ref=f1e16]:
+          - link "Dashboard" [ref=f1e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f1e24]:
+        - generic [ref=f1e25]: Catalog
+        - navigation [ref=f1e26]:
+          - link "Products" [ref=f1e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f1e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f1e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f1e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f1e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f1e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f1e60]:
+        - generic [ref=f1e61]: Inventory
+        - navigation [ref=f1e62]:
+          - link "Inventory" [ref=f1e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f1e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f1e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f1e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f1e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f1e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f1e105]:
+        - generic [ref=f1e106]: Purchasing
+        - navigation [ref=f1e107]:
+          - link "Purchase orders" [ref=f1e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f1e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f1e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f1e124]:
+        - generic [ref=f1e125]: Sales
+        - navigation [ref=f1e126]:
+          - link "Sales orders" [ref=f1e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f1e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f1e138]:
+        - generic [ref=f1e139]: Account
+        - navigation [ref=f1e140]:
+          - link "Profile" [ref=f1e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f1e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f1e151]:
+    - banner [ref=f1e152]:
+      - button "Collapse navigation" [ref=f1e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f1e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f1e161] [cursor=pointer]:
+        - generic [ref=f1e162]: QT
+        - generic [ref=f1e163]:
+          - generic [ref=f1e164]: QA Tester
+          - generic [ref=f1e165]: qa@example.test
+    - main [ref=f1e168]:
+      - generic [ref=f1e170]:
+        - generic [ref=f1e171]: Purchasing
+        - heading "New supplier" [level=1] [ref=f1e172]
+        - paragraph [ref=f1e173]: A vendor you can buy stock from.
+      - generic [ref=f1e177]:
+        - generic [ref=f1e178]:
+          - generic [ref=f1e180]:
+            - text: Supplier name
+            - generic [ref=f1e181]: "*"
+          - textbox "Supplier name" [ref=f1e182]
+        - generic [ref=f1e183]:
+          - generic [ref=f1e185]:
+            - text: Default lead time (days)
+            - generic [ref=f1e186]: "*"
+          - spinbutton "Default lead time (days)" [ref=f1e187]: "7"
+        - generic [ref=f1e188]:
+          - generic [ref=f1e189]: Minimum order value
+          - spinbutton "Minimum order value" [ref=f1e191]
+          - paragraph [ref=f1e192]: Optional
+        - generic [ref=f1e194]:
+          - checkbox "Active" [checked] [ref=f1e195] [cursor=pointer]
+          - generic [ref=f1e196] [cursor=pointer]: Active
+        - generic [ref=f1e197]:
+          - generic [ref=f1e198]: SKUs supplied
+          - button "Add SKU" [ref=f1e201] [cursor=pointer]
+        - button "Create supplier" [ref=f1e204] [cursor=pointer]

@@ -1,0 +1,86 @@
+- generic [ref=f40e3]:
+  - complementary "Main navigation" [ref=f40e4]:
+    - link "Laravel" [ref=f40e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f40e13]:
+      - generic [ref=f40e14]:
+        - generic [ref=f40e15]: Overview
+        - navigation [ref=f40e16]:
+          - link "Dashboard" [ref=f40e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f40e24]:
+        - generic [ref=f40e25]: Catalog
+        - navigation [ref=f40e26]:
+          - link "Products" [ref=f40e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f40e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f40e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f40e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f40e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f40e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f40e60]:
+        - generic [ref=f40e61]: Inventory
+        - navigation [ref=f40e62]:
+          - link "Inventory" [ref=f40e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Stock movements" [ref=f40e75] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f40e80] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Warehouses" [ref=f40e86] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f40e91]:
+        - generic [ref=f40e92]: Account
+        - navigation [ref=f40e93]:
+          - link "Profile" [ref=f40e94] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f40e99] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f40e104]:
+    - banner [ref=f40e105]:
+      - button "Collapse navigation" [ref=f40e106] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f40e110] [cursor=pointer]
+      - button "Percival Denesik qa@example.test" [ref=f40e114] [cursor=pointer]:
+        - generic [ref=f40e115]: PD
+        - generic [ref=f40e116]:
+          - generic [ref=f40e117]: Percival Denesik
+          - generic [ref=f40e118]: qa@example.test
+    - main [ref=f40e121]:
+      - generic [ref=f40e123]:
+        - generic [ref=f40e124]: Catalog
+        - heading "Edit Size 42" [level=1] [ref=f40e125]
+        - paragraph [ref=f40e126]: Update this variant's details and attribute values.
+      - generic [ref=f40e130]:
+        - generic [ref=f40e131]:
+          - generic [ref=f40e133]:
+            - text: Product
+            - generic [ref=f40e134]: "*"
+          - combobox "Product" [ref=f40e135]:
+            - option "Skechers Go Walk" [selected]
+        - generic [ref=f40e136]:
+          - generic [ref=f40e138]:
+            - text: Variant name
+            - generic [ref=f40e139]: "*"
+          - textbox "Variant name" [ref=f40e140]: Size 42
+        - generic [ref=f40e142]:
+          - checkbox "Active" [checked] [ref=f40e143] [cursor=pointer]
+          - generic [ref=f40e144] [cursor=pointer]: Active
+        - generic [ref=f40e145]:
+          - generic [ref=f40e146]: Attribute values
+          - generic [ref=f40e148]:
+            - generic [ref=f40e149]:
+              - combobox "Attribute" [ref=f40e150]:
+                - option "Select attribute"
+                - option "Size" [selected]
+              - combobox "Value" [ref=f40e151]:
+                - option "Select value"
+                - option "41"
+                - option "42" [selected]
+              - button "Remove attribute value" [disabled]
+            - button "Add attribute value" [ref=f40e152] [cursor=pointer]
+        - button "Save changes" [ref=f40e155] [cursor=pointer]

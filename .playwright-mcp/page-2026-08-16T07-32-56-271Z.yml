@@ -1,0 +1,129 @@
+- generic [ref=f2e3]:
+  - complementary "Main navigation" [ref=f2e4]:
+    - link "Laravel" [ref=f2e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f2e13]:
+      - generic [ref=f2e14]:
+        - generic [ref=f2e15]: Overview
+        - navigation [ref=f2e16]:
+          - link "Dashboard" [ref=f2e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f2e24]:
+        - generic [ref=f2e25]: Catalog
+        - navigation [ref=f2e26]:
+          - link "Products" [ref=f2e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f2e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f2e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f2e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f2e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f2e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f2e60]:
+        - generic [ref=f2e61]: Inventory
+        - navigation [ref=f2e62]:
+          - link "Inventory" [ref=f2e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f2e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f2e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f2e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f2e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f2e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f2e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f2e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f2e115]:
+        - generic [ref=f2e116]: Purchasing
+        - navigation [ref=f2e117]:
+          - link "Purchase orders" [ref=f2e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f2e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f2e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f2e134]:
+        - generic [ref=f2e135]: Sales
+        - navigation [ref=f2e136]:
+          - link "Sales orders" [ref=f2e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f2e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f2e148]:
+        - generic [ref=f2e149]: Forecasting
+        - navigation [ref=f2e150]:
+          - link "Forecasts" [ref=f2e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f2e156] [cursor=pointer]:
+            - /url: /forecast-run
+      - generic [ref=f2e160]:
+        - generic [ref=f2e161]: Account
+        - navigation [ref=f2e162]:
+          - link "Profile" [ref=f2e163] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f2e168] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f2e173]:
+    - banner [ref=f2e174]:
+      - button "Collapse navigation" [ref=f2e175] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f2e179] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f2e183] [cursor=pointer]:
+        - generic [ref=f2e184]: QT
+        - generic [ref=f2e185]:
+          - generic [ref=f2e186]: QA Tester
+          - generic [ref=f2e187]: qa@example.test
+    - main [ref=f2e190]:
+      - generic [ref=f2e191]:
+        - generic [ref=f2e192]:
+          - generic [ref=f2e193]: Forecasting
+          - heading "Forecast runs" [level=1] [ref=f2e194]
+          - paragraph [ref=f2e195]: Each run asks the ML service to predict demand for a set of warehouses over a horizon — currently a labeled statistical baseline, not a trained model. See ml-service/README.md.
+        - link "New forecast run" [ref=f2e197] [cursor=pointer]:
+          - /url: /forecast-run/create
+      - generic [ref=f2e199]:
+        - generic [ref=f2e200]:
+          - searchbox "Search…" [ref=f2e202]
+          - combobox "Filter by status" [ref=f2e203]:
+            - option "All statuses" [selected]
+            - option "Queued"
+            - option "Processing"
+            - option "Completed"
+            - option "Failed"
+          - generic [ref=f2e204]:
+            - button "Clear" [disabled]
+        - table [ref=f2e206]:
+          - rowgroup [ref=f2e207]:
+            - row [ref=f2e208]:
+              - columnheader "Run" [ref=f2e209]
+              - columnheader "Horizon" [ref=f2e210]
+              - columnheader "Warehouses" [ref=f2e211]
+              - columnheader "Forecasts" [ref=f2e212]
+              - columnheader "Model" [ref=f2e213]
+              - columnheader "Status" [ref=f2e214]
+              - columnheader "Queued" [ref=f2e215]
+          - rowgroup [ref=f2e216]:
+            - row [ref=f2e217]:
+              - cell "#2" [ref=f2e218]
+              - cell "30 days" [ref=f2e219]
+              - cell "All" [ref=f2e220]
+              - cell "1" [ref=f2e221]
+              - cell "—" [ref=f2e222]
+              - cell "Completed" [ref=f2e223]
+              - cell "2026-08-16 07:31:58" [ref=f2e226]
+        - generic [ref=f2e228]:
+          - generic [ref=f2e229]: Showing 1–1 of 1
+          - generic [ref=f2e230]:
+            - text: Rows
+            - combobox "Rows" [ref=f2e231]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

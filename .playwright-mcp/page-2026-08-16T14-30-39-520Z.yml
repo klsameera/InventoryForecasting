@@ -1,0 +1,134 @@
+- generic [ref=f29e3]:
+  - complementary "Main navigation" [ref=f29e4]:
+    - link "Laravel" [ref=f29e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f29e13]:
+      - generic [ref=f29e14]:
+        - generic [ref=f29e15]: Overview
+        - navigation [ref=f29e16]:
+          - link "Dashboard" [ref=f29e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f29e24]:
+        - generic [ref=f29e25]: Catalog
+        - navigation [ref=f29e26]:
+          - link "Products" [ref=f29e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f29e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f29e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f29e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f29e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f29e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f29e60]:
+        - generic [ref=f29e61]: Inventory
+        - navigation [ref=f29e62]:
+          - link "Inventory" [ref=f29e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f29e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f29e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f29e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f29e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f29e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f29e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f29e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f29e115]:
+        - generic [ref=f29e116]: Purchasing
+        - navigation [ref=f29e117]:
+          - link "Purchase orders" [ref=f29e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f29e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f29e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f29e134]:
+        - generic [ref=f29e135]: Sales
+        - navigation [ref=f29e136]:
+          - link "Sales orders" [ref=f29e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f29e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f29e148]:
+        - generic [ref=f29e149]: Forecasting
+        - navigation [ref=f29e150]:
+          - link "Forecasts" [ref=f29e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f29e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f29e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f29e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f29e172]:
+        - generic [ref=f29e173]: Advanced intelligence
+        - navigation [ref=f29e174]:
+          - link "Supplier performance" [ref=f29e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f29e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f29e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f29e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f29e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f29e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f29e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f29e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f29e225]:
+        - generic [ref=f29e226]: Account
+        - navigation [ref=f29e227]:
+          - link "Profile" [ref=f29e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f29e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f29e238]:
+    - banner [ref=f29e239]:
+      - button "Collapse navigation" [ref=f29e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f29e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f29e248] [cursor=pointer]:
+        - generic [ref=f29e249]: MB
+        - generic [ref=f29e250]:
+          - generic [ref=f29e251]: Marilou Brakus
+          - generic [ref=f29e252]: qa@example.com
+    - main [ref=f29e255]:
+      - generic [ref=f29e256]:
+        - generic [ref=f29e257]:
+          - generic [ref=f29e258]: Advanced intelligence
+          - heading "Supplier performance" [level=1] [ref=f29e259]
+          - paragraph [ref=f29e260]: Real observed lead time, on-time delivery and fill rate per supplier per month — computed from actual purchase order and goods receipt dates, compared against each supplier's configured lead time.
+        - generic [ref=f29e262]:
+          - textbox "Month to capture" [ref=f29e263]
+          - button "Capture month" [ref=f29e264] [cursor=pointer]
+      - generic [ref=f29e270]:
+        - generic [ref=f29e271]:
+          - searchbox "Search by supplier…" [ref=f29e273]
+          - combobox "Filter by supplier" [ref=f29e274]:
+            - option "All suppliers" [selected]
+            - option "QA P10 Supplier"
+          - generic [ref=f29e275]:
+            - button "Clear" [disabled]
+        - generic [ref=f29e276]:
+          - paragraph [ref=f29e281]: No supplier performance captured yet
+          - paragraph [ref=f29e282]: Capture a month above, or wait for the monthly schedule to run.
+        - generic [ref=f29e284]:
+          - generic [ref=f29e285]: No results
+          - generic [ref=f29e286]:
+            - text: Rows
+            - combobox "Rows" [ref=f29e287]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

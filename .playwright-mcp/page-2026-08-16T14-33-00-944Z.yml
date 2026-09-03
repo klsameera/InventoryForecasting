@@ -1,0 +1,151 @@
+- generic [ref=f37e3]:
+  - complementary "Main navigation" [ref=f37e4]:
+    - link "Laravel" [ref=f37e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f37e13]:
+      - generic [ref=f37e14]:
+        - generic [ref=f37e15]: Overview
+        - navigation [ref=f37e16]:
+          - link "Dashboard" [ref=f37e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f37e24]:
+        - generic [ref=f37e25]: Catalog
+        - navigation [ref=f37e26]:
+          - link "Products" [ref=f37e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f37e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f37e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f37e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f37e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f37e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f37e60]:
+        - generic [ref=f37e61]: Inventory
+        - navigation [ref=f37e62]:
+          - link "Inventory" [ref=f37e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f37e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f37e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f37e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f37e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f37e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f37e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f37e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f37e115]:
+        - generic [ref=f37e116]: Purchasing
+        - navigation [ref=f37e117]:
+          - link "Purchase orders" [ref=f37e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f37e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f37e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f37e134]:
+        - generic [ref=f37e135]: Sales
+        - navigation [ref=f37e136]:
+          - link "Sales orders" [ref=f37e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f37e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f37e148]:
+        - generic [ref=f37e149]: Forecasting
+        - navigation [ref=f37e150]:
+          - link "Forecasts" [ref=f37e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f37e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f37e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f37e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f37e172]:
+        - generic [ref=f37e173]: Advanced intelligence
+        - navigation [ref=f37e174]:
+          - link "Supplier performance" [ref=f37e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f37e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f37e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f37e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f37e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f37e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f37e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f37e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f37e225]:
+        - generic [ref=f37e226]: Account
+        - navigation [ref=f37e227]:
+          - link "Profile" [ref=f37e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f37e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f37e238]:
+    - banner [ref=f37e239]:
+      - button "Collapse navigation" [ref=f37e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f37e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f37e248] [cursor=pointer]:
+        - generic [ref=f37e249]: MB
+        - generic [ref=f37e250]:
+          - generic [ref=f37e251]: Marilou Brakus
+          - generic [ref=f37e252]: qa@example.com
+    - main [ref=f37e255]:
+      - generic [ref=f37e257]:
+        - generic [ref=f37e258]: Advanced intelligence
+        - heading "New promotion" [level=1] [ref=f37e259]
+        - paragraph [ref=f37e260]: Record a discount that ran (or will run) on a set of SKUs, so its real effect on demand can be measured afterward.
+      - generic [ref=f37e264]:
+        - generic [ref=f37e265]:
+          - generic [ref=f37e267]:
+            - text: Name
+            - generic [ref=f37e268]: "*"
+          - textbox "Name" [ref=f37e269]
+        - generic [ref=f37e270]:
+          - generic [ref=f37e272]:
+            - generic [ref=f37e274]:
+              - text: Discount type
+              - generic [ref=f37e275]: "*"
+            - combobox "Discount type" [ref=f37e276]:
+              - option "Percentage" [selected]
+              - option "Fixed amount"
+          - generic [ref=f37e278]:
+            - generic [ref=f37e280]:
+              - text: Discount value
+              - generic [ref=f37e281]: "*"
+            - spinbutton "Discount value" [ref=f37e282]
+        - generic [ref=f37e283]:
+          - generic [ref=f37e285]:
+            - generic [ref=f37e287]:
+              - text: Start date
+              - generic [ref=f37e288]: "*"
+            - textbox "Start date" [ref=f37e289]
+          - generic [ref=f37e291]:
+            - generic [ref=f37e293]:
+              - text: End date
+              - generic [ref=f37e294]: "*"
+            - textbox "End date" [ref=f37e295]
+        - generic [ref=f37e296]:
+          - generic [ref=f37e297]: SKUs
+          - listbox "SKUs" [ref=f37e299]:
+            - option "QA-P10-001" [ref=f37e300]
+          - paragraph [ref=f37e301]: Hold Ctrl/Cmd to select multiple
+        - generic [ref=f37e302]:
+          - generic [ref=f37e303]: Notes
+          - textbox "Notes" [ref=f37e305]
+          - paragraph [ref=f37e306]: Optional
+        - button "Create promotion" [ref=f37e308] [cursor=pointer]

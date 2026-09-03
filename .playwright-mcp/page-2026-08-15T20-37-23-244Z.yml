@@ -1,0 +1,124 @@
+- generic [ref=e69]:
+  - complementary "Main navigation" [ref=e70]:
+    - link "Laravel" [ref=e72] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e81]: Overview
+        - navigation [ref=e82]:
+          - link "Dashboard" [ref=e83] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=e90]:
+        - generic [ref=e91]: Catalog
+        - navigation [ref=e92]:
+          - link "Products" [ref=e93] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=e101] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=e107] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=e113] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=e118] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=e123] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=e126]:
+        - generic [ref=e127]: Inventory
+        - navigation [ref=e128]:
+          - link "Inventory" [ref=e129] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=e141] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=e147] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=e152] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=e158] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=e166] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=e171]:
+        - generic [ref=e172]: Purchasing
+        - navigation [ref=e173]:
+          - link "Purchase orders" [ref=e174] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=e179] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=e186] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=e190]:
+        - generic [ref=e191]: Sales
+        - navigation [ref=e192]:
+          - link "Sales orders" [ref=e193] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=e199] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=e204]:
+        - generic [ref=e205]: Account
+        - navigation [ref=e206]:
+          - link "Profile" [ref=e207] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=e212] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=e217]:
+    - banner [ref=e218]:
+      - button "Collapse navigation" [ref=e219] [cursor=pointer]
+      - navigation "Breadcrumb" [ref=e223]:
+        - list [ref=e224]:
+          - listitem [ref=e225]: Dashboard
+      - button "Switch to dark theme" [ref=e226] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=e230] [cursor=pointer]:
+        - generic [ref=e231]: QT
+        - generic [ref=e232]:
+          - generic [ref=e233]: QA Tester
+          - generic [ref=e234]: qa@example.test
+    - main [ref=e237]:
+      - generic [ref=e238]:
+        - generic [ref=e240]:
+          - generic [ref=e241]: Overview
+          - heading "Dashboard" [level=1] [ref=e242]
+          - paragraph [ref=e243]: Demand, coverage and reorder signals across your catalogue.
+        - generic [ref=e244]:
+          - article [ref=e246]:
+            - paragraph [ref=e248]: SKUs tracked
+            - paragraph [ref=e260]: —
+          - article [ref=e262]:
+            - paragraph [ref=e264]: Forecast accuracy
+            - paragraph [ref=e269]: —
+          - article [ref=e271]:
+            - paragraph [ref=e273]: Reorder alerts
+            - paragraph [ref=e277]: —
+          - article [ref=e279]:
+            - paragraph [ref=e281]: Days of cover
+            - paragraph [ref=e289]: —
+        - generic [ref=e290]:
+          - generic [ref=e292]:
+            - generic [ref=e294]:
+              - heading "Demand trend" [level=2] [ref=e295]
+              - paragraph [ref=e296]: Units forecast against units sold.
+            - generic [ref=e298]:
+              - paragraph [ref=e303]: No demand history yet
+              - paragraph [ref=e304]: Once a forecasting module publishes its figures, the trend appears here.
+          - generic [ref=e306]:
+            - generic [ref=e308]:
+              - heading "Top movers" [level=2] [ref=e309]
+              - paragraph [ref=e310]: Highest volume this period.
+            - generic [ref=e312]:
+              - paragraph [ref=e317]: Nothing to compare yet
+              - paragraph [ref=e318]: Movement ranks appear once stock records exist.
+        - generic [ref=e319]:
+          - generic [ref=e321]:
+            - heading "Quick actions" [level=2] [ref=e322]
+            - paragraph [ref=e323]: Jump straight to the things you do most.
+          - generic [ref=e324]:
+            - link "Profile settings Update your name and email address" [ref=e325] [cursor=pointer]:
+              - /url: /settings/profile
+              - generic [ref=e330]:
+                - generic [ref=e331]: Profile settings
+                - generic [ref=e332]: Update your name and email address
+            - link "Security Passwords, two-factor and passkeys" [ref=e335] [cursor=pointer]:
+              - /url: /settings/security
+              - generic [ref=e340]:
+                - generic [ref=e341]: Security
+                - generic [ref=e342]: Passwords, two-factor and passkeys

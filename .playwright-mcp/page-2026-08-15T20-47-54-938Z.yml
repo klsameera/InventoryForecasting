@@ -1,0 +1,113 @@
+- generic [ref=f9e3]:
+  - complementary "Main navigation" [ref=f9e4]:
+    - link "Laravel" [ref=f9e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f9e13]:
+      - generic [ref=f9e14]:
+        - generic [ref=f9e15]: Overview
+        - navigation [ref=f9e16]:
+          - link "Dashboard" [ref=f9e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f9e24]:
+        - generic [ref=f9e25]: Catalog
+        - navigation [ref=f9e26]:
+          - link "Products" [ref=f9e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f9e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f9e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f9e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f9e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f9e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f9e60]:
+        - generic [ref=f9e61]: Inventory
+        - navigation [ref=f9e62]:
+          - link "Inventory" [ref=f9e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f9e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f9e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f9e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f9e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f9e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f9e105]:
+        - generic [ref=f9e106]: Purchasing
+        - navigation [ref=f9e107]:
+          - link "Purchase orders" [ref=f9e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f9e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f9e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f9e124]:
+        - generic [ref=f9e125]: Sales
+        - navigation [ref=f9e126]:
+          - link "Sales orders" [ref=f9e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f9e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f9e138]:
+        - generic [ref=f9e139]: Account
+        - navigation [ref=f9e140]:
+          - link "Profile" [ref=f9e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f9e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f9e151]:
+    - banner [ref=f9e152]:
+      - button "Collapse navigation" [ref=f9e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f9e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f9e161] [cursor=pointer]:
+        - generic [ref=f9e162]: QT
+        - generic [ref=f9e163]:
+          - generic [ref=f9e164]: QA Tester
+          - generic [ref=f9e165]: qa@example.test
+    - main [ref=f9e168]:
+      - generic [ref=f9e170]:
+        - generic [ref=f9e171]: Purchasing
+        - heading "Record goods receipt" [level=1] [ref=f9e172]
+        - paragraph [ref=f9e173]: Log what arrived against an ordered purchase order.
+      - generic [ref=f9e176]:
+        - generic [ref=f9e177]:
+          - generic [ref=f9e178]: Purchase order
+          - combobox "Purchase order" [ref=f9e180]:
+            - option "Select a purchase order"
+            - option "PO-000001 — Northwind Footwear Co" [selected]
+        - generic [ref=f9e182]:
+          - generic [ref=f9e183]:
+            - generic [ref=f9e185]:
+              - text: Received date
+              - generic [ref=f9e186]: "*"
+            - textbox "Received date" [ref=f9e187]: 2026-08-15
+          - generic [ref=f9e188]:
+            - generic [ref=f9e189]: Notes
+            - textbox "Notes" [ref=f9e191]
+            - paragraph [ref=f9e192]: Optional
+          - generic [ref=f9e193]:
+            - generic [ref=f9e194]: Received lines
+            - table [ref=f9e197]:
+              - rowgroup [ref=f9e198]:
+                - row [ref=f9e199]:
+                  - columnheader "SKU" [ref=f9e200]
+                  - columnheader "Product" [ref=f9e201]
+                  - columnheader "Outstanding" [ref=f9e202]
+                  - columnheader "Receiving now" [ref=f9e203]
+                  - columnheader "Unit cost" [ref=f9e204]
+              - rowgroup [ref=f9e205]:
+                - row [ref=f9e206]:
+                  - cell "TR-001" [ref=f9e207]
+                  - cell "Trail Runner" [ref=f9e208]
+                  - cell "100" [ref=f9e209]
+                  - cell [ref=f9e210]:
+                    - spinbutton "Received quantity for TR-001" [ref=f9e211]: "100"
+                  - cell [ref=f9e212]:
+                    - spinbutton "Unit cost for TR-001" [ref=f9e213]: "20"
+          - button "Record receipt" [ref=f9e215] [cursor=pointer]

@@ -1,0 +1,270 @@
+// =============================================================================
+// Design tokens
+// -----------------------------------------------------------------------------
+// Sass-level tokens. These are consumed by Bootstrap when it compiles, so every
+// override below must be declared before `bootstrap/scss/bootstrap` is imported.
+// Runtime-swappable tokens (gradients, shadows, motion) live in base/_tokens.scss
+// as CSS custom properties so they can react to the active colour scheme.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Palette
+// -----------------------------------------------------------------------------
+$brand-50: #eff6ff;
+$brand-100: #dbeafe;
+$brand-200: #bfdbfe;
+$brand-300: #93c5fd;
+$brand-400: #60a5fa;
+$brand-500: #3b82f6;
+$brand-600: #2563eb;
+$brand-700: #1d4ed8;
+$brand-800: #1e40af;
+$brand-900: #1e3a8a;
+
+$accent-400: #2dd4bf;
+$accent-500: #14b8a6;
+$accent-600: #0f766e;
+
+$neutral-25: #fcfcfd;
+$neutral-50: #f9fafb;
+$neutral-100: #f2f4f7;
+$neutral-200: #e4e7ec;
+$neutral-300: #d0d5dd;
+$neutral-400: #98a2b3;
+$neutral-500: #667085;
+$neutral-600: #475467;
+$neutral-700: #344054;
+$neutral-800: #1d2939;
+$neutral-900: #101828;
+$neutral-950: #0b0f19;
+
+// -----------------------------------------------------------------------------
+// Bootstrap: theme colours
+// -----------------------------------------------------------------------------
+$primary: $brand-600;
+$secondary: $neutral-500;
+$success: #10b981;
+$info: #0ea5e9;
+$warning: #f59e0b;
+$danger: #ef4444;
+$light: $neutral-50;
+$dark: $neutral-900;
+
+$min-contrast-ratio: 3;
+
+// -----------------------------------------------------------------------------
+// Bootstrap: options
+// -----------------------------------------------------------------------------
+$enable-negative-margins: true;
+$enable-cssgrid: true;
+$enable-shadows: false;
+$enable-smooth-scroll: true;
+
+// -----------------------------------------------------------------------------
+// Bootstrap: typography
+// -----------------------------------------------------------------------------
+$font-family-sans-serif:
+    'Instrument Sans',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    roboto,
+    'Helvetica Neue',
+    arial,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji';
+$font-family-monospace:
+    'JetBrains Mono', ui-monospace, sfmono-regular, 'SF Mono', menlo, consolas,
+    monospace;
+
+$font-size-base: 0.9375rem;
+$line-height-base: 1.6;
+
+$h1-font-size: 1.75rem;
+$h2-font-size: 1.5rem;
+$h3-font-size: 1.25rem;
+$h4-font-size: 1.125rem;
+$h5-font-size: 1rem;
+$h6-font-size: 0.875rem;
+
+$headings-font-weight: 600;
+$headings-line-height: 1.3;
+
+$small-font-size: 0.8125rem;
+
+// -----------------------------------------------------------------------------
+// Bootstrap: body & surfaces
+// -----------------------------------------------------------------------------
+$body-bg: #f1f4f9;
+$body-color: $neutral-700;
+$body-secondary-color: $neutral-500;
+$body-tertiary-color: $neutral-400;
+$body-emphasis-color: $neutral-900;
+$border-color: $neutral-200;
+$border-color-translucent: rgba($neutral-900, 0.08);
+
+$body-bg-dark: #060a12;
+$body-color-dark: #b9c2d0;
+$body-secondary-color-dark: #8b94a5;
+$body-secondary-bg-dark: #111827;
+$body-tertiary-color-dark: #6d768a;
+$body-tertiary-bg-dark: #0b1220;
+$body-emphasis-color-dark: #f4f6fb;
+$border-color-dark: #202b3d;
+
+// -----------------------------------------------------------------------------
+// Bootstrap: geometry
+// -----------------------------------------------------------------------------
+$border-radius-sm: 0.5rem;
+$border-radius: 0.875rem;
+$border-radius-lg: 1.125rem;
+$border-radius-xl: 1.375rem;
+$border-radius-xxl: 1.75rem;
+$border-radius-pill: 50rem;
+
+$grid-gutter-width: 1.5rem;
+
+// -----------------------------------------------------------------------------
+// Bootstrap: buttons & inputs
+// -----------------------------------------------------------------------------
+$btn-font-weight: 600;
+$btn-padding-y: 0.5625rem;
+$btn-padding-x: 1.125rem;
+$btn-font-size: 0.9375rem;
+$btn-padding-y-sm: 0.375rem;
+$btn-padding-x-sm: 0.75rem;
+$btn-font-size-sm: 0.8125rem;
+$btn-padding-y-lg: 0.75rem;
+$btn-padding-x-lg: 1.5rem;
+$btn-font-size-lg: 1rem;
+$btn-border-radius: 0.75rem;
+$btn-border-radius-sm: 0.5rem;
+$btn-border-radius-lg: 0.875rem;
+$btn-focus-width: 0.2rem;
+$btn-disabled-opacity: 0.55;
+
+$input-btn-focus-color-opacity: 0.18;
+
+$input-padding-y: 0.625rem;
+$input-padding-x: 0.875rem;
+$input-font-size: 0.9375rem;
+$input-bg: #fff;
+$input-border-color: $neutral-300;
+$input-placeholder-color: $neutral-400;
+$input-border-radius: 0.75rem;
+$input-border-radius-sm: 0.5rem;
+$input-border-radius-lg: 0.875rem;
+$input-focus-border-color: $brand-400;
+$input-disabled-bg: $neutral-100;
+
+$form-label-font-size: 0.875rem;
+$form-label-font-weight: 600;
+$form-label-color: $neutral-700;
+$form-label-margin-bottom: 0.375rem;
+
+$form-text-font-size: 0.8125rem;
+$form-text-color: $neutral-500;
+
+$form-check-input-width: 1.125em;
+$form-check-input-border-radius: 0.375em;
+$form-check-input-border: 1px solid $neutral-300;
+$form-check-input-checked-bg-color: $primary;
+
+$form-switch-width: 2.25em;
+$form-select-border-radius: 0.75rem;
+
+// -----------------------------------------------------------------------------
+// Bootstrap: components
+// -----------------------------------------------------------------------------
+$card-bg: #fff;
+$card-border-color: $neutral-200;
+$card-border-radius: 1.125rem;
+$card-inner-border-radius: 1rem;
+$card-spacer-y: 1.25rem;
+$card-spacer-x: 1.25rem;
+$card-cap-padding-y: 1.125rem;
+$card-cap-padding-x: 1.25rem;
+$card-cap-bg: transparent;
+$card-title-spacer-y: 0.375rem;
+
+$table-cell-padding-y: 0.875rem;
+$table-cell-padding-x: 1rem;
+$table-th-font-weight: 600;
+$table-border-color: $neutral-200;
+$table-hover-bg: rgba($brand-600, 0.035);
+$table-striped-bg: rgba($neutral-900, 0.015);
+
+$badge-font-size: 0.75rem;
+$badge-font-weight: 600;
+$badge-padding-y: 0.3125em;
+$badge-padding-x: 0.6875em;
+$badge-border-radius: $border-radius-pill;
+
+$dropdown-min-width: 12rem;
+$dropdown-padding-y: 0.375rem;
+$dropdown-padding-x: 0.375rem;
+$dropdown-border-radius: 0.875rem;
+$dropdown-border-color: $neutral-200;
+$dropdown-link-color: $neutral-700;
+$dropdown-link-hover-bg: $neutral-100;
+$dropdown-link-active-bg: $brand-50;
+$dropdown-link-active-color: $brand-700;
+$dropdown-item-padding-y: 0.5rem;
+$dropdown-item-padding-x: 0.75rem;
+$dropdown-font-size: 0.875rem;
+
+$modal-content-border-radius: 1.375rem;
+$modal-content-border-color: $neutral-200;
+$modal-inner-padding: 1.5rem;
+$modal-header-padding: 1.5rem 1.5rem 0.75rem;
+$modal-footer-margin-between: 0.5rem;
+$modal-backdrop-bg: $neutral-950;
+$modal-backdrop-opacity: 0.55;
+
+$nav-link-font-size: 0.9375rem;
+$nav-link-font-weight: 500;
+$nav-link-padding-y: 0.625rem;
+$nav-link-padding-x: 0.875rem;
+$nav-link-color: $neutral-600;
+$nav-link-hover-color: $brand-600;
+$nav-tabs-border-width: 0;
+$nav-tabs-link-active-color: $brand-700;
+$nav-tabs-link-active-bg: transparent;
+
+$pagination-padding-y: 0.4375rem;
+$pagination-padding-x: 0.75rem;
+$pagination-font-size: 0.875rem;
+$pagination-color: $neutral-600;
+$pagination-bg: transparent;
+$pagination-border-color: transparent;
+$pagination-hover-bg: $neutral-100;
+$pagination-hover-border-color: transparent;
+$pagination-active-bg: $primary;
+$pagination-active-border-color: $primary;
+$pagination-border-radius: 0.5rem;
+
+$alert-border-radius: 0.875rem;
+$alert-padding-y: 0.875rem;
+$alert-padding-x: 1rem;
+
+$progress-height: 0.5rem;
+$progress-border-radius: $border-radius-pill;
+$progress-bg: $neutral-100;
+
+$tooltip-border-radius: 0.5rem;
+$tooltip-font-size: 0.8125rem;
+$tooltip-bg: $neutral-900;
+$tooltip-opacity: 1;
+
+$offcanvas-horizontal-width: 17.5rem;
+
+$spinner-border-width: 0.15em;
+
+// -----------------------------------------------------------------------------
+// Project layout metrics
+// -----------------------------------------------------------------------------
+$app-sidebar-width: 17.5rem;
+$app-sidebar-width-collapsed: 5.25rem;
+$app-topbar-height: 4.75rem;
+$app-content-max-width: 96rem;

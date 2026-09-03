@@ -1,0 +1,490 @@
+- generic [ref=f42e3]:
+  - complementary "Main navigation" [ref=f42e4]:
+    - link "Laravel" [ref=f42e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f42e13]:
+      - generic [ref=f42e14]:
+        - generic [ref=f42e15]: Overview
+        - navigation [ref=f42e16]:
+          - link "Dashboard" [ref=f42e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f42e24]:
+        - generic [ref=f42e25]: Catalog
+        - navigation [ref=f42e26]:
+          - link "Products" [ref=f42e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f42e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f42e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f42e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f42e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f42e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f42e60]:
+        - generic [ref=f42e61]: Inventory
+        - navigation [ref=f42e62]:
+          - link "Inventory" [ref=f42e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f42e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f42e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f42e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f42e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f42e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f42e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f42e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f42e115]:
+        - generic [ref=f42e116]: Purchasing
+        - navigation [ref=f42e117]:
+          - link "Purchase orders" [ref=f42e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f42e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f42e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f42e134]:
+        - generic [ref=f42e135]: Sales
+        - navigation [ref=f42e136]:
+          - link "Sales orders" [ref=f42e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f42e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f42e148]:
+        - generic [ref=f42e149]: Forecasting
+        - navigation [ref=f42e150]:
+          - link "Forecasts" [ref=f42e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f42e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f42e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f42e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f42e172]:
+        - generic [ref=f42e173]: Advanced intelligence
+        - navigation [ref=f42e174]:
+          - link "Supplier performance" [ref=f42e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f42e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f42e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f42e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f42e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f42e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f42e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f42e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f42e225]:
+        - generic [ref=f42e226]: Account
+        - navigation [ref=f42e227]:
+          - link "Profile" [ref=f42e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f42e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f42e238]:
+    - banner [ref=f42e239]:
+      - button "Collapse navigation" [ref=f42e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f42e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f42e248] [cursor=pointer]:
+        - generic [ref=f42e249]: MB
+        - generic [ref=f42e250]:
+          - generic [ref=f42e251]: Marilou Brakus
+          - generic [ref=f42e252]: qa@example.com
+    - main [ref=f42e255]:
+      - generic [ref=f42e257]:
+        - generic [ref=f42e258]: Advanced intelligence
+        - heading "Lost sales" [level=1] [ref=f42e259]
+        - paragraph [ref=f42e260]: "Units likely missed during real stockouts — stockout minutes multiplied by the SKU's own normal daily rate on its non-stockout days in the same window. A pair that was out of stock the entire window is excluded: there's no in-stock data to estimate a normal rate from."
+      - generic [ref=f42e261]:
+        - generic [ref=f42e262]:
+          - searchbox "Search by SKU or product…" [ref=f42e264]
+          - combobox "Filter by warehouse" [ref=f42e265]:
+            - option "All warehouses" [selected]
+            - option "Dambulla Regional Warehouse"
+            - option "Galle Regional Warehouse"
+            - option "Jaffna Regional Warehouse"
+            - option "Kadolkale Warehouse - Buy Abans Team"
+            - option "Kotikawatta Warehouse"
+            - option "Vavuniya Regional Warehouse"
+          - combobox "Filter by SKU" [ref=f42e266]:
+            - option "All SKUs" [selected]
+            - option "ABACSTLG30CR"
+            - option "ABACSTLG36CR"
+            - option "ABCKRC100G01"
+            - option "ABCKRC80G01"
+            - option "ABCKRCT40"
+            - option "ABFNIN600TII"
+            - option "ABFNIN750TII"
+            - option "ABFNIN750TWII"
+            - option "ABFNMFYD207"
+            - option "ABFR750XN"
+            - option "ABFRCH400AEL"
+            - option "ABFRCH923XN"
+            - option "ABFRDPCB260AEL"
+            - option "ABFRDPCB360AEL"
+            - option "ABKMLB9001B"
+            - option "ABMG3550MGWS"
+            - option "ABRFURFR180J"
+            - option "ABVCEV800"
+            - option "ABVCWDRY7730L"
+            - option "ABWG10LSQT"
+            - option "ABWG15LSQT"
+            - option "ABWG30LCYT"
+            - option "ABWG50LCYT"
+            - option "ABWGWHDSZF20LJ15Y6U"
+            - option "ABWHDSZF20LJ30Y6A"
+            - option "ABWHDSZF20LJ50Y6A"
+            - option "DTFNIN50TS"
+            - option "DZACLD200ACR"
+            - option "ELVC930"
+            - option "ELVCZ1230"
+            - option "ELWM705HQWA"
+            - option "ELWMDRY754H3WB"
+            - option "EMIACSG302"
+            - option "EMIACSG353"
+            - option "FDSTNM5126WS"
+            - option "HKPMCITATION200BLKEU"
+            - option "HKPMCITATION200GRYEU"
+            - option "HLAFRFBXK12321"
+            - option "HLAFRFBXK12321WS"
+            - option "HLMG06021WS"
+            - option "HRFRCH350DMS5"
+            - option "HRFRCH719HSEP"
+            - option "HRFRCH719W"
+            - option "HRFRCHHFC788DMS5"
+            - option "HWACL151"
+            - option "HWACL20AE"
+            - option "HWACL30XC"
+            - option "HWACL604AE"
+            - option "IGDRYIGT10RCDW"
+            - option "IGMOMJF31GDCX3"
+            - option "INIRZYGTJ01KL"
+            - option "JBLPMBOOMBOX2SQUAD"
+            - option "JBLPMPARTYBOX1000EU"
+            - option "JBLPMPARTYBOX100EU"
+            - option "JBLPMPARTYBOX310EU"
+            - option "JBLPMPARTYBOX710EU"
+            - option "JBLPMPARTYBOXGOBUK"
+            - option "JBLSPPBSTAGE320"
+            - option "JPMGFRUTTICA"
+            - option "JPPREMIUM"
+            - option "LGACINQ09JA3BD"
+            - option "LGACINQ12JA17C"
+            - option "LGACINQ12JA3FB"
+            - option "LGACINQ18JL3BD"
+            - option "LGACINQ18KL2FA"
+            - option "LGACINQ18KL3FA"
+            - option "LGACINQ24K22FA"
+            - option "LGACINQ24K23BD"
+            - option "LGHSVCA9TULTRA"
+            - option "LGHVCA9KPRO"
+            - option "LGMO2043DB"
+            - option "LGMO2044DB"
+            - option "LGMO2595DIS"
+            - option "LGMO2846SL"
+            - option "LGMO3965BGS"
+            - option "LGMO6565DIS"
+            - option "LGMO7636GIS"
+            - option "LGMOMJEN326TL"
+            - option "LGMOMS3636GIS"
+            - option "LGRF6011NSNBS"
+            - option "LGRF6012PZPN3"
+            - option "LGRF6018MTBK"
+            - option "LGRF6181DSDGS"
+            - option "LGRFB4059PZPS"
+            - option "LGRFDDM5097PZ"
+            - option "LGRFGSB6432WB"
+            - option "LGRFGSL6172PZ"
+            - option "LGRFGSX6172NS"
+            - option "LGRFQ6011MC"
+            - option "LGVCVR66900TWVV"
+            - option "LGWD2719RVTV"
+            - option "LGWDRV1329AD5S"
+            - option "LGWM1329AN7S"
+            - option "LGWMDRYTDC8066S"
+            - option "LGWMFAU1408S4W"
+            - option "LGWMFAU1450S2K"
+            - option "LGWMFAUFL1007S5W"
+            - option "LGWMINW069FD2M"
+            - option "LGWMINWS069FD2FS"
+            - option "LGWPUWW170EP"
+            - option "LPBDAFRY400B5"
+            - option "LPBDAFRYAF200B5"
+            - option "LPBDIRSTGST2000B5WS"
+            - option "LPBDJEJE250B5"
+            - option "LPICHMAAVC10"
+            - option "LPIMVCJUGVC20"
+            - option "LPINIRYD012V"
+            - option "LPPUWFWFILTERG"
+            - option "LPPUWFWFILTERS"
+            - option "LPUNWPUCLASSICG2"
+            - option "LPUNWPUPMUVG2"
+            - option "LPUNWPUULTIMARO"
+            - option "LPWPPAK9100BL"
+            - option "LPWPPAK9101W"
+            - option "MARSPWOBURN3BK"
+            - option "MBFNPD16GAPCYRD"
+            - option "MBFNPD16GAPSFGY"
+            - option "MBFNPD16GUPCYRD"
+            - option "MBFNPD16GUPSFGY"
+            - option "MIACLMAC200R"
+            - option "MIACLMAC200RW"
+            - option "MIAFRY98"
+            - option "MICKRC100"
+            - option "MICKRC42"
+            - option "MICKRC56"
+            - option "MICKRC78"
+            - option "MIFNPD16J15R"
+            - option "MIWHC30A"
+            - option "MIWHC50A"
+            - option "MIWHC80A"
+            - option "MRMG640151"
+            - option "OMAFRYOMAF2254J"
+            - option "PLAFRY9216"
+            - option "PLAFRYHD9721"
+            - option "PLIRST392020"
+            - option "PLIRST51449"
+            - option "PLIRST523"
+            - option "PNCKRCSRGA321"
+            - option "PNCKRCSRGA421"
+            - option "PNCKRCSRGA721"
+            - option "RHAFRY26510"
+            - option "RHIRST2804056"
+            - option "RHSTPOP2164473"
+            - option "RHSTPOP2164474"
+            - option "SFDIR2913GS"
+            - option "SFHMSF1364SMWS"
+            - option "SFIRSTSF2910GS"
+            - option "SFMTGSF5855MG"
+            - option "SFVCW891VC"
+          - combobox "Lookback window" [ref=f42e267]:
+            - option "Last 7 days"
+            - option "Last 30 days" [selected]
+            - option "Last 90 days"
+          - generic [ref=f42e268]:
+            - button "Clear" [disabled]
+        - table [ref=f42e270]:
+          - rowgroup [ref=f42e271]:
+            - row [ref=f42e272]:
+              - columnheader "SKU" [ref=f42e273]
+              - columnheader "Warehouse" [ref=f42e274]
+              - columnheader "Stockout days" [ref=f42e275]
+              - columnheader "Normal daily rate" [ref=f42e276]
+              - columnheader "Estimated lost units" [ref=f42e277]
+          - rowgroup [ref=f42e278]:
+            - row [ref=f42e279]:
+              - cell [ref=f42e280]:
+                - generic [ref=f42e281]:
+                  - paragraph [ref=f42e282]: LGACINQ12JA3FB
+                  - paragraph [ref=f42e283]: LG 12000 BTU Air Conditioner Antivirus & Wi-Fi Inverter
+              - cell "Jaffna Regional Warehouse" [ref=f42e284]
+              - cell "27" [ref=f42e285]
+              - cell "1.67" [ref=f42e286]
+              - cell "45.0" [ref=f42e287]
+            - row [ref=f42e288]:
+              - cell [ref=f42e289]:
+                - generic [ref=f42e290]:
+                  - paragraph [ref=f42e291]: LGWDRV1329AD5S
+                  - paragraph [ref=f42e292]: LG 10.2KG Commercial Electric Dryer
+              - cell "Dambulla Regional Warehouse" [ref=f42e293]
+              - cell "28" [ref=f42e294]
+              - cell "1.00" [ref=f42e295]
+              - cell "28.0" [ref=f42e296]
+            - row [ref=f42e297]:
+              - cell [ref=f42e298]:
+                - generic [ref=f42e299]:
+                  - paragraph [ref=f42e300]: LGRFB4059PZPS
+                  - paragraph [ref=f42e301]: LG 454L Refrigerator Bottom Freezer - Platinum Silver
+              - cell "Dambulla Regional Warehouse" [ref=f42e302]
+              - cell "27" [ref=f42e303]
+              - cell "1.00" [ref=f42e304]
+              - cell "27.0" [ref=f42e305]
+            - row [ref=f42e306]:
+              - cell [ref=f42e307]:
+                - generic [ref=f42e308]:
+                  - paragraph [ref=f42e309]: ABKMLB9001B
+                  - paragraph [ref=f42e310]: ABANS Stand Mixer
+              - cell "Vavuniya Regional Warehouse" [ref=f42e311]
+              - cell "21" [ref=f42e312]
+              - cell "0.89" [ref=f42e313]
+              - cell "18.7" [ref=f42e314]
+            - row [ref=f42e315]:
+              - cell [ref=f42e316]:
+                - generic [ref=f42e317]:
+                  - paragraph [ref=f42e318]: LGRF6011NSNBS
+                  - paragraph [ref=f42e319]: LG 668L Refrigerator, Door in Door SXS - Nobel Steel
+              - cell "Dambulla Regional Warehouse" [ref=f42e320]
+              - cell "28" [ref=f42e321]
+              - cell "0.50" [ref=f42e322]
+              - cell "14.0" [ref=f42e323]
+            - row [ref=f42e324]:
+              - cell [ref=f42e325]:
+                - generic [ref=f42e326]:
+                  - paragraph [ref=f42e327]: LGMOMJEN326TL
+                  - paragraph [ref=f42e328]: LG 32L All In One Microwave Oven - Black
+              - cell "Galle Regional Warehouse" [ref=f42e329]
+              - cell "23" [ref=f42e330]
+              - cell "0.57" [ref=f42e331]
+              - cell "12.7" [ref=f42e332]
+            - row [ref=f42e333]:
+              - cell [ref=f42e334]:
+                - generic [ref=f42e335]:
+                  - paragraph [ref=f42e336]: LGACINQ12JA17C
+                  - paragraph [ref=f42e337]: LG 12000 BTU Air Conditioner - UV Nano Inverter
+              - cell "Dambulla Regional Warehouse" [ref=f42e338]
+              - cell "23" [ref=f42e339]
+              - cell "0.43" [ref=f42e340]
+              - cell "9.9" [ref=f42e341]
+            - row [ref=f42e342]:
+              - cell [ref=f42e343]:
+                - generic [ref=f42e344]:
+                  - paragraph [ref=f42e345]: MIACLMAC200RW
+                  - paragraph [ref=f42e346]: Mistral 20L Air Cooler
+              - cell "Vavuniya Regional Warehouse" [ref=f42e347]
+              - cell "10" [ref=f42e348]
+              - cell "0.95" [ref=f42e349]
+              - cell "9.5" [ref=f42e350]
+            - row [ref=f42e351]:
+              - cell [ref=f42e352]:
+                - generic [ref=f42e353]:
+                  - paragraph [ref=f42e354]: LGRF6011NSNBS
+                  - paragraph [ref=f42e355]: LG 668L Refrigerator, Door in Door SXS - Nobel Steel
+              - cell "Kotikawatta Warehouse" [ref=f42e356]
+              - cell "22" [ref=f42e357]
+              - cell "0.38" [ref=f42e358]
+              - cell "8.3" [ref=f42e359]
+            - row [ref=f42e360]:
+              - cell [ref=f42e361]:
+                - generic [ref=f42e362]:
+                  - paragraph [ref=f42e363]: LGACINQ18JL3BD
+                  - paragraph [ref=f42e364]: LG 18000BTU Air Conditioner Dual Cool R32 Inverter
+              - cell "Vavuniya Regional Warehouse" [ref=f42e365]
+              - cell "20" [ref=f42e366]
+              - cell "0.40" [ref=f42e367]
+              - cell "7.7" [ref=f42e368]
+            - row [ref=f42e369]:
+              - cell [ref=f42e370]:
+                - generic [ref=f42e371]:
+                  - paragraph [ref=f42e372]: LGRFB4059PZPS
+                  - paragraph [ref=f42e373]: LG 454L Refrigerator Bottom Freezer - Platinum Silver
+              - cell "Galle Regional Warehouse" [ref=f42e374]
+              - cell "19" [ref=f42e375]
+              - cell "0.36" [ref=f42e376]
+              - cell "6.9" [ref=f42e377]
+            - row [ref=f42e378]:
+              - cell [ref=f42e379]:
+                - generic [ref=f42e380]:
+                  - paragraph [ref=f42e381]: LGACINQ18JL3BD
+                  - paragraph [ref=f42e382]: LG 18000BTU Air Conditioner Dual Cool R32 Inverter
+              - cell "Kotikawatta Warehouse" [ref=f42e383]
+              - cell "21" [ref=f42e384]
+              - cell "0.33" [ref=f42e385]
+              - cell "6.8" [ref=f42e386]
+            - row [ref=f42e387]:
+              - cell [ref=f42e388]:
+                - generic [ref=f42e389]:
+                  - paragraph [ref=f42e390]: LGWM1329AN7S
+                  - paragraph [ref=f42e391]: LG 10.2KG Commercial Gas Dryer
+              - cell "Jaffna Regional Warehouse" [ref=f42e392]
+              - cell "23" [ref=f42e393]
+              - cell "0.29" [ref=f42e394]
+              - cell "6.6" [ref=f42e395]
+            - row [ref=f42e396]:
+              - cell [ref=f42e397]:
+                - generic [ref=f42e398]:
+                  - paragraph [ref=f42e399]: LGMO6565DIS
+                  - paragraph [ref=f42e400]: LG 25L Microwave Oven with Grill - Black
+              - cell "Jaffna Regional Warehouse" [ref=f42e401]
+              - cell "22" [ref=f42e402]
+              - cell "0.25" [ref=f42e403]
+              - cell "5.5" [ref=f42e404]
+            - row [ref=f42e405]:
+              - cell [ref=f42e406]:
+                - generic [ref=f42e407]:
+                  - paragraph [ref=f42e408]: HRFRCH719W
+                  - paragraph [ref=f42e409]: HAIER 719L Two Door Chest Freezer
+              - cell "Jaffna Regional Warehouse" [ref=f42e410]
+              - cell "22" [ref=f42e411]
+              - cell "0.25" [ref=f42e412]
+              - cell "5.3" [ref=f42e413]
+            - row [ref=f42e414]:
+              - cell [ref=f42e415]:
+                - generic [ref=f42e416]:
+                  - paragraph [ref=f42e417]: HWACL30XC
+                  - paragraph [ref=f42e418]: HONEYWELL 30L Air Cooler - Silver
+              - cell "Vavuniya Regional Warehouse" [ref=f42e419]
+              - cell "14" [ref=f42e420]
+              - cell "0.38" [ref=f42e421]
+              - cell "5.3" [ref=f42e422]
+            - row [ref=f42e423]:
+              - cell [ref=f42e424]:
+                - generic [ref=f42e425]:
+                  - paragraph [ref=f42e426]: LGRFQ6011MC
+                  - paragraph [ref=f42e427]: LG 725L Inverter Refrigerator - Matt Black
+              - cell "Kadolkale Warehouse - Buy Abans Team" [ref=f42e428]
+              - cell "17" [ref=f42e429]
+              - cell "0.31" [ref=f42e430]
+              - cell "5.2" [ref=f42e431]
+            - row [ref=f42e432]:
+              - cell [ref=f42e433]:
+                - generic [ref=f42e434]:
+                  - paragraph [ref=f42e435]: LGWMFAU1450S2K
+                  - paragraph [ref=f42e436]: LG 10.5KG Front Loader Washer
+              - cell "Jaffna Regional Warehouse" [ref=f42e437]
+              - cell "19" [ref=f42e438]
+              - cell "0.27" [ref=f42e439]
+              - cell "5.2" [ref=f42e440]
+            - row [ref=f42e441]:
+              - cell [ref=f42e442]:
+                - generic [ref=f42e443]:
+                  - paragraph [ref=f42e444]: LGACINQ18KL3FA
+                  - paragraph [ref=f42e445]: LG 18000BTU Antivirus & Wi-Fi Inverter Air Conditioner
+              - cell "Vavuniya Regional Warehouse" [ref=f42e446]
+              - cell "19" [ref=f42e447]
+              - cell "0.27" [ref=f42e448]
+              - cell "5.2" [ref=f42e449]
+            - row [ref=f42e450]:
+              - cell [ref=f42e451]:
+                - generic [ref=f42e452]:
+                  - paragraph [ref=f42e453]: LGMO7636GIS
+                  - paragraph [ref=f42e454]: LG 36L Microwave Oven with Grill - Black
+              - cell "Jaffna Regional Warehouse" [ref=f42e455]
+              - cell "19" [ref=f42e456]
+              - cell "0.27" [ref=f42e457]
+              - cell "5.2" [ref=f42e458]
+        - generic [ref=f42e459]:
+          - generic [ref=f42e460]:
+            - generic [ref=f42e461]: Showing 1–20 of 143
+            - generic [ref=f42e462]:
+              - text: Rows
+              - combobox "Rows" [ref=f42e463]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+          - navigation "Pagination" [ref=f42e464]:
+            - list [ref=f42e465]:
+              - listitem [ref=f42e466]:
+                - button "Previous page" [disabled] [ref=f42e467]
+              - listitem [ref=f42e470]:
+                - button "1" [ref=f42e471] [cursor=pointer]
+              - listitem [ref=f42e472]:
+                - button "2" [ref=f42e473] [cursor=pointer]
+              - listitem [ref=f42e474]: …
+              - listitem [ref=f42e475]:
+                - button "8" [ref=f42e476] [cursor=pointer]
+              - listitem [ref=f42e477]:
+                - button "Next page" [ref=f42e478] [cursor=pointer]

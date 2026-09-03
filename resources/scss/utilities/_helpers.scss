@@ -1,0 +1,76 @@
+// =============================================================================
+// Project utilities
+// =============================================================================
+
+.app-surface {
+    background-color: var(--app-surface) !important;
+}
+
+.app-surface-muted {
+    background-color: var(--app-surface-muted) !important;
+}
+
+.app-surface-sunken {
+    background-color: var(--app-surface-sunken) !important;
+}
+
+.app-border {
+    border: 1px solid var(--app-border) !important;
+}
+
+.app-border-top {
+    border-top: 1px solid var(--app-border-subtle) !important;
+}
+
+.app-rounded-md {
+    border-radius: var(--app-radius-md) !important;
+}
+
+.app-rounded-lg {
+    border-radius: var(--app-radius-lg) !important;
+}
+
+.app-rounded-xl {
+    border-radius: var(--app-radius-xl) !important;
+}
+
+.app-shadow-sm {
+    box-shadow: var(--app-shadow-sm) !important;
+}
+
+.app-shadow-md {
+    box-shadow: var(--app-shadow-md) !important;
+}
+
+.app-shadow-lg {
+    box-shadow: var(--app-shadow-lg) !important;
+}
+
+.app-scroll-y {
+    overflow-y: auto;
+
+    @include slim-scrollbar;
+}
+
+// Lets a flex child shrink below its content width so truncation can kick in.
+.app-min-w-0 {
+    min-width: 0 !important;
+}
+
+.app-truncate {
+    @include line-clamp(1);
+}
+
+.app-truncate-2 {
+    @include line-clamp(2);
+}
+
+.app-grid-cards {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.app-grid-cards--wide {
+    grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+}

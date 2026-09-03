@@ -1,0 +1,102 @@
+- generic [ref=f37e3]:
+  - complementary "Main navigation" [ref=f37e4]:
+    - link "Laravel" [ref=f37e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f37e13]:
+      - generic [ref=f37e14]:
+        - generic [ref=f37e15]: Overview
+        - navigation [ref=f37e16]:
+          - link "Dashboard" [ref=f37e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f37e24]:
+        - generic [ref=f37e25]: Catalog
+        - navigation [ref=f37e26]:
+          - link "Products" [ref=f37e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f37e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f37e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f37e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f37e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f37e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f37e60]:
+        - generic [ref=f37e61]: Inventory
+        - navigation [ref=f37e62]:
+          - link "Inventory" [ref=f37e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Stock movements" [ref=f37e75] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f37e80] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Warehouses" [ref=f37e86] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f37e91]:
+        - generic [ref=f37e92]: Account
+        - navigation [ref=f37e93]:
+          - link "Profile" [ref=f37e94] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f37e99] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f37e104]:
+    - banner [ref=f37e105]:
+      - button "Collapse navigation" [ref=f37e106] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f37e110] [cursor=pointer]
+      - button "Percival Denesik qa@example.test" [ref=f37e114] [cursor=pointer]:
+        - generic [ref=f37e115]: PD
+        - generic [ref=f37e116]:
+          - generic [ref=f37e117]: Percival Denesik
+          - generic [ref=f37e118]: qa@example.test
+    - main [ref=f37e121]:
+      - generic [ref=f37e122]:
+        - generic [ref=f37e123]:
+          - generic [ref=f37e124]: Inventory
+          - heading "Inventory" [level=1] [ref=f37e125]
+          - paragraph [ref=f37e126]: Current stock balances by warehouse. Derived from the stock movement ledger — record an adjustment to change a balance.
+        - link "Record adjustment" [ref=f37e128] [cursor=pointer]:
+          - /url: /stock-movement/create
+      - generic [ref=f37e133]:
+        - generic [ref=f37e134]:
+          - searchbox "Search by SKU…" [ref=f37e136]
+          - combobox "Filter by warehouse" [ref=f37e137]:
+            - option "All warehouses" [selected]
+            - option "Galle Branch"
+            - option "Kandy Branch"
+          - generic [ref=f37e138]:
+            - button "Clear" [disabled]
+        - table [ref=f37e140]:
+          - rowgroup [ref=f37e141]:
+            - row [ref=f37e142]:
+              - columnheader "SKU" [ref=f37e143]
+              - columnheader "Warehouse" [ref=f37e144]
+              - columnheader [ref=f37e145]:
+                - button "On hand" [ref=f37e146] [cursor=pointer]
+              - columnheader "Reserved" [ref=f37e150]
+              - columnheader [ref=f37e151]:
+                - button "Available" [ref=f37e152] [cursor=pointer]
+              - columnheader "Incoming" [ref=f37e156]
+              - columnheader [ref=f37e157]:
+                - button "Avg. cost" [ref=f37e158] [cursor=pointer]
+          - rowgroup [ref=f37e162]:
+            - row [ref=f37e163]:
+              - cell [ref=f37e164]:
+                - generic [ref=f37e165]:
+                  - paragraph [ref=f37e166]: SK-GOWALK-42
+                  - paragraph [ref=f37e167]: Skechers Go Walk
+              - cell "Galle Branch" [ref=f37e168]
+              - cell "100" [ref=f37e169]
+              - cell "0" [ref=f37e170]
+              - cell "100" [ref=f37e171]
+              - cell "0" [ref=f37e172]
+              - cell "25.00" [ref=f37e173]
+        - generic [ref=f37e175]:
+          - generic [ref=f37e176]: Showing 1–1 of 1
+          - generic [ref=f37e177]:
+            - text: Rows
+            - combobox "Rows" [ref=f37e178]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

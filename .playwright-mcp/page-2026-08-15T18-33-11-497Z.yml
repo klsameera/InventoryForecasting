@@ -1,0 +1,49 @@
+- generic [ref=f3e3]:
+  - complementary "Main navigation" [ref=f3e4]:
+    - link "Laravel" [ref=f3e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f3e13]:
+      - generic [ref=f3e14]:
+        - generic [ref=f3e15]: Overview
+        - navigation [ref=f3e16]:
+          - link "Dashboard" [ref=f3e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f3e24]:
+        - generic [ref=f3e25]: Account
+        - navigation [ref=f3e26]:
+          - link "Profile" [ref=f3e27] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f3e32] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f3e37]:
+    - banner [ref=f3e38]:
+      - button "Collapse navigation" [ref=f3e39] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f3e43] [cursor=pointer]
+      - button "Percival Denesik qa@example.test" [ref=f3e47] [cursor=pointer]:
+        - generic [ref=f3e48]: PD
+        - generic [ref=f3e49]:
+          - generic [ref=f3e50]: Percival Denesik
+          - generic [ref=f3e51]: qa@example.test
+    - main [ref=f3e54]:
+      - generic [ref=f3e56]:
+        - generic [ref=f3e57]: Catalog
+        - heading "Edit Colombo Central" [level=1] [ref=f3e58]
+        - paragraph [ref=f3e59]: Update this warehouse's details.
+      - generic [ref=f3e63]:
+        - generic [ref=f3e64]:
+          - generic [ref=f3e66]:
+            - text: Name
+            - generic [ref=f3e67]: "*"
+          - textbox "Name" [ref=f3e68]: Colombo Central
+        - generic [ref=f3e69]:
+          - generic [ref=f3e71]:
+            - text: Code
+            - generic [ref=f3e72]: "*"
+          - textbox "Code" [ref=f3e73]: WH-001
+        - generic [ref=f3e74]:
+          - generic [ref=f3e75]: Address
+          - textbox "Address" [ref=f3e77]: 123 Galle Road, Colombo
+        - generic [ref=f3e79]:
+          - checkbox "Active" [checked] [ref=f3e80] [cursor=pointer]
+          - generic [ref=f3e81] [cursor=pointer]: Active
+        - button "Save changes" [ref=f3e83] [cursor=pointer]

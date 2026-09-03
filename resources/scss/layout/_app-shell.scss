@@ -1,0 +1,73 @@
+// =============================================================================
+// Application shell
+// =============================================================================
+
+.app-shell {
+    position: relative;
+    min-height: 100svh;
+    isolation: isolate;
+    background-color: var(--app-canvas);
+    background-image: var(--app-gradient-grid);
+    background-size: 32px 32px;
+
+    &::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: var(--app-gradient-aurora);
+        opacity: 0.9;
+        pointer-events: none;
+        z-index: 0;
+    }
+}
+
+.app-shell__main {
+    position: relative;
+    z-index: 1;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    transition: padding-inline-start var(--app-transition-base);
+
+    @include media-breakpoint-up(lg) {
+        padding-inline-start: var(--app-sidebar-width);
+
+        .app-shell--collapsed & {
+            padding-inline-start: var(--app-sidebar-width-collapsed);
+        }
+    }
+}
+
+.app-shell__content {
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: var(--app-content-max-width);
+    margin-inline: auto;
+    padding: var(--app-space-page-y) var(--app-space-page-x)
+        calc(var(--app-space-page-y) * 2);
+
+    > * + * {
+        margin-block-start: var(--app-space-stack);
+    }
+}
+
+.app-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--app-space-stack);
+}
+
+.app-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1035;
+    background-color: rgb(3 7 15 / 68%);
+    backdrop-filter: blur(5px);
+    border: 0;
+    padding: 0;
+    animation: app-fade-in var(--app-transition-base) both;
+
+    @include media-breakpoint-up(lg) {
+        display: none;
+    }
+}

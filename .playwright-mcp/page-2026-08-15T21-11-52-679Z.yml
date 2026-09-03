@@ -1,0 +1,154 @@
+- generic [ref=f3e3]:
+  - complementary "Main navigation" [ref=f3e4]:
+    - link "Laravel" [ref=f3e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f3e13]:
+      - generic [ref=f3e14]:
+        - generic [ref=f3e15]: Overview
+        - navigation [ref=f3e16]:
+          - link "Dashboard" [ref=f3e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f3e24]:
+        - generic [ref=f3e25]: Catalog
+        - navigation [ref=f3e26]:
+          - link "Products" [ref=f3e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f3e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f3e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f3e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f3e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f3e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f3e60]:
+        - generic [ref=f3e61]: Inventory
+        - navigation [ref=f3e62]:
+          - link "Inventory" [ref=f3e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f3e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f3e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f3e85] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f3e90] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f3e96] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f3e104] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f3e109]:
+        - generic [ref=f3e110]: Purchasing
+        - navigation [ref=f3e111]:
+          - link "Purchase orders" [ref=f3e112] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f3e117] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f3e124] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f3e128]:
+        - generic [ref=f3e129]: Sales
+        - navigation [ref=f3e130]:
+          - link "Sales orders" [ref=f3e131] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f3e137] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f3e142]:
+        - generic [ref=f3e143]: Account
+        - navigation [ref=f3e144]:
+          - link "Profile" [ref=f3e145] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f3e150] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f3e155]:
+    - banner [ref=f3e156]:
+      - button "Collapse navigation" [ref=f3e157] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f3e161] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f3e165] [cursor=pointer]:
+        - generic [ref=f3e166]: QT
+        - generic [ref=f3e167]:
+          - generic [ref=f3e168]: QA Tester
+          - generic [ref=f3e169]: qa@example.test
+    - main [ref=f3e172]:
+      - generic [ref=f3e174]:
+        - generic [ref=f3e175]: Inventory
+        - heading "Inventory analytics" [level=1] [ref=f3e176]
+        - paragraph [ref=f3e177]: Deterministic metrics computed from actual sales and stock history — no forecasting yet.
+      - generic [ref=f3e178]:
+        - generic [ref=f3e179]:
+          - searchbox "Search by SKU or product…" [ref=f3e181]
+          - combobox "Filter by warehouse" [ref=f3e182]:
+            - option "All warehouses" [selected]
+            - option "Main"
+          - combobox "Filter by category" [ref=f3e183]:
+            - option "All categories" [selected]
+            - option "Footwear"
+          - combobox "Filter by movement speed" [ref=f3e184]:
+            - option "All movement speeds" [selected]
+            - option "Fast mover"
+            - option "Slow mover"
+            - option "Dead stock"
+            - option "No stock"
+          - combobox "Filter by ABC class" [ref=f3e185]:
+            - option "All ABC classes"
+            - option "A — top revenue"
+            - option "B — mid revenue"
+            - option "C — long tail"
+            - option "Unclassified" [selected]
+          - generic [ref=f3e186]:
+            - checkbox "Needs reorder only" [ref=f3e187] [cursor=pointer]
+            - generic [ref=f3e188] [cursor=pointer]: Needs reorder only
+          - generic [ref=f3e189]:
+            - generic [ref=f3e190]: Lookback
+            - spinbutton "Lookback days" [ref=f3e191]: "30"
+            - generic [ref=f3e192]: Safety
+            - spinbutton "Safety days" [ref=f3e193]: "7"
+          - button "Clear" [ref=f3e195] [cursor=pointer]
+        - table [ref=f3e200]:
+          - rowgroup [ref=f3e201]:
+            - row [ref=f3e202]:
+              - columnheader [ref=f3e203]:
+                - button "SKU" [ref=f3e204] [cursor=pointer]
+              - columnheader "Warehouse" [ref=f3e208]
+              - columnheader [ref=f3e209]:
+                - button "Available" [ref=f3e210] [cursor=pointer]
+              - columnheader [ref=f3e214]:
+                - button "Velocity/day" [ref=f3e215] [cursor=pointer]
+              - columnheader [ref=f3e219]:
+                - button "Days of stock" [ref=f3e220] [cursor=pointer]
+              - columnheader [ref=f3e224]:
+                - button "Turnover" [ref=f3e225] [cursor=pointer]
+              - columnheader [ref=f3e229]:
+                - button "Avg. age" [ref=f3e230] [cursor=pointer]
+              - columnheader [ref=f3e234]:
+                - button "Revenue" [ref=f3e235] [cursor=pointer]
+              - columnheader "ABC" [ref=f3e239]
+              - columnheader "Movement" [ref=f3e240]
+              - columnheader "Reorder point" [ref=f3e241]
+          - rowgroup [ref=f3e242]:
+            - row [ref=f3e243]:
+              - cell [ref=f3e244]:
+                - generic [ref=f3e245]:
+                  - paragraph [ref=f3e246]: DEAD-001
+                  - paragraph [ref=f3e247]: Dead Stock · Footwear
+              - cell "Main" [ref=f3e248]
+              - cell "30" [ref=f3e249]
+              - cell "0.00" [ref=f3e250]
+              - cell "—" [ref=f3e251]
+              - cell "0" [ref=f3e252]
+              - cell "—" [ref=f3e253]
+              - cell "0.00" [ref=f3e254]
+              - cell "Unclassified" [ref=f3e255]
+              - cell "Dead stock" [ref=f3e258]
+              - cell "—" [ref=f3e261]
+        - generic [ref=f3e263]:
+          - generic [ref=f3e264]: Showing 1–1 of 1
+          - generic [ref=f3e265]:
+            - text: Rows
+            - combobox "Rows" [ref=f3e266]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

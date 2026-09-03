@@ -1,0 +1,118 @@
+- generic [ref=f31e2]:
+  - generic [ref=f31e3]:
+    - complementary "Main navigation" [ref=f31e4]:
+      - link "Laravel" [ref=f31e6] [cursor=pointer]:
+        - /url: /dashboard
+      - generic [ref=f31e13]:
+        - generic [ref=f31e14]:
+          - generic [ref=f31e15]: Overview
+          - navigation [ref=f31e16]:
+            - link "Dashboard" [ref=f31e17] [cursor=pointer]:
+              - /url: /dashboard
+        - generic [ref=f31e24]:
+          - generic [ref=f31e25]: Catalog
+          - navigation [ref=f31e26]:
+            - link "Products" [ref=f31e27] [cursor=pointer]:
+              - /url: /product
+            - link "Variants" [ref=f31e35] [cursor=pointer]:
+              - /url: /product-variant
+            - link "SKUs" [ref=f31e41] [cursor=pointer]:
+              - /url: /sku
+            - link "Categories" [ref=f31e47] [cursor=pointer]:
+              - /url: /category
+            - link "Brands" [ref=f31e52] [cursor=pointer]:
+              - /url: /brand
+            - link "Attributes" [ref=f31e57] [cursor=pointer]:
+              - /url: /attribute
+        - generic [ref=f31e60]:
+          - generic [ref=f31e61]: Inventory
+          - navigation [ref=f31e62]:
+            - link "Inventory" [ref=f31e63] [cursor=pointer]:
+              - /url: /inventory
+            - link "Stock movements" [ref=f31e75] [cursor=pointer]:
+              - /url: /stock-movement
+            - link "Adjustments" [ref=f31e80] [cursor=pointer]:
+              - /url: /stock-movement/create
+            - link "Warehouses" [ref=f31e86] [cursor=pointer]:
+              - /url: /warehouse
+        - generic [ref=f31e91]:
+          - generic [ref=f31e92]: Account
+          - navigation [ref=f31e93]:
+            - link "Profile" [ref=f31e94] [cursor=pointer]:
+              - /url: /settings/profile
+            - link "Security" [ref=f31e99] [cursor=pointer]:
+              - /url: /settings/security
+    - generic [ref=f31e104]:
+      - banner [ref=f31e105]:
+        - button "Collapse navigation" [ref=f31e106] [cursor=pointer]
+        - button "Switch to dark theme" [ref=f31e110] [cursor=pointer]
+        - button "Percival Denesik qa@example.test" [ref=f31e114] [cursor=pointer]:
+          - generic [ref=f31e115]: PD
+          - generic [ref=f31e116]:
+            - generic [ref=f31e117]: Percival Denesik
+            - generic [ref=f31e118]: qa@example.test
+      - main [ref=f31e121]:
+        - generic [ref=f31e187]:
+          - generic [ref=f31e188]:
+            - generic [ref=f31e189]: Catalog
+            - heading "Products" [level=1] [ref=f31e190]
+            - paragraph [ref=f31e191]: Simple and configurable products in the catalog.
+          - link "New product" [ref=f31e193] [cursor=pointer]:
+            - /url: /product/create
+        - generic [ref=f31e195]:
+          - generic [ref=f31e196]:
+            - searchbox "Search products…" [ref=f31e198]
+            - combobox "Filter by category" [ref=f31e199]:
+              - option "All categories" [selected]
+              - option "Footwear"
+            - combobox "Filter by brand" [ref=f31e200]:
+              - option "All brands" [selected]
+              - option "Skechers"
+            - combobox "Filter by product type" [ref=f31e201]:
+              - option "All types" [selected]
+              - option "Simple"
+              - option "Configurable"
+            - combobox "Filter by status" [ref=f31e202]:
+              - option "All statuses" [selected]
+              - option "Active"
+              - option "Inactive"
+            - generic [ref=f31e203]:
+              - button "Clear" [disabled]
+          - table [ref=f31e205]:
+            - rowgroup [ref=f31e206]:
+              - row [ref=f31e207]:
+                - columnheader [ref=f31e208]:
+                  - button "Product" [ref=f31e209] [cursor=pointer]
+                - columnheader "Category" [ref=f31e213]
+                - columnheader "Brand" [ref=f31e214]
+                - columnheader "Type" [ref=f31e215]
+                - columnheader [ref=f31e216]:
+                  - button "Status" [ref=f31e217] [cursor=pointer]
+                - columnheader "Actions" [ref=f31e221]
+            - rowgroup [ref=f31e222]:
+              - row [ref=f31e223]:
+                - cell [ref=f31e224]:
+                  - generic [ref=f31e225]:
+                    - paragraph [ref=f31e226]: Skechers Go Walk
+                    - paragraph [ref=f31e227]: —
+                - cell "Footwear" [ref=f31e228]
+                - cell "Skechers" [ref=f31e229]
+                - cell "Configurable" [ref=f31e230]
+                - cell "Active" [ref=f31e232]
+                - cell [ref=f31e235]:
+                  - generic [ref=f31e236]:
+                    - link "Edit Skechers Go Walk" [ref=f31e237] [cursor=pointer]:
+                      - /url: /product/2/edit
+                    - button "Delete Skechers Go Walk" [ref=f31e241] [cursor=pointer]
+          - generic [ref=f31e246]:
+            - generic [ref=f31e247]: Showing 1–1 of 1
+            - generic [ref=f31e248]:
+              - text: Rows
+              - combobox "Rows" [ref=f31e249]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+  - region "Notifications":
+    - status [ref=f31e250]:
+      - paragraph [ref=f31e254]: Product created successfully
+      - button "Dismiss notification" [ref=f31e255] [cursor=pointer]

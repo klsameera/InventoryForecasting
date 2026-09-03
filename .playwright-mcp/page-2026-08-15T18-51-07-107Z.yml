@@ -1,0 +1,103 @@
+- generic [ref=f38e3]:
+  - complementary "Main navigation" [ref=f38e4]:
+    - link "Laravel" [ref=f38e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f38e13]:
+      - generic [ref=f38e14]:
+        - generic [ref=f38e15]: Overview
+        - navigation [ref=f38e16]:
+          - link "Dashboard" [ref=f38e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f38e24]:
+        - generic [ref=f38e25]: Catalog
+        - navigation [ref=f38e26]:
+          - link "Products" [ref=f38e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f38e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f38e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f38e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f38e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f38e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f38e60]:
+        - generic [ref=f38e61]: Inventory
+        - navigation [ref=f38e62]:
+          - link "Inventory" [ref=f38e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Stock movements" [ref=f38e75] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f38e80] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Warehouses" [ref=f38e86] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f38e91]:
+        - generic [ref=f38e92]: Account
+        - navigation [ref=f38e93]:
+          - link "Profile" [ref=f38e94] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f38e99] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f38e104]:
+    - banner [ref=f38e105]:
+      - button "Collapse navigation" [ref=f38e106] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f38e110] [cursor=pointer]
+      - button "Percival Denesik qa@example.test" [ref=f38e114] [cursor=pointer]:
+        - generic [ref=f38e115]: PD
+        - generic [ref=f38e116]:
+          - generic [ref=f38e117]: Percival Denesik
+          - generic [ref=f38e118]: qa@example.test
+    - main [ref=f38e121]:
+      - generic [ref=f38e123]:
+        - generic [ref=f38e124]: Inventory
+        - heading "Record adjustment" [level=1] [ref=f38e125]
+        - paragraph [ref=f38e126]: Manually record a stock change. This writes an entry to the ledger and updates the warehouse balance immediately.
+      - generic [ref=f38e130]:
+        - generic [ref=f38e131]:
+          - generic [ref=f38e133]:
+            - generic [ref=f38e135]:
+              - text: Warehouse
+              - generic [ref=f38e136]: "*"
+            - combobox "Warehouse" [ref=f38e137]:
+              - option "Select a warehouse" [disabled] [selected]
+              - option "Galle Branch"
+              - option "Kandy Branch"
+          - generic [ref=f38e139]:
+            - generic [ref=f38e141]:
+              - text: SKU
+              - generic [ref=f38e142]: "*"
+            - combobox "SKU" [ref=f38e143]:
+              - option "Select a SKU" [disabled] [selected]
+              - option "SK-GOWALK-42"
+        - generic [ref=f38e144]:
+          - generic [ref=f38e146]:
+            - text: Movement type
+            - generic [ref=f38e147]: "*"
+          - combobox "Movement type" [ref=f38e148]:
+            - option "Select a movement type" [disabled] [selected]
+            - option "Opening stock"
+            - option "Adjustment in"
+            - option "Adjustment out"
+            - option "Damage"
+            - option "Write-off"
+        - generic [ref=f38e149]:
+          - generic [ref=f38e151]:
+            - generic [ref=f38e153]:
+              - text: Quantity
+              - generic [ref=f38e154]: "*"
+            - spinbutton "Quantity" [ref=f38e155]
+          - generic [ref=f38e157]:
+            - generic [ref=f38e158]: Unit cost
+            - spinbutton "Unit cost" [ref=f38e160]
+            - paragraph [ref=f38e161]: Only affects average cost on an inbound movement.
+        - generic [ref=f38e162]:
+          - generic [ref=f38e163]: Occurred at
+          - textbox "Occurred at" [ref=f38e165]
+          - paragraph [ref=f38e166]: Defaults to now if left blank.
+        - generic [ref=f38e167]:
+          - generic [ref=f38e168]: Notes
+          - textbox "Notes" [ref=f38e170]
+        - button "Record movement" [ref=f38e172] [cursor=pointer]

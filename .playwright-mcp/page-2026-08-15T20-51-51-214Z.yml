@@ -1,0 +1,115 @@
+- generic [ref=f13e3]:
+  - complementary "Main navigation" [ref=f13e4]:
+    - link "Laravel" [ref=f13e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f13e13]:
+      - generic [ref=f13e14]:
+        - generic [ref=f13e15]: Overview
+        - navigation [ref=f13e16]:
+          - link "Dashboard" [ref=f13e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f13e24]:
+        - generic [ref=f13e25]: Catalog
+        - navigation [ref=f13e26]:
+          - link "Products" [ref=f13e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f13e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f13e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f13e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f13e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f13e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f13e60]:
+        - generic [ref=f13e61]: Inventory
+        - navigation [ref=f13e62]:
+          - link "Inventory" [ref=f13e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f13e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f13e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f13e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f13e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f13e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f13e105]:
+        - generic [ref=f13e106]: Purchasing
+        - navigation [ref=f13e107]:
+          - link "Purchase orders" [ref=f13e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f13e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f13e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f13e124]:
+        - generic [ref=f13e125]: Sales
+        - navigation [ref=f13e126]:
+          - link "Sales orders" [ref=f13e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f13e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f13e138]:
+        - generic [ref=f13e139]: Account
+        - navigation [ref=f13e140]:
+          - link "Profile" [ref=f13e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f13e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f13e151]:
+    - banner [ref=f13e152]:
+      - button "Collapse navigation" [ref=f13e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f13e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f13e161] [cursor=pointer]:
+        - generic [ref=f13e162]: QT
+        - generic [ref=f13e163]:
+          - generic [ref=f13e164]: QA Tester
+          - generic [ref=f13e165]: qa@example.test
+    - main [ref=f13e168]:
+      - generic [ref=f13e170]:
+        - generic [ref=f13e171]: Sales
+        - heading "Record sales return" [level=1] [ref=f13e172]
+        - paragraph [ref=f13e173]: Log stock coming back against a confirmed sales order.
+      - generic [ref=f13e176]:
+        - generic [ref=f13e177]:
+          - generic [ref=f13e178]: Sales order
+          - combobox "Sales order" [ref=f13e180]:
+            - option "Select a sales order"
+            - option "SO-000001" [selected]
+        - generic [ref=f13e182]:
+          - generic [ref=f13e183]:
+            - generic [ref=f13e185]:
+              - text: Return date
+              - generic [ref=f13e186]: "*"
+            - textbox "Return date" [ref=f13e187]: 2026-08-15
+          - generic [ref=f13e188]:
+            - generic [ref=f13e189]: Reason
+            - textbox "Reason" [ref=f13e191]
+            - paragraph [ref=f13e192]: Optional
+          - generic [ref=f13e193]:
+            - generic [ref=f13e194]: Returned lines
+            - table [ref=f13e197]:
+              - rowgroup [ref=f13e198]:
+                - row [ref=f13e199]:
+                  - columnheader "SKU" [ref=f13e200]
+                  - columnheader "Product" [ref=f13e201]
+                  - columnheader "Sold" [ref=f13e202]
+                  - columnheader "Returning now" [ref=f13e203]
+                  - columnheader "Condition" [ref=f13e204]
+              - rowgroup [ref=f13e205]:
+                - row [ref=f13e216]:
+                  - cell "TR-001" [ref=f13e207]
+                  - cell "Trail Runner" [ref=f13e208]
+                  - cell "10" [ref=f13e209]
+                  - cell [ref=f13e210]:
+                    - spinbutton "Quantity returned for TR-001" [active] [ref=f13e211]: "2"
+                  - cell "Damaged" [ref=f13e217]:
+                    - combobox "Condition for TR-001" [ref=f13e213]:
+                      - option "Sellable"
+                      - option "Damaged" [selected]
+          - button "Record return" [ref=f13e215] [cursor=pointer]

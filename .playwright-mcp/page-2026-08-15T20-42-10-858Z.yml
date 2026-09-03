@@ -1,0 +1,102 @@
+- generic [ref=f2e3]:
+  - complementary "Main navigation" [ref=f2e4]:
+    - link "Laravel" [ref=f2e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f2e13]:
+      - generic [ref=f2e14]:
+        - generic [ref=f2e15]: Overview
+        - navigation [ref=f2e16]:
+          - link "Dashboard" [ref=f2e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f2e24]:
+        - generic [ref=f2e25]: Catalog
+        - navigation [ref=f2e26]:
+          - link "Products" [ref=f2e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f2e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f2e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f2e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f2e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f2e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f2e60]:
+        - generic [ref=f2e61]: Inventory
+        - navigation [ref=f2e62]:
+          - link "Inventory" [ref=f2e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f2e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f2e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f2e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f2e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f2e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f2e105]:
+        - generic [ref=f2e106]: Purchasing
+        - navigation [ref=f2e107]:
+          - link "Purchase orders" [ref=f2e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f2e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f2e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f2e124]:
+        - generic [ref=f2e125]: Sales
+        - navigation [ref=f2e126]:
+          - link "Sales orders" [ref=f2e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f2e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f2e138]:
+        - generic [ref=f2e139]: Account
+        - navigation [ref=f2e140]:
+          - link "Profile" [ref=f2e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f2e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f2e151]:
+    - banner [ref=f2e152]:
+      - button "Collapse navigation" [ref=f2e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f2e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f2e161] [cursor=pointer]:
+        - generic [ref=f2e162]: QT
+        - generic [ref=f2e163]:
+          - generic [ref=f2e164]: QA Tester
+          - generic [ref=f2e165]: qa@example.test
+    - main [ref=f2e168]:
+      - generic [ref=f2e169]:
+        - generic [ref=f2e170]:
+          - generic [ref=f2e171]: Purchasing
+          - heading "Suppliers" [level=1] [ref=f2e172]
+          - paragraph [ref=f2e173]: Vendors you buy stock from, and what they supply.
+        - link "New supplier" [ref=f2e175] [cursor=pointer]:
+          - /url: /supplier/create
+      - generic [ref=f2e177]:
+        - generic [ref=f2e178]:
+          - searchbox "Search suppliers…" [ref=f2e180]
+          - combobox "Filter by status" [ref=f2e181]:
+            - option "All statuses" [selected]
+            - option "Active"
+            - option "Inactive"
+          - generic [ref=f2e182]:
+            - button "Clear" [disabled]
+        - generic [ref=f2e183]:
+          - paragraph [ref=f2e188]: No suppliers yet
+          - paragraph [ref=f2e189]: Add your first supplier to start recording purchase orders.
+          - link "New supplier" [ref=f2e191] [cursor=pointer]:
+            - /url: /supplier/create
+        - generic [ref=f2e194]:
+          - generic [ref=f2e195]: No results
+          - generic [ref=f2e196]:
+            - text: Rows
+            - combobox "Rows" [ref=f2e197]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

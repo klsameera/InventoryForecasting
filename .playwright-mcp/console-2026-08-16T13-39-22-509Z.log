@@ -1,0 +1,4 @@
+[    7022ms] [WARNING] Error with Permissions-Policy header: Unrecognized feature: 'attribution-reporting'. @ :0
+[    7435ms] [INFO] [O11Y] [DatadogRUM] Initialized {service: claude-ai, env: production, version: 3b5cb299b2} @ https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-datadog-BiPS_f2G.js:0
+[    8050ms] [WARNING] Error with Permissions-Policy header: Unrecognized feature: 'attribution-reporting'. @ :0
+[    8110ms] [LOG] recaptchacompat disabled @ https://assets-proxy.anthropic.com/claude-ai/v2/assets/v1/vendor-datadog-BiPS_f2G.js:0

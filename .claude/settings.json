@@ -1,0 +1,55 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "permissions": {
+        "defaultMode": "acceptEdits",
+        "allow": [
+            "Read",
+            "Edit",
+            "Write",
+            "Glob",
+            "Grep",
+            "WebFetch",
+            "WebSearch",
+            "Bash",
+            "mcp__laravel-boost",
+            "mcp__playwright"
+        ],
+        "ask": [
+            "Bash(git push:*)",
+            "Bash(git push*)",
+            "Bash(git reset --hard:*)",
+            "Bash(git reset --hard*)",
+            "Bash(git clean:*)",
+            "Bash(git clean*)",
+            "Bash(git checkout --:*)",
+            "Bash(git branch -D:*)",
+            "Bash(git branch -D*)",
+            "Bash(git rebase:*)",
+            "Bash(git filter-branch:*)",
+            "Bash(rm -rf:*)",
+            "Bash(rm -rf*)",
+            "Bash(rm -fr*)",
+            "Bash(rm -r:*)",
+            "Bash(rmdir /s*)",
+            "Bash(del /f*)",
+            "Bash(php artisan migrate:fresh:*)",
+            "Bash(php artisan migrate:fresh*)",
+            "Bash(php artisan migrate:reset*)",
+            "Bash(php artisan migrate:rollback*)",
+            "Bash(php artisan db:wipe*)",
+            "Bash(php artisan optimize:clear*)",
+            "Bash(composer remove:*)",
+            "Bash(composer remove*)",
+            "Bash(npm uninstall:*)",
+            "Bash(npm uninstall*)",
+            "PowerShell(Remove-Item -Recurse*)",
+            "PowerShell(Remove-Item*-Force*)",
+            "PowerShell(git push*)"
+        ],
+        "deny": []
+    },
+    "enabledMcpjsonServers": [
+        "laravel-boost",
+        "playwright"
+    ]
+}

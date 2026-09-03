@@ -1,0 +1,305 @@
+// =============================================================================
+// Runtime theme tokens
+// -----------------------------------------------------------------------------
+// Everything a component needs to look "premium" and stay colour-scheme aware:
+// surfaces, borders, gradients, shadows, radii and motion. Components must read
+// these instead of hard-coding colours so light/dark stay in sync automatically.
+// =============================================================================
+
+:root {
+    // Canvas
+    --app-canvas: #f1f4f9;
+    --app-canvas-deep: #e8edf5;
+
+    // Surfaces
+    --app-surface: #{$card-bg};
+    --app-surface-raised: rgb(255 255 255 / 94%);
+    --app-surface-muted: #{$neutral-50};
+    --app-surface-sunken: #{$neutral-100};
+    --app-surface-glass: rgb(255 255 255 / 78%);
+    --app-surface-highlight: rgb(255 255 255 / 86%);
+    --app-surface-inverted: #{$neutral-900};
+
+    // Navigation rail
+    --app-sidebar-surface: rgb(9 17 33 / 97%);
+    --app-sidebar-border: rgb(255 255 255 / 8%);
+    --app-sidebar-text: #f8fafc;
+    --app-sidebar-muted: #a8b3c7;
+    --app-sidebar-soft: #69778f;
+    --app-sidebar-hover: rgb(255 255 255 / 7%);
+    --app-sidebar-active: rgb(59 130 246 / 18%);
+    --app-sidebar-active-border: rgb(96 165 250 / 32%);
+
+    // Borders
+    --app-border: #{$neutral-200};
+    --app-border-strong: #{$neutral-300};
+    --app-border-subtle: #{rgba($neutral-900, 0.06)};
+
+    // Text
+    --app-text: #{$neutral-900};
+    --app-text-muted: #{$neutral-500};
+    --app-text-soft: #{$neutral-400};
+
+    // Brand
+    --app-brand: #{$brand-600};
+    --app-brand-strong: #{$brand-700};
+    --app-brand-soft: #{$brand-50};
+    --app-brand-contrast: #fff;
+
+    // Gradients
+    --app-gradient-brand: linear-gradient(
+        135deg,
+        #{$brand-600} 0%,
+        #{$accent-600} 100%
+    );
+    --app-gradient-brand-hover: linear-gradient(
+        135deg,
+        #{$brand-700} 0%,
+        #0b625b 100%
+    );
+    --app-gradient-surface: linear-gradient(
+        145deg,
+        rgb(255 255 255 / 100%) 0%,
+        rgb(248 250 252 / 82%) 100%
+    );
+    --app-gradient-panel:
+        radial-gradient(
+            32rem 18rem at 92% -20%,
+            #{rgba($brand-400, 0.18)},
+            transparent 68%
+        ),
+        linear-gradient(135deg, rgb(255 255 255 / 97%), rgb(248 250 252 / 90%));
+    --app-gradient-sidebar:
+        radial-gradient(
+            22rem 18rem at -15% -5%,
+            #{rgba($brand-500, 0.24)},
+            transparent 66%
+        ),
+        radial-gradient(
+            18rem 22rem at 115% 100%,
+            #{rgba($accent-500, 0.14)},
+            transparent 70%
+        );
+    --app-gradient-grid:
+        linear-gradient(rgb(37 99 235 / 3.5%) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(37 99 235 / 3.5%) 1px, transparent 1px);
+    --app-gradient-ring: linear-gradient(
+        135deg,
+        rgb(96 165 250 / 55%),
+        rgb(45 212 191 / 34%),
+        transparent 74%
+    );
+    --app-gradient-sheen: linear-gradient(
+        120deg,
+        rgb(255 255 255 / 0%) 0%,
+        rgb(255 255 255 / 45%) 50%,
+        rgb(255 255 255 / 0%) 100%
+    );
+    --app-gradient-aurora:
+        radial-gradient(
+            60rem 30rem at 12% -10%,
+            #{rgba($brand-400, 0.2)} 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            48rem 26rem at 96% 4%,
+            #{rgba($accent-400, 0.14)} 0%,
+            transparent 62%
+        );
+
+    // Elevation
+    --app-shadow-xs: 0 1px 2px #{rgba($neutral-900, 0.05)};
+    --app-shadow-sm:
+        0 1px 2px #{rgba($neutral-900, 0.04)},
+        0 8px 24px -18px #{rgba($neutral-900, 0.24)};
+    --app-shadow-md:
+        0 2px 4px #{rgba($neutral-900, 0.035)},
+        0 16px 36px -20px #{rgba($neutral-900, 0.3)};
+    --app-shadow-lg:
+        0 4px 8px #{rgba($neutral-900, 0.045)},
+        0 24px 52px -24px #{rgba($neutral-900, 0.38)};
+    --app-shadow-xl:
+        0 8px 18px #{rgba($neutral-900, 0.06)},
+        0 40px 80px -28px #{rgba($neutral-900, 0.45)};
+    --app-shadow-brand:
+        0 3px 8px #{rgba($brand-700, 0.18)},
+        0 16px 30px -14px #{rgba($brand-600, 0.62)};
+
+    // Radii
+    --app-radius-xs: 0.375rem;
+    --app-radius-sm: 0.5rem;
+    --app-radius-md: 0.875rem;
+    --app-radius-lg: 1.125rem;
+    --app-radius-xl: 1.375rem;
+    --app-radius-2xl: 1.75rem;
+    --app-radius-pill: 50rem;
+
+    // Spacing rhythm
+    --app-space-page-x: 1rem;
+    --app-space-page-y: 1.25rem;
+    --app-space-stack: 1.25rem;
+
+    // Motion
+    --app-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --app-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --app-transition-fast: 120ms var(--app-ease);
+    --app-transition-base: 220ms var(--app-ease);
+    --app-transition-slow: 420ms var(--app-ease-out);
+
+    // Layout metrics
+    --app-sidebar-width: #{$app-sidebar-width};
+    --app-sidebar-width-collapsed: #{$app-sidebar-width-collapsed};
+    --app-topbar-height: #{$app-topbar-height};
+    --app-content-max-width: #{$app-content-max-width};
+
+    // Data visualisation ramp
+    // Fixed categorical order — validated for CVD separation, lightness band and
+    // chroma against the light chart surface. Assign by slot, never by rank, and
+    // never cycle past slot 6: fold the tail into "Other" or facet instead.
+    --app-chart-1: #4f46e5;
+    --app-chart-2: #f79009;
+    --app-chart-3: #0ba5ec;
+    --app-chart-4: #12b76a;
+    --app-chart-5: #8b5cf6;
+    --app-chart-6: #f04438;
+    --app-chart-grid: #{rgba($neutral-900, 0.09)};
+    --app-chart-axis: #{$neutral-400};
+    --app-chart-surface: #{$card-bg};
+    --app-chart-muted: #{$neutral-300};
+}
+
+[data-bs-theme='dark'] {
+    --app-canvas: #060a12;
+    --app-canvas-deep: #03060c;
+
+    --app-surface: #0f1726;
+    --app-surface-raised: rgb(15 23 38 / 94%);
+    --app-surface-muted: #121c2d;
+    --app-surface-sunken: #0a111e;
+    --app-surface-glass: rgb(10 17 30 / 80%);
+    --app-surface-highlight: rgb(255 255 255 / 7%);
+    --app-surface-inverted: #f4f6fb;
+
+    --app-sidebar-surface: rgb(3 7 15 / 97%);
+    --app-sidebar-border: rgb(255 255 255 / 8%);
+    --app-sidebar-text: #f8fafc;
+    --app-sidebar-muted: #9eacc2;
+    --app-sidebar-soft: #59677c;
+    --app-sidebar-hover: rgb(255 255 255 / 7%);
+    --app-sidebar-active: rgb(59 130 246 / 20%);
+    --app-sidebar-active-border: rgb(96 165 250 / 34%);
+
+    --app-border: #202b3d;
+    --app-border-strong: #2b3a51;
+    --app-border-subtle: rgb(255 255 255 / 6%);
+
+    --app-text: #f4f6fb;
+    --app-text-muted: #8b94a5;
+    --app-text-soft: #6d768a;
+
+    --app-brand: #{$brand-400};
+    --app-brand-strong: #{$brand-300};
+    --app-brand-soft: #{rgba($brand-500, 0.18)};
+    --app-brand-contrast: #0b0f19;
+
+    --app-gradient-brand: linear-gradient(
+        135deg,
+        #{$brand-500} 0%,
+        #{$accent-600} 100%
+    );
+    --app-gradient-brand-hover: linear-gradient(
+        135deg,
+        #{$brand-400} 0%,
+        #{$accent-500} 100%
+    );
+    --app-gradient-surface: linear-gradient(
+        145deg,
+        rgb(255 255 255 / 5%) 0%,
+        rgb(255 255 255 / 0%) 100%
+    );
+    --app-gradient-panel:
+        radial-gradient(
+            32rem 18rem at 92% -20%,
+            #{rgba($brand-500, 0.22)},
+            transparent 68%
+        ),
+        linear-gradient(135deg, rgb(15 23 38 / 98%), rgb(10 17 30 / 94%));
+    --app-gradient-sidebar:
+        radial-gradient(
+            22rem 18rem at -15% -5%,
+            #{rgba($brand-500, 0.22)},
+            transparent 66%
+        ),
+        radial-gradient(
+            18rem 22rem at 115% 100%,
+            #{rgba($accent-500, 0.12)},
+            transparent 70%
+        );
+    --app-gradient-grid:
+        linear-gradient(rgb(96 165 250 / 3.5%) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(96 165 250 / 3.5%) 1px, transparent 1px);
+    --app-gradient-ring: linear-gradient(
+        135deg,
+        rgb(96 165 250 / 50%),
+        rgb(45 212 191 / 30%),
+        transparent 74%
+    );
+    --app-gradient-sheen: linear-gradient(
+        120deg,
+        rgb(255 255 255 / 0%) 0%,
+        rgb(255 255 255 / 10%) 50%,
+        rgb(255 255 255 / 0%) 100%
+    );
+    --app-gradient-aurora:
+        radial-gradient(
+            60rem 30rem at 12% -10%,
+            #{rgba($brand-500, 0.26)} 0%,
+            transparent 60%
+        ),
+        radial-gradient(
+            48rem 26rem at 96% 4%,
+            #{rgba($accent-500, 0.2)} 0%,
+            transparent 62%
+        );
+
+    --app-shadow-xs: 0 1px 2px rgb(0 0 0 / 40%);
+    --app-shadow-sm:
+        0 1px 2px rgb(0 0 0 / 42%), 0 10px 26px -20px rgb(0 0 0 / 90%);
+    --app-shadow-md:
+        0 2px 5px rgb(0 0 0 / 45%), 0 18px 40px -22px rgb(0 0 0 / 95%);
+    --app-shadow-lg:
+        0 4px 10px rgb(0 0 0 / 48%), 0 28px 58px -26px rgb(0 0 0 / 100%);
+    --app-shadow-xl:
+        0 8px 18px rgb(0 0 0 / 55%), 0 44px 90px -30px rgb(0 0 0 / 100%);
+    --app-shadow-brand:
+        0 3px 8px #{rgba($brand-500, 0.22)},
+        0 16px 30px -14px #{rgba($brand-500, 0.7)};
+
+    // Same six hues, re-stepped for the dark surface (not an automatic flip) and
+    // validated as a set against it.
+    --app-chart-1: #6366f1;
+    --app-chart-2: #d97706;
+    --app-chart-3: #0d95d6;
+    --app-chart-4: #059f6b;
+    --app-chart-5: #9085e9;
+    --app-chart-6: #ef4444;
+    --app-chart-grid: rgb(255 255 255 / 9%);
+    --app-chart-axis: #6d768a;
+    --app-chart-surface: #121724;
+    --app-chart-muted: #2f384c;
+}
+
+@include media-breakpoint-up(md) {
+    :root {
+        --app-space-page-x: 1.75rem;
+        --app-space-page-y: 1.75rem;
+        --app-space-stack: 1.5rem;
+    }
+}
+
+@include media-breakpoint-up(xxl) {
+    :root {
+        --app-space-page-x: 2.25rem;
+        --app-space-page-y: 2rem;
+    }
+}

@@ -1,0 +1,130 @@
+// =============================================================================
+// Tabs
+// =============================================================================
+
+.app-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    overflow-x: auto;
+    border-block-end: 1px solid var(--app-border);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    @include slim-scrollbar;
+}
+
+.app-tabs__link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+    padding: 0.6875rem 0.875rem;
+    white-space: nowrap;
+    font-size: 0.9063rem;
+    font-weight: 550;
+    color: var(--app-text-muted);
+    border: 0;
+    background: none;
+    transition: color var(--app-transition-fast);
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset-inline: 0.5rem;
+        inset-block-end: -1px;
+        height: 2px;
+        border-radius: var(--app-radius-pill);
+        background: var(--app-gradient-brand);
+        scale: 0 1;
+        transition: scale var(--app-transition-base);
+    }
+
+    &:hover {
+        color: var(--app-text);
+    }
+
+    &.is-active {
+        color: var(--app-brand-strong);
+        font-weight: 650;
+
+        &::after {
+            scale: 1 1;
+        }
+    }
+}
+
+.app-tabs--pills {
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-md);
+    background-color: var(--app-surface-sunken);
+
+    .app-tabs__link {
+        border-radius: var(--app-radius-sm);
+        padding: 0.4375rem 0.75rem;
+
+        &::after {
+            display: none;
+        }
+
+        &.is-active {
+            background-color: var(--app-surface);
+            color: var(--app-text);
+            box-shadow: var(--app-shadow-xs);
+        }
+    }
+}
+
+.app-tabs--vertical {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-xl);
+    background-color: var(--app-surface);
+    background-image: var(--app-gradient-surface);
+    box-shadow:
+        inset 0 1px var(--app-surface-highlight),
+        var(--app-shadow-sm);
+    overflow: visible;
+
+    @include media-breakpoint-up(lg) {
+        position: sticky;
+        inset-block-start: calc(var(--app-topbar-height) + var(--app-space-page-y));
+    }
+
+    .app-tabs__link {
+        justify-content: flex-start;
+        border-radius: var(--app-radius-md);
+        min-height: 2.75rem;
+        padding: 0.625rem 0.75rem;
+
+        &::after {
+            inset: 0.375rem auto 0.375rem 0;
+            width: 3px;
+            height: auto;
+            scale: 1 0;
+        }
+
+        &:hover {
+            background-color: var(--app-surface-sunken);
+        }
+
+        &.is-active {
+            background-color: var(--app-brand-soft);
+
+            &::after {
+                scale: 1 1;
+            }
+        }
+    }
+}

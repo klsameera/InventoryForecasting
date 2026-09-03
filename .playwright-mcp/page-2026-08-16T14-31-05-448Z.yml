@@ -1,0 +1,152 @@
+- generic [ref=f30e3]:
+  - complementary "Main navigation" [ref=f30e4]:
+    - link "Laravel" [ref=f30e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f30e13]:
+      - generic [ref=f30e14]:
+        - generic [ref=f30e15]: Overview
+        - navigation [ref=f30e16]:
+          - link "Dashboard" [ref=f30e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f30e24]:
+        - generic [ref=f30e25]: Catalog
+        - navigation [ref=f30e26]:
+          - link "Products" [ref=f30e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f30e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f30e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f30e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f30e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f30e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f30e60]:
+        - generic [ref=f30e61]: Inventory
+        - navigation [ref=f30e62]:
+          - link "Inventory" [ref=f30e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f30e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f30e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f30e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f30e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f30e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f30e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f30e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f30e115]:
+        - generic [ref=f30e116]: Purchasing
+        - navigation [ref=f30e117]:
+          - link "Purchase orders" [ref=f30e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f30e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f30e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f30e134]:
+        - generic [ref=f30e135]: Sales
+        - navigation [ref=f30e136]:
+          - link "Sales orders" [ref=f30e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f30e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f30e148]:
+        - generic [ref=f30e149]: Forecasting
+        - navigation [ref=f30e150]:
+          - link "Forecasts" [ref=f30e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f30e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f30e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f30e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f30e172]:
+        - generic [ref=f30e173]: Advanced intelligence
+        - navigation [ref=f30e174]:
+          - link "Supplier performance" [ref=f30e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f30e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f30e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f30e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f30e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f30e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f30e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f30e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f30e225]:
+        - generic [ref=f30e226]: Account
+        - navigation [ref=f30e227]:
+          - link "Profile" [ref=f30e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f30e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f30e238]:
+    - banner [ref=f30e239]:
+      - button "Collapse navigation" [ref=f30e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f30e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f30e248] [cursor=pointer]:
+        - generic [ref=f30e249]: MB
+        - generic [ref=f30e250]:
+          - generic [ref=f30e251]: Marilou Brakus
+          - generic [ref=f30e252]: qa@example.com
+    - main [ref=f30e255]:
+      - generic [ref=f30e257]:
+        - generic [ref=f30e258]: Advanced intelligence
+        - heading "Lost sales" [level=1] [ref=f30e259]
+        - paragraph [ref=f30e260]: "Units likely missed during real stockouts — stockout minutes multiplied by the SKU's own normal daily rate on its non-stockout days in the same window. A pair that was out of stock the entire window is excluded: there's no in-stock data to estimate a normal rate from."
+      - generic [ref=f30e261]:
+        - generic [ref=f30e262]:
+          - searchbox "Search by SKU or product…" [ref=f30e264]
+          - combobox "Filter by warehouse" [ref=f30e265]:
+            - option "All warehouses" [selected]
+            - option "QA P10 Warehouse"
+          - combobox "Filter by SKU" [ref=f30e266]:
+            - option "All SKUs" [selected]
+            - option "QA-P10-001"
+          - combobox "Lookback window" [ref=f30e267]:
+            - option "Last 7 days"
+            - option "Last 30 days" [selected]
+            - option "Last 90 days"
+          - generic [ref=f30e268]:
+            - button "Clear" [disabled]
+        - table [ref=f30e270]:
+          - rowgroup [ref=f30e271]:
+            - row [ref=f30e272]:
+              - columnheader "SKU" [ref=f30e273]
+              - columnheader "Warehouse" [ref=f30e274]
+              - columnheader "Stockout days" [ref=f30e275]
+              - columnheader "Normal daily rate" [ref=f30e276]
+              - columnheader "Estimated lost units" [ref=f30e277]
+          - rowgroup [ref=f30e278]:
+            - row [ref=f30e279]:
+              - cell [ref=f30e280]:
+                - generic [ref=f30e281]:
+                  - paragraph [ref=f30e282]: QA-P10-001
+                  - paragraph [ref=f30e283]: QA P10 Product
+              - cell "QA P10 Warehouse" [ref=f30e284]
+              - cell "1" [ref=f30e285]
+              - cell "20.00" [ref=f30e286]
+              - cell "10.0" [ref=f30e287]
+        - generic [ref=f30e289]:
+          - generic [ref=f30e290]: Showing 1–1 of 1
+          - generic [ref=f30e291]:
+            - text: Rows
+            - combobox "Rows" [ref=f30e292]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

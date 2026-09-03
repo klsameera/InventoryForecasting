@@ -1,0 +1,382 @@
+- generic [ref=f41e3]:
+  - complementary "Main navigation" [ref=f41e4]:
+    - link "Laravel" [ref=f41e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f41e13]:
+      - generic [ref=f41e14]:
+        - generic [ref=f41e15]: Overview
+        - navigation [ref=f41e16]:
+          - link "Dashboard" [ref=f41e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f41e24]:
+        - generic [ref=f41e25]: Catalog
+        - navigation [ref=f41e26]:
+          - link "Products" [ref=f41e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f41e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f41e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f41e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f41e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f41e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f41e60]:
+        - generic [ref=f41e61]: Inventory
+        - navigation [ref=f41e62]:
+          - link "Inventory" [ref=f41e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f41e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f41e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f41e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f41e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f41e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f41e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f41e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f41e115]:
+        - generic [ref=f41e116]: Purchasing
+        - navigation [ref=f41e117]:
+          - link "Purchase orders" [ref=f41e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f41e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f41e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f41e134]:
+        - generic [ref=f41e135]: Sales
+        - navigation [ref=f41e136]:
+          - link "Sales orders" [ref=f41e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f41e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f41e148]:
+        - generic [ref=f41e149]: Forecasting
+        - navigation [ref=f41e150]:
+          - link "Forecasts" [ref=f41e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f41e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f41e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f41e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f41e172]:
+        - generic [ref=f41e173]: Advanced intelligence
+        - navigation [ref=f41e174]:
+          - link "Supplier performance" [ref=f41e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f41e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f41e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f41e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f41e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f41e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f41e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f41e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f41e225]:
+        - generic [ref=f41e226]: Account
+        - navigation [ref=f41e227]:
+          - link "Profile" [ref=f41e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f41e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f41e238]:
+    - banner [ref=f41e239]:
+      - button "Collapse navigation" [ref=f41e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f41e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f41e248] [cursor=pointer]:
+        - generic [ref=f41e249]: MB
+        - generic [ref=f41e250]:
+          - generic [ref=f41e251]: Marilou Brakus
+          - generic [ref=f41e252]: qa@example.com
+    - main [ref=f41e255]:
+      - generic [ref=f41e256]:
+        - generic [ref=f41e257]:
+          - generic [ref=f41e258]: Advanced intelligence
+          - heading "Supplier performance" [level=1] [ref=f41e259]
+          - paragraph [ref=f41e260]: Real observed lead time, on-time delivery and fill rate per supplier per month — computed from actual purchase order and goods receipt dates, compared against each supplier's configured lead time.
+        - generic [ref=f41e262]:
+          - textbox "Month to capture" [ref=f41e263]
+          - button "Capture month" [ref=f41e264] [cursor=pointer]
+      - generic [ref=f41e270]:
+        - generic [ref=f41e271]:
+          - searchbox "Search by supplier…" [ref=f41e273]
+          - combobox "Filter by supplier" [ref=f41e274]:
+            - option "All suppliers" [selected]
+            - option "Abans Direct Import Division"
+            - option "Brown & Company Distribution"
+            - option "General Appliance Importers (Pvt) Ltd"
+            - option "Hayleys Consumer Products"
+            - option "LG Electronics Lanka (Pvt) Ltd"
+            - option "Metropolitan Traders (Pvt) Ltd"
+            - option "National Distributors (Whirlpool)"
+            - option "Premier Appliances Lanka"
+            - option "Regnis Lanka (Pvt) Ltd"
+            - option "Softlogic Distribution (Pvt) Ltd"
+          - generic [ref=f41e275]:
+            - button "Clear" [disabled]
+        - table [ref=f41e277]:
+          - rowgroup [ref=f41e278]:
+            - row [ref=f41e279]:
+              - columnheader "Supplier" [ref=f41e280]
+              - columnheader "Period" [ref=f41e281]
+              - columnheader "Actual vs. configured lead time" [ref=f41e282]
+              - columnheader "On-time" [ref=f41e283]
+              - columnheader "Fill rate" [ref=f41e284]
+              - columnheader "Ordered / Received" [ref=f41e285]
+              - columnheader "Quality issues" [ref=f41e286]
+          - rowgroup [ref=f41e287]:
+            - row [ref=f41e288]:
+              - cell "LG Electronics Lanka (Pvt) Ltd" [ref=f41e289]
+              - cell "2026-07-01 – 2026-07-31" [ref=f41e290]
+              - cell [ref=f41e291]:
+                - generic [ref=f41e292]:
+                  - generic [ref=f41e293]: 32.6d actual
+                  - paragraph [ref=f41e295]: "Configured: 33d · ±4.8d"
+              - cell "60%" [ref=f41e296]
+              - cell "10%" [ref=f41e297]
+              - cell "1692 / 172" [ref=f41e298]
+              - cell "Not tracked" [ref=f41e299]
+            - row [ref=f41e300]:
+              - cell "National Distributors (Whirlpool)" [ref=f41e301]
+              - cell "2026-07-01 – 2026-07-31" [ref=f41e302]
+              - cell "—" [ref=f41e303]
+              - cell "—" [ref=f41e304]
+              - cell "0%" [ref=f41e305]
+              - cell "215 / 0" [ref=f41e306]
+              - cell "Not tracked" [ref=f41e307]
+            - row [ref=f41e308]:
+              - cell "Abans Direct Import Division" [ref=f41e309]
+              - cell "2026-07-01 – 2026-07-31" [ref=f41e310]
+              - cell [ref=f41e311]:
+                - generic [ref=f41e312]:
+                  - generic [ref=f41e313]: 24.0d actual
+                  - paragraph [ref=f41e315]: "Configured: 23d · ±3.0d"
+              - cell "47%" [ref=f41e316]
+              - cell "54%" [ref=f41e317]
+              - cell "1069 / 576" [ref=f41e318]
+              - cell "Not tracked" [ref=f41e319]
+            - row [ref=f41e320]:
+              - cell "Softlogic Distribution (Pvt) Ltd" [ref=f41e321]
+              - cell "2026-07-01 – 2026-07-31" [ref=f41e322]
+              - cell [ref=f41e323]:
+                - generic [ref=f41e324]:
+                  - generic [ref=f41e325]: 32.5d actual
+                  - paragraph [ref=f41e327]: "Configured: 35d · ±0.7d"
+              - cell "100%" [ref=f41e328]
+              - cell "7%" [ref=f41e329]
+              - cell "791 / 54" [ref=f41e330]
+              - cell "Not tracked" [ref=f41e331]
+            - row [ref=f41e332]:
+              - cell "Hayleys Consumer Products" [ref=f41e333]
+              - cell "2026-07-01 – 2026-07-31" [ref=f41e334]
+              - cell [ref=f41e335]:
+                - generic [ref=f41e336]:
+                  - generic [ref=f41e337]: 30.0d actual
+                  - paragraph [ref=f41e339]: "Configured: 32d · ±4.1d"
+              - cell "50%" [ref=f41e340]
+              - cell "6%" [ref=f41e341]
+              - cell "863 / 55" [ref=f41e342]
+              - cell "Not tracked" [ref=f41e343]
+            - row [ref=f41e344]:
+              - cell "Metropolitan Traders (Pvt) Ltd" [ref=f41e345]
+              - cell "2026-07-01 – 2026-07-31" [ref=f41e346]
+              - cell [ref=f41e347]:
+                - generic [ref=f41e348]:
+                  - generic [ref=f41e349]: 32.0d actual
+                  - paragraph [ref=f41e351]: "Configured: 34d"
+              - cell "100%" [ref=f41e352]
+              - cell "0%" [ref=f41e353]
+              - cell "653 / 1" [ref=f41e354]
+              - cell "Not tracked" [ref=f41e355]
+            - row [ref=f41e356]:
+              - cell "General Appliance Importers (Pvt) Ltd" [ref=f41e357]
+              - cell "2026-07-01 – 2026-07-31" [ref=f41e358]
+              - cell [ref=f41e359]:
+                - generic [ref=f41e360]:
+                  - generic [ref=f41e361]: 16.5d actual
+                  - paragraph [ref=f41e363]: "Configured: 16d · ±2.2d"
+              - cell "56%" [ref=f41e364]
+              - cell "98%" [ref=f41e365]
+              - cell "2701 / 2640" [ref=f41e366]
+              - cell "Not tracked" [ref=f41e367]
+            - row [ref=f41e368]:
+              - cell "LG Electronics Lanka (Pvt) Ltd" [ref=f41e369]
+              - cell "2026-06-01 – 2026-06-30" [ref=f41e370]
+              - cell [ref=f41e371]:
+                - generic [ref=f41e372]:
+                  - generic [ref=f41e373]: 34.8d actual
+                  - paragraph [ref=f41e375]: "Configured: 33d · ±4.7d"
+              - cell "42%" [ref=f41e376]
+              - cell "100%" [ref=f41e377]
+              - cell "492 / 492" [ref=f41e378]
+              - cell "Not tracked" [ref=f41e379]
+            - row [ref=f41e380]:
+              - cell "National Distributors (Whirlpool)" [ref=f41e381]
+              - cell "2026-06-01 – 2026-06-30" [ref=f41e382]
+              - cell [ref=f41e383]:
+                - generic [ref=f41e384]:
+                  - generic [ref=f41e385]: 41.0d actual
+                  - paragraph [ref=f41e387]: "Configured: 40d · ±2.8d"
+              - cell "50%" [ref=f41e388]
+              - cell "100%" [ref=f41e389]
+              - cell "24 / 24" [ref=f41e390]
+              - cell "Not tracked" [ref=f41e391]
+            - row [ref=f41e392]:
+              - cell "Abans Direct Import Division" [ref=f41e393]
+              - cell "2026-06-01 – 2026-06-30" [ref=f41e394]
+              - cell [ref=f41e395]:
+                - generic [ref=f41e396]:
+                  - generic [ref=f41e397]: 24.7d actual
+                  - paragraph [ref=f41e399]: "Configured: 23d · ±3.6d"
+              - cell "43%" [ref=f41e400]
+              - cell "100%" [ref=f41e401]
+              - cell "808 / 808" [ref=f41e402]
+              - cell "Not tracked" [ref=f41e403]
+            - row [ref=f41e404]:
+              - cell "Softlogic Distribution (Pvt) Ltd" [ref=f41e405]
+              - cell "2026-06-01 – 2026-06-30" [ref=f41e406]
+              - cell [ref=f41e407]:
+                - generic [ref=f41e408]:
+                  - generic [ref=f41e409]: 34.2d actual
+                  - paragraph [ref=f41e411]: "Configured: 35d · ±3.4d"
+              - cell "60%" [ref=f41e412]
+              - cell "100%" [ref=f41e413]
+              - cell "100 / 100" [ref=f41e414]
+              - cell "Not tracked" [ref=f41e415]
+            - row [ref=f41e416]:
+              - cell "Hayleys Consumer Products" [ref=f41e417]
+              - cell "2026-06-01 – 2026-06-30" [ref=f41e418]
+              - cell [ref=f41e419]:
+                - generic [ref=f41e420]:
+                  - generic [ref=f41e421]: 39.4d actual
+                  - paragraph [ref=f41e423]: "Configured: 32d · ±2.9d"
+              - cell "0%" [ref=f41e424]
+              - cell "100%" [ref=f41e425]
+              - cell "260 / 260" [ref=f41e426]
+              - cell "Not tracked" [ref=f41e427]
+            - row [ref=f41e428]:
+              - cell "Metropolitan Traders (Pvt) Ltd" [ref=f41e429]
+              - cell "2026-06-01 – 2026-06-30" [ref=f41e430]
+              - cell [ref=f41e431]:
+                - generic [ref=f41e432]:
+                  - generic [ref=f41e433]: 34.8d actual
+                  - paragraph [ref=f41e435]: "Configured: 34d · ±5.0d"
+              - cell "58%" [ref=f41e436]
+              - cell "100%" [ref=f41e437]
+              - cell "188 / 188" [ref=f41e438]
+              - cell "Not tracked" [ref=f41e439]
+            - row [ref=f41e440]:
+              - cell "General Appliance Importers (Pvt) Ltd" [ref=f41e441]
+              - cell "2026-06-01 – 2026-06-30" [ref=f41e442]
+              - cell [ref=f41e443]:
+                - generic [ref=f41e444]:
+                  - generic [ref=f41e445]: 16.7d actual
+                  - paragraph [ref=f41e447]: "Configured: 16d · ±2.3d"
+              - cell "46%" [ref=f41e448]
+              - cell "100%" [ref=f41e449]
+              - cell "2101 / 2101" [ref=f41e450]
+              - cell "Not tracked" [ref=f41e451]
+            - row [ref=f41e452]:
+              - cell "LG Electronics Lanka (Pvt) Ltd" [ref=f41e453]
+              - cell "2026-05-01 – 2026-05-31" [ref=f41e454]
+              - cell [ref=f41e455]:
+                - generic [ref=f41e456]:
+                  - generic [ref=f41e457]: 34.5d actual
+                  - paragraph [ref=f41e459]: "Configured: 33d · ±4.5d"
+              - cell "43%" [ref=f41e460]
+              - cell "100%" [ref=f41e461]
+              - cell "522 / 522" [ref=f41e462]
+              - cell "Not tracked" [ref=f41e463]
+            - row [ref=f41e464]:
+              - cell "National Distributors (Whirlpool)" [ref=f41e465]
+              - cell "2026-05-01 – 2026-05-31" [ref=f41e466]
+              - cell [ref=f41e467]:
+                - generic [ref=f41e468]:
+                  - generic [ref=f41e469]: 45.8d actual
+                  - paragraph [ref=f41e471]: "Configured: 40d · ±4.3d"
+              - cell "17%" [ref=f41e472]
+              - cell "100%" [ref=f41e473]
+              - cell "37 / 37" [ref=f41e474]
+              - cell "Not tracked" [ref=f41e475]
+            - row [ref=f41e476]:
+              - cell "Abans Direct Import Division" [ref=f41e477]
+              - cell "2026-05-01 – 2026-05-31" [ref=f41e478]
+              - cell [ref=f41e479]:
+                - generic [ref=f41e480]:
+                  - generic [ref=f41e481]: 23.7d actual
+                  - paragraph [ref=f41e483]: "Configured: 23d · ±3.3d"
+              - cell "49%" [ref=f41e484]
+              - cell "100%" [ref=f41e485]
+              - cell "1041 / 1041" [ref=f41e486]
+              - cell "Not tracked" [ref=f41e487]
+            - row [ref=f41e488]:
+              - cell "Softlogic Distribution (Pvt) Ltd" [ref=f41e489]
+              - cell "2026-05-01 – 2026-05-31" [ref=f41e490]
+              - cell [ref=f41e491]:
+                - generic [ref=f41e492]:
+                  - generic [ref=f41e493]: 32.8d actual
+                  - paragraph [ref=f41e495]: "Configured: 35d · ±4.6d"
+              - cell "75%" [ref=f41e496]
+              - cell "100%" [ref=f41e497]
+              - cell "97 / 97" [ref=f41e498]
+              - cell "Not tracked" [ref=f41e499]
+            - row [ref=f41e500]:
+              - cell "Hayleys Consumer Products" [ref=f41e501]
+              - cell "2026-05-01 – 2026-05-31" [ref=f41e502]
+              - cell [ref=f41e503]:
+                - generic [ref=f41e504]:
+                  - generic [ref=f41e505]: 35.4d actual
+                  - paragraph [ref=f41e507]: "Configured: 32d · ±4.4d"
+              - cell "27%" [ref=f41e508]
+              - cell "100%" [ref=f41e509]
+              - cell "336 / 336" [ref=f41e510]
+              - cell "Not tracked" [ref=f41e511]
+            - row [ref=f41e512]:
+              - cell "Metropolitan Traders (Pvt) Ltd" [ref=f41e513]
+              - cell "2026-05-01 – 2026-05-31" [ref=f41e514]
+              - cell [ref=f41e515]:
+                - generic [ref=f41e516]:
+                  - generic [ref=f41e517]: 37.5d actual
+                  - paragraph [ref=f41e519]: "Configured: 34d · ±3.6d"
+              - cell "20%" [ref=f41e520]
+              - cell "100%" [ref=f41e521]
+              - cell "78 / 78" [ref=f41e522]
+              - cell "Not tracked" [ref=f41e523]
+        - generic [ref=f41e524]:
+          - generic [ref=f41e525]:
+            - generic [ref=f41e526]: Showing 1–20 of 252
+            - generic [ref=f41e527]:
+              - text: Rows
+              - combobox "Rows" [ref=f41e528]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+          - navigation "Pagination" [ref=f41e529]:
+            - list [ref=f41e530]:
+              - listitem [ref=f41e531]:
+                - button "Previous page" [disabled] [ref=f41e532]
+              - listitem [ref=f41e535]:
+                - button "1" [ref=f41e536] [cursor=pointer]
+              - listitem [ref=f41e537]:
+                - button "2" [ref=f41e538] [cursor=pointer]
+              - listitem [ref=f41e539]: …
+              - listitem [ref=f41e540]:
+                - button "13" [ref=f41e541] [cursor=pointer]
+              - listitem [ref=f41e542]:
+                - button "Next page" [ref=f41e543] [cursor=pointer]

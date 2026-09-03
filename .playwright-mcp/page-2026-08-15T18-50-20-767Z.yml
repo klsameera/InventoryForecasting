@@ -1,0 +1,113 @@
+- generic [ref=f35e2]:
+  - generic [ref=f35e3]:
+    - complementary "Main navigation" [ref=f35e4]:
+      - link "Laravel" [ref=f35e6] [cursor=pointer]:
+        - /url: /dashboard
+      - generic [ref=f35e13]:
+        - generic [ref=f35e14]:
+          - generic [ref=f35e15]: Overview
+          - navigation [ref=f35e16]:
+            - link "Dashboard" [ref=f35e17] [cursor=pointer]:
+              - /url: /dashboard
+        - generic [ref=f35e24]:
+          - generic [ref=f35e25]: Catalog
+          - navigation [ref=f35e26]:
+            - link "Products" [ref=f35e27] [cursor=pointer]:
+              - /url: /product
+            - link "Variants" [ref=f35e35] [cursor=pointer]:
+              - /url: /product-variant
+            - link "SKUs" [ref=f35e41] [cursor=pointer]:
+              - /url: /sku
+            - link "Categories" [ref=f35e47] [cursor=pointer]:
+              - /url: /category
+            - link "Brands" [ref=f35e52] [cursor=pointer]:
+              - /url: /brand
+            - link "Attributes" [ref=f35e57] [cursor=pointer]:
+              - /url: /attribute
+        - generic [ref=f35e60]:
+          - generic [ref=f35e61]: Inventory
+          - navigation [ref=f35e62]:
+            - link "Inventory" [ref=f35e63] [cursor=pointer]:
+              - /url: /inventory
+            - link "Stock movements" [ref=f35e75] [cursor=pointer]:
+              - /url: /stock-movement
+            - link "Adjustments" [ref=f35e80] [cursor=pointer]:
+              - /url: /stock-movement/create
+            - link "Warehouses" [ref=f35e86] [cursor=pointer]:
+              - /url: /warehouse
+        - generic [ref=f35e91]:
+          - generic [ref=f35e92]: Account
+          - navigation [ref=f35e93]:
+            - link "Profile" [ref=f35e94] [cursor=pointer]:
+              - /url: /settings/profile
+            - link "Security" [ref=f35e99] [cursor=pointer]:
+              - /url: /settings/security
+    - generic [ref=f35e104]:
+      - banner [ref=f35e105]:
+        - button "Collapse navigation" [ref=f35e106] [cursor=pointer]
+        - button "Switch to dark theme" [ref=f35e110] [cursor=pointer]
+        - button "Percival Denesik qa@example.test" [ref=f35e114] [cursor=pointer]:
+          - generic [ref=f35e115]: PD
+          - generic [ref=f35e116]:
+            - generic [ref=f35e117]: Percival Denesik
+            - generic [ref=f35e118]: qa@example.test
+      - main [ref=f35e121]:
+        - generic [ref=f35e186]:
+          - generic [ref=f35e187]:
+            - generic [ref=f35e188]: Catalog
+            - heading "SKUs" [level=1] [ref=f35e189]
+            - paragraph [ref=f35e190]: Sellable, stock-tracked units.
+          - link "New SKU" [ref=f35e192] [cursor=pointer]:
+            - /url: /sku/create
+        - generic [ref=f35e194]:
+          - generic [ref=f35e195]:
+            - searchbox "Search SKUs…" [ref=f35e197]
+            - combobox "Filter by product" [ref=f35e198]:
+              - option "All products" [selected]
+              - option "Skechers Go Walk"
+            - combobox "Filter by status" [ref=f35e199]:
+              - option "All statuses" [selected]
+              - option "Active"
+              - option "Inactive"
+            - generic [ref=f35e200]:
+              - button "Clear" [disabled]
+          - table [ref=f35e202]:
+            - rowgroup [ref=f35e203]:
+              - row [ref=f35e204]:
+                - columnheader [ref=f35e205]:
+                  - button "SKU" [ref=f35e206] [cursor=pointer]
+                - columnheader "Barcode" [ref=f35e210]
+                - columnheader [ref=f35e211]:
+                  - button "Cost" [ref=f35e212] [cursor=pointer]
+                - columnheader [ref=f35e216]:
+                  - button "Price" [ref=f35e217] [cursor=pointer]
+                - columnheader [ref=f35e221]:
+                  - button "Status" [ref=f35e222] [cursor=pointer]
+                - columnheader "Actions" [ref=f35e226]
+            - rowgroup [ref=f35e227]:
+              - row [ref=f35e228]:
+                - cell [ref=f35e229]:
+                  - generic [ref=f35e230]:
+                    - paragraph [ref=f35e231]: SK-GOWALK-42
+                    - paragraph [ref=f35e232]: Skechers Go Walk · Size 42
+                - cell "—" [ref=f35e233]
+                - cell "25.00" [ref=f35e234]
+                - cell "49.99" [ref=f35e235]
+                - cell "Active" [ref=f35e236]
+                - cell [ref=f35e239]:
+                  - generic [ref=f35e240]:
+                    - link "Edit SK-GOWALK-42" [ref=f35e241] [cursor=pointer]:
+                      - /url: /sku/2/edit
+                    - button "Delete SK-GOWALK-42" [ref=f35e245] [cursor=pointer]
+          - generic [ref=f35e250]:
+            - generic [ref=f35e251]: Showing 1–1 of 1
+            - generic [ref=f35e252]:
+              - text: Rows
+              - combobox "Rows" [ref=f35e253]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+  - region "Notifications":
+    - status [ref=f35e254]:
+      - paragraph [ref=f35e258]: Sku created successfully
+      - button "Dismiss notification" [ref=f35e259] [cursor=pointer]

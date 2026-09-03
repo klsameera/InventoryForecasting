@@ -1,0 +1,151 @@
+- generic [ref=f34e3]:
+  - complementary "Main navigation" [ref=f34e4]:
+    - link "Laravel" [ref=f34e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f34e13]:
+      - generic [ref=f34e14]:
+        - generic [ref=f34e15]: Overview
+        - navigation [ref=f34e16]:
+          - link "Dashboard" [ref=f34e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f34e24]:
+        - generic [ref=f34e25]: Catalog
+        - navigation [ref=f34e26]:
+          - link "Products" [ref=f34e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f34e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f34e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f34e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f34e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f34e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f34e60]:
+        - generic [ref=f34e61]: Inventory
+        - navigation [ref=f34e62]:
+          - link "Inventory" [ref=f34e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f34e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f34e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f34e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f34e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f34e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f34e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f34e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f34e115]:
+        - generic [ref=f34e116]: Purchasing
+        - navigation [ref=f34e117]:
+          - link "Purchase orders" [ref=f34e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f34e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f34e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f34e134]:
+        - generic [ref=f34e135]: Sales
+        - navigation [ref=f34e136]:
+          - link "Sales orders" [ref=f34e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f34e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f34e148]:
+        - generic [ref=f34e149]: Forecasting
+        - navigation [ref=f34e150]:
+          - link "Forecasts" [ref=f34e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f34e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f34e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f34e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f34e172]:
+        - generic [ref=f34e173]: Advanced intelligence
+        - navigation [ref=f34e174]:
+          - link "Supplier performance" [ref=f34e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f34e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f34e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f34e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f34e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f34e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f34e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f34e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f34e225]:
+        - generic [ref=f34e226]: Account
+        - navigation [ref=f34e227]:
+          - link "Profile" [ref=f34e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f34e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f34e238]:
+    - banner [ref=f34e239]:
+      - button "Collapse navigation" [ref=f34e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f34e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f34e248] [cursor=pointer]:
+        - generic [ref=f34e249]: MB
+        - generic [ref=f34e250]:
+          - generic [ref=f34e251]: Marilou Brakus
+          - generic [ref=f34e252]: qa@example.com
+    - main [ref=f34e255]:
+      - generic [ref=f34e256]:
+        - generic [ref=f34e257]:
+          - generic [ref=f34e258]: Advanced intelligence
+          - heading "Promotions" [level=1] [ref=f34e259]
+          - paragraph [ref=f34e260]: Discounts recorded against a set of SKUs — once a promotion has ended, its real effect on demand can be measured against a matching pre-promotion baseline.
+        - link "New promotion" [ref=f34e262] [cursor=pointer]:
+          - /url: /promotion/create
+      - generic [ref=f34e264]:
+        - generic [ref=f34e265]:
+          - searchbox "Search by name…" [ref=f34e267]
+          - combobox "Filter by SKU" [ref=f34e268]:
+            - option "All SKUs" [selected]
+            - option "QA-P10-001"
+          - generic [ref=f34e269]:
+            - button "Clear" [disabled]
+        - table [ref=f34e271]:
+          - rowgroup [ref=f34e272]:
+            - row [ref=f34e273]:
+              - columnheader "Name" [ref=f34e274]
+              - columnheader "Discount" [ref=f34e275]
+              - columnheader "Dates" [ref=f34e276]
+              - columnheader "SKUs" [ref=f34e277]
+              - columnheader "Status" [ref=f34e278]
+              - columnheader "Actions" [ref=f34e279]
+          - rowgroup [ref=f34e280]:
+            - row [ref=f34e281]:
+              - cell [ref=f34e282]:
+                - link "QA P10 Promotion" [ref=f34e283] [cursor=pointer]:
+                  - /url: /promotion/1/edit
+              - cell "20.56" [ref=f34e284]
+              - cell "2026-07-27 – 2026-08-05" [ref=f34e285]
+              - cell "1" [ref=f34e286]
+              - cell "Ended" [ref=f34e287]
+              - cell [ref=f34e290]:
+                - link "View impact" [ref=f34e291] [cursor=pointer]:
+                  - /url: /promotion/1/impact
+        - generic [ref=f34e293]:
+          - generic [ref=f34e294]: Showing 1–1 of 1
+          - generic [ref=f34e295]:
+            - text: Rows
+            - combobox "Rows" [ref=f34e296]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

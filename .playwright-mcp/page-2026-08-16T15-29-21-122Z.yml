@@ -1,0 +1,590 @@
+- generic [ref=f39e3]:
+  - complementary "Main navigation" [ref=f39e4]:
+    - link "Laravel" [ref=f39e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f39e13]:
+      - generic [ref=f39e14]:
+        - generic [ref=f39e15]: Overview
+        - navigation [ref=f39e16]:
+          - link "Dashboard" [ref=f39e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f39e24]:
+        - generic [ref=f39e25]: Catalog
+        - navigation [ref=f39e26]:
+          - link "Products" [ref=f39e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f39e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f39e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f39e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f39e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f39e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f39e60]:
+        - generic [ref=f39e61]: Inventory
+        - navigation [ref=f39e62]:
+          - link "Inventory" [ref=f39e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f39e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f39e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f39e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f39e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f39e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f39e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f39e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f39e115]:
+        - generic [ref=f39e116]: Purchasing
+        - navigation [ref=f39e117]:
+          - link "Purchase orders" [ref=f39e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f39e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f39e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f39e134]:
+        - generic [ref=f39e135]: Sales
+        - navigation [ref=f39e136]:
+          - link "Sales orders" [ref=f39e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f39e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f39e148]:
+        - generic [ref=f39e149]: Forecasting
+        - navigation [ref=f39e150]:
+          - link "Forecasts" [ref=f39e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f39e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f39e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f39e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f39e172]:
+        - generic [ref=f39e173]: Advanced intelligence
+        - navigation [ref=f39e174]:
+          - link "Supplier performance" [ref=f39e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f39e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f39e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f39e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f39e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f39e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f39e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f39e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f39e225]:
+        - generic [ref=f39e226]: Account
+        - navigation [ref=f39e227]:
+          - link "Profile" [ref=f39e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f39e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f39e238]:
+    - banner [ref=f39e239]:
+      - button "Collapse navigation" [ref=f39e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f39e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f39e248] [cursor=pointer]:
+        - generic [ref=f39e249]: MB
+        - generic [ref=f39e250]:
+          - generic [ref=f39e251]: Marilou Brakus
+          - generic [ref=f39e252]: qa@example.com
+    - main [ref=f39e255]:
+      - generic [ref=f39e256]:
+        - generic [ref=f39e257]:
+          - generic [ref=f39e258]: Forecasting
+          - heading "Forecasts" [level=1] [ref=f39e259]
+          - paragraph [ref=f39e260]: Predicted demand from the ML service — one of two baseline algorithms, chosen per SKU from real backtested accuracy history. See Forecast runs for how these were produced.
+        - button "Score accuracy" [ref=f39e262] [cursor=pointer]
+      - generic [ref=f39e268]:
+        - generic [ref=f39e269]:
+          - searchbox "Search by SKU…" [ref=f39e271]
+          - combobox "Filter by warehouse" [ref=f39e272]:
+            - option "All warehouses" [selected]
+            - option "Dambulla Regional Warehouse"
+            - option "Galle Regional Warehouse"
+            - option "Jaffna Regional Warehouse"
+            - option "Kadolkale Warehouse - Buy Abans Team"
+            - option "Kotikawatta Warehouse"
+            - option "Vavuniya Regional Warehouse"
+          - combobox "Filter by SKU" [ref=f39e273]:
+            - option "All SKUs" [selected]
+            - option "ABACSTLG30CR"
+            - option "ABACSTLG36CR"
+            - option "ABCKRC100G01"
+            - option "ABCKRC80G01"
+            - option "ABCKRCT40"
+            - option "ABFNIN600TII"
+            - option "ABFNIN750TII"
+            - option "ABFNIN750TWII"
+            - option "ABFNMFYD207"
+            - option "ABFR750XN"
+            - option "ABFRCH400AEL"
+            - option "ABFRCH923XN"
+            - option "ABFRDPCB260AEL"
+            - option "ABFRDPCB360AEL"
+            - option "ABKMLB9001B"
+            - option "ABMG3550MGWS"
+            - option "ABRFURFR180J"
+            - option "ABVCEV800"
+            - option "ABVCWDRY7730L"
+            - option "ABWG10LSQT"
+            - option "ABWG15LSQT"
+            - option "ABWG30LCYT"
+            - option "ABWG50LCYT"
+            - option "ABWGWHDSZF20LJ15Y6U"
+            - option "ABWHDSZF20LJ30Y6A"
+            - option "ABWHDSZF20LJ50Y6A"
+            - option "DTFNIN50TS"
+            - option "DZACLD200ACR"
+            - option "ELVC930"
+            - option "ELVCZ1230"
+            - option "ELWM705HQWA"
+            - option "ELWMDRY754H3WB"
+            - option "EMIACSG302"
+            - option "EMIACSG353"
+            - option "FDSTNM5126WS"
+            - option "HKPMCITATION200BLKEU"
+            - option "HKPMCITATION200GRYEU"
+            - option "HLAFRFBXK12321"
+            - option "HLAFRFBXK12321WS"
+            - option "HLMG06021WS"
+            - option "HRFRCH350DMS5"
+            - option "HRFRCH719HSEP"
+            - option "HRFRCH719W"
+            - option "HRFRCHHFC788DMS5"
+            - option "HWACL151"
+            - option "HWACL20AE"
+            - option "HWACL30XC"
+            - option "HWACL604AE"
+            - option "IGDRYIGT10RCDW"
+            - option "IGMOMJF31GDCX3"
+            - option "INIRZYGTJ01KL"
+            - option "JBLPMBOOMBOX2SQUAD"
+            - option "JBLPMPARTYBOX1000EU"
+            - option "JBLPMPARTYBOX100EU"
+            - option "JBLPMPARTYBOX310EU"
+            - option "JBLPMPARTYBOX710EU"
+            - option "JBLPMPARTYBOXGOBUK"
+            - option "JBLSPPBSTAGE320"
+            - option "JPMGFRUTTICA"
+            - option "JPPREMIUM"
+            - option "LGACINQ09JA3BD"
+            - option "LGACINQ12JA17C"
+            - option "LGACINQ12JA3FB"
+            - option "LGACINQ18JL3BD"
+            - option "LGACINQ18KL2FA"
+            - option "LGACINQ18KL3FA"
+            - option "LGACINQ24K22FA"
+            - option "LGACINQ24K23BD"
+            - option "LGHSVCA9TULTRA"
+            - option "LGHVCA9KPRO"
+            - option "LGMO2043DB"
+            - option "LGMO2044DB"
+            - option "LGMO2595DIS"
+            - option "LGMO2846SL"
+            - option "LGMO3965BGS"
+            - option "LGMO6565DIS"
+            - option "LGMO7636GIS"
+            - option "LGMOMJEN326TL"
+            - option "LGMOMS3636GIS"
+            - option "LGRF6011NSNBS"
+            - option "LGRF6012PZPN3"
+            - option "LGRF6018MTBK"
+            - option "LGRF6181DSDGS"
+            - option "LGRFB4059PZPS"
+            - option "LGRFDDM5097PZ"
+            - option "LGRFGSB6432WB"
+            - option "LGRFGSL6172PZ"
+            - option "LGRFGSX6172NS"
+            - option "LGRFQ6011MC"
+            - option "LGVCVR66900TWVV"
+            - option "LGWD2719RVTV"
+            - option "LGWDRV1329AD5S"
+            - option "LGWM1329AN7S"
+            - option "LGWMDRYTDC8066S"
+            - option "LGWMFAU1408S4W"
+            - option "LGWMFAU1450S2K"
+            - option "LGWMFAUFL1007S5W"
+            - option "LGWMINW069FD2M"
+            - option "LGWMINWS069FD2FS"
+            - option "LGWPUWW170EP"
+            - option "LPBDAFRY400B5"
+            - option "LPBDAFRYAF200B5"
+            - option "LPBDIRSTGST2000B5WS"
+            - option "LPBDJEJE250B5"
+            - option "LPICHMAAVC10"
+            - option "LPIMVCJUGVC20"
+            - option "LPINIRYD012V"
+            - option "LPPUWFWFILTERG"
+            - option "LPPUWFWFILTERS"
+            - option "LPUNWPUCLASSICG2"
+            - option "LPUNWPUPMUVG2"
+            - option "LPUNWPUULTIMARO"
+            - option "LPWPPAK9100BL"
+            - option "LPWPPAK9101W"
+            - option "MARSPWOBURN3BK"
+            - option "MBFNPD16GAPCYRD"
+            - option "MBFNPD16GAPSFGY"
+            - option "MBFNPD16GUPCYRD"
+            - option "MBFNPD16GUPSFGY"
+            - option "MIACLMAC200R"
+            - option "MIACLMAC200RW"
+            - option "MIAFRY98"
+            - option "MICKRC100"
+            - option "MICKRC42"
+            - option "MICKRC56"
+            - option "MICKRC78"
+            - option "MIFNPD16J15R"
+            - option "MIWHC30A"
+            - option "MIWHC50A"
+            - option "MIWHC80A"
+            - option "MRMG640151"
+            - option "OMAFRYOMAF2254J"
+            - option "PLAFRY9216"
+            - option "PLAFRYHD9721"
+            - option "PLIRST392020"
+            - option "PLIRST51449"
+            - option "PLIRST523"
+            - option "PNCKRCSRGA321"
+            - option "PNCKRCSRGA421"
+            - option "PNCKRCSRGA721"
+            - option "RHAFRY26510"
+            - option "RHIRST2804056"
+            - option "RHSTPOP2164473"
+            - option "RHSTPOP2164474"
+            - option "SFDIR2913GS"
+            - option "SFHMSF1364SMWS"
+            - option "SFIRSTSF2910GS"
+            - option "SFMTGSF5855MG"
+            - option "SFVCW891VC"
+          - generic [ref=f39e274]:
+            - button "Clear" [disabled]
+        - table [ref=f39e276]:
+          - rowgroup [ref=f39e277]:
+            - row [ref=f39e278]:
+              - columnheader "SKU" [ref=f39e279]
+              - columnheader "Warehouse" [ref=f39e280]
+              - columnheader "For" [ref=f39e281]
+              - columnheader "Predicted" [ref=f39e282]
+              - columnheader "Confidence" [ref=f39e283]
+              - columnheader "Source" [ref=f39e284]
+              - columnheader "Actual vs. predicted" [ref=f39e285]
+          - rowgroup [ref=f39e286]:
+            - row [ref=f39e287]:
+              - cell [ref=f39e288]:
+                - generic [ref=f39e289]:
+                  - paragraph [ref=f39e290]: ABFRCH400AEL
+                  - paragraph [ref=f39e291]: ABANS 400L Chest Freezer
+              - cell "Vavuniya Regional Warehouse" [ref=f39e292]
+              - cell "2026-09-15 (30d)" [ref=f39e293]
+              - cell "2 (1–4)" [ref=f39e294]
+              - cell "25%" [ref=f39e295]
+              - cell [ref=f39e296]:
+                - generic [ref=f39e297]:
+                  - generic [ref=f39e298]: Hybrid
+                  - paragraph [ref=f39e300]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e301]
+            - row [ref=f39e302]:
+              - cell [ref=f39e303]:
+                - generic [ref=f39e304]:
+                  - paragraph [ref=f39e305]: LGRF6018MTBK
+                  - paragraph [ref=f39e306]: LG Inverter Refrigerator 668L - Matte Black
+              - cell "Jaffna Regional Warehouse" [ref=f39e307]
+              - cell "2026-09-15 (30d)" [ref=f39e308]
+              - cell "1 (0–4)" [ref=f39e309]
+              - cell "25%" [ref=f39e310]
+              - cell [ref=f39e311]:
+                - generic [ref=f39e312]:
+                  - generic [ref=f39e313]: SKU history
+                  - paragraph [ref=f39e315]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e316]
+            - row [ref=f39e317]:
+              - cell [ref=f39e318]:
+                - generic [ref=f39e319]:
+                  - paragraph [ref=f39e320]: HRFRCH350DMS5
+                  - paragraph [ref=f39e321]: Haier Chest Freezer - 324L
+              - cell "Vavuniya Regional Warehouse" [ref=f39e322]
+              - cell "2026-09-15 (30d)" [ref=f39e323]
+              - cell "2 (0–6)" [ref=f39e324]
+              - cell "25%" [ref=f39e325]
+              - cell [ref=f39e326]:
+                - generic [ref=f39e327]:
+                  - generic [ref=f39e328]: SKU history
+                  - paragraph [ref=f39e330]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e331]
+            - row [ref=f39e332]:
+              - cell [ref=f39e333]:
+                - generic [ref=f39e334]:
+                  - paragraph [ref=f39e335]: LGMOMS3636GIS
+                  - paragraph [ref=f39e336]: LG 36L Solo Neo Chef Microwave Oven - Black
+              - cell "Vavuniya Regional Warehouse" [ref=f39e337]
+              - cell "2026-09-15 (30d)" [ref=f39e338]
+              - cell "4 (0–8)" [ref=f39e339]
+              - cell "25%" [ref=f39e340]
+              - cell [ref=f39e341]:
+                - generic [ref=f39e342]:
+                  - generic [ref=f39e343]: SKU history
+                  - paragraph [ref=f39e345]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e346]
+            - row [ref=f39e347]:
+              - cell [ref=f39e348]:
+                - generic [ref=f39e349]:
+                  - paragraph [ref=f39e350]: MIWHC30A
+                  - paragraph [ref=f39e351]: MISTRAL 30L Storage Water Heater
+              - cell "Vavuniya Regional Warehouse" [ref=f39e352]
+              - cell "2026-09-15 (30d)" [ref=f39e353]
+              - cell "4 (1–7)" [ref=f39e354]
+              - cell "25%" [ref=f39e355]
+              - cell [ref=f39e356]:
+                - generic [ref=f39e357]:
+                  - generic [ref=f39e358]: SKU history
+                  - paragraph [ref=f39e360]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e361]
+            - row [ref=f39e362]:
+              - cell [ref=f39e363]:
+                - generic [ref=f39e364]:
+                  - paragraph [ref=f39e365]: ABWGWHDSZF20LJ15Y6U
+                  - paragraph [ref=f39e366]: ABANS 15L Electric Water Heater
+              - cell "Kotikawatta Warehouse" [ref=f39e367]
+              - cell "2026-09-15 (30d)" [ref=f39e368]
+              - cell "4 (1–8)" [ref=f39e369]
+              - cell "25%" [ref=f39e370]
+              - cell [ref=f39e371]:
+                - generic [ref=f39e372]:
+                  - generic [ref=f39e373]: SKU history
+                  - paragraph [ref=f39e375]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e376]
+            - row [ref=f39e377]:
+              - cell [ref=f39e378]:
+                - generic [ref=f39e379]:
+                  - paragraph [ref=f39e380]: ABFRDPCB360AEL
+                  - paragraph [ref=f39e381]: ABANS 358L Curved Glass Top Freezer
+              - cell "Vavuniya Regional Warehouse" [ref=f39e382]
+              - cell "2026-09-15 (30d)" [ref=f39e383]
+              - cell "4 (0–8)" [ref=f39e384]
+              - cell "25%" [ref=f39e385]
+              - cell [ref=f39e386]:
+                - generic [ref=f39e387]:
+                  - generic [ref=f39e388]: SKU history
+                  - paragraph [ref=f39e390]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e391]
+            - row [ref=f39e392]:
+              - cell [ref=f39e393]:
+                - generic [ref=f39e394]:
+                  - paragraph [ref=f39e395]: ABWG50LCYT
+                  - paragraph [ref=f39e396]: Abans Water Geyser 50L - Cylinder Type
+              - cell "Vavuniya Regional Warehouse" [ref=f39e397]
+              - cell "2026-09-15 (30d)" [ref=f39e398]
+              - cell "8 (4–13)" [ref=f39e399]
+              - cell "25%" [ref=f39e400]
+              - cell [ref=f39e401]:
+                - generic [ref=f39e402]:
+                  - generic [ref=f39e403]: SKU history
+                  - paragraph [ref=f39e405]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e406]
+            - row [ref=f39e407]:
+              - cell [ref=f39e408]:
+                - generic [ref=f39e409]:
+                  - paragraph [ref=f39e410]: LPICHMAAVC10
+                  - paragraph [ref=f39e411]: Xiaomi Incom Deerma VC01 Lightweight Cordless Stick Handheld Vacuum Cleaner
+              - cell "Vavuniya Regional Warehouse" [ref=f39e412]
+              - cell "2026-09-15 (30d)" [ref=f39e413]
+              - cell "11 (6–17)" [ref=f39e414]
+              - cell "25%" [ref=f39e415]
+              - cell [ref=f39e416]:
+                - generic [ref=f39e417]:
+                  - generic [ref=f39e418]: SKU history
+                  - paragraph [ref=f39e420]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e421]
+            - row [ref=f39e422]:
+              - cell [ref=f39e423]:
+                - generic [ref=f39e424]:
+                  - paragraph [ref=f39e425]: ABFRDPCB260AEL
+                  - paragraph [ref=f39e426]: ABANS 258L Curved Glass Top Freezer
+              - cell "Vavuniya Regional Warehouse" [ref=f39e427]
+              - cell "2026-09-15 (30d)" [ref=f39e428]
+              - cell "4 (0–9)" [ref=f39e429]
+              - cell "25%" [ref=f39e430]
+              - cell [ref=f39e431]:
+                - generic [ref=f39e432]:
+                  - generic [ref=f39e433]: SKU history
+                  - paragraph [ref=f39e435]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e436]
+            - row [ref=f39e437]:
+              - cell [ref=f39e438]:
+                - generic [ref=f39e439]:
+                  - paragraph [ref=f39e440]: ABWHDSZF20LJ50Y6A
+                  - paragraph [ref=f39e441]: ABANS 50L Electric Water Heater
+              - cell "Vavuniya Regional Warehouse" [ref=f39e442]
+              - cell "2026-09-15 (30d)" [ref=f39e443]
+              - cell "6 (1–10)" [ref=f39e444]
+              - cell "25%" [ref=f39e445]
+              - cell [ref=f39e446]:
+                - generic [ref=f39e447]:
+                  - generic [ref=f39e448]: SKU history
+                  - paragraph [ref=f39e450]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e451]
+            - row [ref=f39e452]:
+              - cell [ref=f39e453]:
+                - generic [ref=f39e454]:
+                  - paragraph [ref=f39e455]: LPIMVCJUGVC20
+                  - paragraph [ref=f39e456]: Xiaomi Deerma VC20 Plus Vacuum Cleaner Handheld Cordless Stick Aspirator Lightweight Vacuum 5500Pa
+              - cell "Vavuniya Regional Warehouse" [ref=f39e457]
+              - cell "2026-09-15 (30d)" [ref=f39e458]
+              - cell "11 (6–16)" [ref=f39e459]
+              - cell "30%" [ref=f39e460]
+              - cell [ref=f39e461]:
+                - generic [ref=f39e462]:
+                  - generic [ref=f39e463]: SKU history
+                  - paragraph [ref=f39e465]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e466]
+            - row [ref=f39e467]:
+              - cell [ref=f39e468]:
+                - generic [ref=f39e469]:
+                  - paragraph [ref=f39e470]: LGRFGSL6172PZ
+                  - paragraph [ref=f39e471]: LG 674L Inverter Refrigerator - Platinum Silver
+              - cell "Jaffna Regional Warehouse" [ref=f39e472]
+              - cell "2026-09-15 (30d)" [ref=f39e473]
+              - cell "3 (0–5)" [ref=f39e474]
+              - cell "25%" [ref=f39e475]
+              - cell [ref=f39e476]:
+                - generic [ref=f39e477]:
+                  - generic [ref=f39e478]: SKU history
+                  - paragraph [ref=f39e480]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e481]
+            - row [ref=f39e482]:
+              - cell [ref=f39e483]:
+                - generic [ref=f39e484]:
+                  - paragraph [ref=f39e485]: ABWG10LSQT
+                  - paragraph [ref=f39e486]: Abans Water Geyser 10L - Square Type
+              - cell "Vavuniya Regional Warehouse" [ref=f39e487]
+              - cell "2026-09-15 (30d)" [ref=f39e488]
+              - cell "17 (11–22)" [ref=f39e489]
+              - cell "30%" [ref=f39e490]
+              - cell [ref=f39e491]:
+                - generic [ref=f39e492]:
+                  - generic [ref=f39e493]: SKU history
+                  - paragraph [ref=f39e495]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e496]
+            - row [ref=f39e497]:
+              - cell [ref=f39e498]:
+                - generic [ref=f39e499]:
+                  - paragraph [ref=f39e500]: IGMOMJF31GDCX3
+                  - paragraph [ref=f39e501]: IGNIS 31L Convection Microwave
+              - cell "Vavuniya Regional Warehouse" [ref=f39e502]
+              - cell "2026-09-15 (30d)" [ref=f39e503]
+              - cell "6 (2–11)" [ref=f39e504]
+              - cell "25%" [ref=f39e505]
+              - cell [ref=f39e506]:
+                - generic [ref=f39e507]:
+                  - generic [ref=f39e508]: SKU history
+                  - paragraph [ref=f39e510]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e511]
+            - row [ref=f39e512]:
+              - cell [ref=f39e513]:
+                - generic [ref=f39e514]:
+                  - paragraph [ref=f39e515]: ABVCEV800
+                  - paragraph [ref=f39e516]: ABANS 2.5L Cyclone Vacuum Cleaner - Red
+              - cell "Vavuniya Regional Warehouse" [ref=f39e517]
+              - cell "2026-09-15 (30d)" [ref=f39e518]
+              - cell "10 (5–15)" [ref=f39e519]
+              - cell "28%" [ref=f39e520]
+              - cell [ref=f39e521]:
+                - generic [ref=f39e522]:
+                  - generic [ref=f39e523]: SKU history
+                  - paragraph [ref=f39e525]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e526]
+            - row [ref=f39e527]:
+              - cell [ref=f39e528]:
+                - generic [ref=f39e529]:
+                  - paragraph [ref=f39e530]: ABFRCH923XN
+                  - paragraph [ref=f39e531]: ABANS 923L Chest Freezer
+              - cell "Vavuniya Regional Warehouse" [ref=f39e532]
+              - cell "2026-09-15 (30d)" [ref=f39e533]
+              - cell "1 (0–3)" [ref=f39e534]
+              - cell "25%" [ref=f39e535]
+              - cell [ref=f39e536]:
+                - generic [ref=f39e537]:
+                  - generic [ref=f39e538]: SKU history
+                  - paragraph [ref=f39e540]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e541]
+            - row [ref=f39e542]:
+              - cell [ref=f39e543]:
+                - generic [ref=f39e544]:
+                  - paragraph [ref=f39e545]: LGMO2043DB
+                  - paragraph [ref=f39e546]: LG 20L Solo Microwave Oven - Black
+              - cell "Vavuniya Regional Warehouse" [ref=f39e547]
+              - cell "2026-09-15 (30d)" [ref=f39e548]
+              - cell "10 (4–16)" [ref=f39e549]
+              - cell "25%" [ref=f39e550]
+              - cell [ref=f39e551]:
+                - generic [ref=f39e552]:
+                  - generic [ref=f39e553]: SKU history
+                  - paragraph [ref=f39e555]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e556]
+            - row [ref=f39e557]:
+              - cell [ref=f39e558]:
+                - generic [ref=f39e559]:
+                  - paragraph [ref=f39e560]: LGMO3965BGS
+                  - paragraph [ref=f39e561]: LG 39L Convection Microwave Oven - Black
+              - cell "Vavuniya Regional Warehouse" [ref=f39e562]
+              - cell "2026-09-15 (30d)" [ref=f39e563]
+              - cell "0 (0–2)" [ref=f39e564]
+              - cell "25%" [ref=f39e565]
+              - cell [ref=f39e566]:
+                - generic [ref=f39e567]:
+                  - generic [ref=f39e568]: SKU history
+                  - paragraph [ref=f39e570]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e571]
+            - row [ref=f39e572]:
+              - cell [ref=f39e573]:
+                - generic [ref=f39e574]:
+                  - paragraph [ref=f39e575]: HRFRCHHFC788DMS5
+                  - paragraph [ref=f39e576]: HAIER 734L Chest Freezer without Divider
+              - cell "Vavuniya Regional Warehouse" [ref=f39e577]
+              - cell "2026-09-15 (30d)" [ref=f39e578]
+              - cell "1 (0–4)" [ref=f39e579]
+              - cell "25%" [ref=f39e580]
+              - cell [ref=f39e581]:
+                - generic [ref=f39e582]:
+                  - generic [ref=f39e583]: SKU history
+                  - paragraph [ref=f39e585]: baseline-moving-average
+              - cell "Not due yet" [ref=f39e586]
+        - generic [ref=f39e587]:
+          - generic [ref=f39e588]:
+            - generic [ref=f39e589]: Showing 1–20 of 437
+            - generic [ref=f39e590]:
+              - text: Rows
+              - combobox "Rows" [ref=f39e591]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+          - navigation "Pagination" [ref=f39e592]:
+            - list [ref=f39e593]:
+              - listitem [ref=f39e594]:
+                - button "Previous page" [disabled] [ref=f39e595]
+              - listitem [ref=f39e598]:
+                - button "1" [ref=f39e599] [cursor=pointer]
+              - listitem [ref=f39e600]:
+                - button "2" [ref=f39e601] [cursor=pointer]
+              - listitem [ref=f39e602]: …
+              - listitem [ref=f39e603]:
+                - button "22" [ref=f39e604] [cursor=pointer]
+              - listitem [ref=f39e605]:
+                - button "Next page" [ref=f39e606] [cursor=pointer]

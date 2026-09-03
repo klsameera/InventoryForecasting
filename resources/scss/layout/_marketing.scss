@@ -1,0 +1,80 @@
+// =============================================================================
+// Public landing layout
+// =============================================================================
+
+.app-marketing {
+    position: relative;
+    z-index: 1;
+    max-width: var(--app-content-max-width);
+    margin-inline: auto;
+    padding-inline: var(--app-space-page-x);
+}
+
+.app-marketing__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: var(--app-topbar-height);
+    margin-block-start: 0.75rem;
+    padding: 0.625rem 0.75rem 0.625rem 1rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-xl);
+    box-shadow: var(--app-shadow-sm);
+
+    @include glass-surface(var(--app-surface-glass), 24px);
+
+    @include media-breakpoint-down(sm) {
+        .app-logo__word {
+            display: none;
+        }
+    }
+}
+
+.app-marketing__hero {
+    position: relative;
+    text-align: center;
+    padding-block: 4rem 5rem;
+
+    &::before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        width: min(72vw, 64rem);
+        aspect-ratio: 1.8;
+        inset-block-start: 1rem;
+        inset-inline-start: 50%;
+        translate: -50% 0;
+        border-radius: 50%;
+        background: radial-gradient(
+            closest-side,
+            color-mix(in srgb, var(--app-brand) 16%, transparent),
+            transparent
+        );
+        filter: blur(12px);
+    }
+
+    @include media-breakpoint-up(md) {
+        padding-block: 6rem 7rem;
+    }
+}
+
+.app-marketing__title {
+    max-width: 22ch;
+    margin-inline: auto;
+    margin-block: 1rem 0;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 740;
+    line-height: 1.02;
+    letter-spacing: -0.06em;
+    text-wrap: balance;
+}
+
+.app-marketing__lead {
+    max-width: 50ch;
+    margin-inline: auto;
+    margin-block-start: 1.125rem;
+    font-size: clamp(1rem, 1.4vw, 1.1875rem);
+    line-height: 1.7;
+    color: var(--app-text-muted);
+}

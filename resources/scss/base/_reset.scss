@@ -1,0 +1,66 @@
+// =============================================================================
+// Base reset
+// =============================================================================
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    background-color: var(--app-canvas);
+    overflow-x: clip;
+}
+
+body {
+    min-height: 100svh;
+    background-color: var(--app-canvas);
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-variant-numeric: tabular-nums;
+    transition:
+        background-color var(--app-transition-base),
+        color var(--app-transition-base);
+
+    @include slim-scrollbar;
+}
+
+:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--app-brand) 38%, transparent);
+    outline-offset: 3px;
+}
+
+button:focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
+}
+
+img,
+svg {
+    max-width: 100%;
+}
+
+hr {
+    border-color: var(--app-border);
+    opacity: 1;
+}
+
+::selection {
+    background-color: var(--app-brand-soft);
+    color: var(--app-brand-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

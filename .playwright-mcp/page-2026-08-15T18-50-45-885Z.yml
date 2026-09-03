@@ -1,0 +1,117 @@
+- generic [ref=f36e2]:
+  - generic [ref=f36e3]:
+    - complementary "Main navigation" [ref=f36e4]:
+      - link "Laravel" [ref=f36e6] [cursor=pointer]:
+        - /url: /dashboard
+      - generic [ref=f36e13]:
+        - generic [ref=f36e14]:
+          - generic [ref=f36e15]: Overview
+          - navigation [ref=f36e16]:
+            - link "Dashboard" [ref=f36e17] [cursor=pointer]:
+              - /url: /dashboard
+        - generic [ref=f36e24]:
+          - generic [ref=f36e25]: Catalog
+          - navigation [ref=f36e26]:
+            - link "Products" [ref=f36e27] [cursor=pointer]:
+              - /url: /product
+            - link "Variants" [ref=f36e35] [cursor=pointer]:
+              - /url: /product-variant
+            - link "SKUs" [ref=f36e41] [cursor=pointer]:
+              - /url: /sku
+            - link "Categories" [ref=f36e47] [cursor=pointer]:
+              - /url: /category
+            - link "Brands" [ref=f36e52] [cursor=pointer]:
+              - /url: /brand
+            - link "Attributes" [ref=f36e57] [cursor=pointer]:
+              - /url: /attribute
+        - generic [ref=f36e60]:
+          - generic [ref=f36e61]: Inventory
+          - navigation [ref=f36e62]:
+            - link "Inventory" [ref=f36e63] [cursor=pointer]:
+              - /url: /inventory
+            - link "Stock movements" [ref=f36e75] [cursor=pointer]:
+              - /url: /stock-movement
+            - link "Adjustments" [ref=f36e80] [cursor=pointer]:
+              - /url: /stock-movement/create
+            - link "Warehouses" [ref=f36e86] [cursor=pointer]:
+              - /url: /warehouse
+        - generic [ref=f36e91]:
+          - generic [ref=f36e92]: Account
+          - navigation [ref=f36e93]:
+            - link "Profile" [ref=f36e94] [cursor=pointer]:
+              - /url: /settings/profile
+            - link "Security" [ref=f36e99] [cursor=pointer]:
+              - /url: /settings/security
+    - generic [ref=f36e104]:
+      - banner [ref=f36e105]:
+        - button "Collapse navigation" [ref=f36e106] [cursor=pointer]
+        - button "Switch to dark theme" [ref=f36e110] [cursor=pointer]
+        - button "Percival Denesik qa@example.test" [ref=f36e114] [cursor=pointer]:
+          - generic [ref=f36e115]: PD
+          - generic [ref=f36e116]:
+            - generic [ref=f36e117]: Percival Denesik
+            - generic [ref=f36e118]: qa@example.test
+      - main [ref=f36e121]:
+        - generic [ref=f36e173]:
+          - generic [ref=f36e174]:
+            - generic [ref=f36e175]: Inventory
+            - heading "Stock movements" [level=1] [ref=f36e176]
+            - paragraph [ref=f36e177]: Append-only ledger of every stock change. Never edited or deleted.
+          - link "Record adjustment" [ref=f36e179] [cursor=pointer]:
+            - /url: /stock-movement/create
+        - generic [ref=f36e181]:
+          - generic [ref=f36e182]:
+            - searchbox "Search by SKU…" [ref=f36e184]
+            - combobox "Filter by warehouse" [ref=f36e185]:
+              - option "All warehouses" [selected]
+              - option "Galle Branch"
+              - option "Kandy Branch"
+            - combobox "Filter by movement type" [ref=f36e186]:
+              - option "All types" [selected]
+              - option "Purchase receipt"
+              - option "Sale"
+              - option "Sale return"
+              - option "Purchase return"
+              - option "Transfer in"
+              - option "Transfer out"
+              - option "Adjustment in"
+              - option "Adjustment out"
+              - option "Damage"
+              - option "Write-off"
+              - option "Opening stock"
+            - generic [ref=f36e187]:
+              - button "Clear" [disabled]
+          - table [ref=f36e189]:
+            - rowgroup [ref=f36e190]:
+              - row [ref=f36e191]:
+                - columnheader "Date" [ref=f36e192]
+                - columnheader "SKU" [ref=f36e193]
+                - columnheader "Warehouse" [ref=f36e194]
+                - columnheader "Type" [ref=f36e195]
+                - columnheader "Quantity" [ref=f36e196]
+                - columnheader "Unit cost" [ref=f36e197]
+                - columnheader "Recorded by" [ref=f36e198]
+            - rowgroup [ref=f36e199]:
+              - row [ref=f36e200]:
+                - cell "2026-08-15 18:50:44" [ref=f36e201]
+                - cell [ref=f36e202]:
+                  - generic [ref=f36e203]:
+                    - paragraph [ref=f36e204]: SK-GOWALK-42
+                    - paragraph [ref=f36e205]: Skechers Go Walk
+                - cell "Galle Branch" [ref=f36e206]
+                - cell "Opening stock" [ref=f36e207]
+                - cell "+100" [ref=f36e210]
+                - cell "25.00" [ref=f36e211]
+                - cell "Percival Denesik" [ref=f36e212]
+          - generic [ref=f36e214]:
+            - generic [ref=f36e215]: Showing 1–1 of 1
+            - generic [ref=f36e216]:
+              - text: Rows
+              - combobox "Rows" [ref=f36e217]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+  - region "Notifications":
+    - status [ref=f36e218]:
+      - paragraph [ref=f36e222]: Stock movement recorded successfully
+      - button "Dismiss notification" [ref=f36e223] [cursor=pointer]

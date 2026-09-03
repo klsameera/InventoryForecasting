@@ -1,0 +1,58 @@
+// =============================================================================
+// Mixins
+// =============================================================================
+
+/// Frosted-glass surface used by the topbar, sidebar and floating panels.
+@mixin glass-surface($bg: var(--app-surface-glass), $blur: 18px) {
+    background-color: $bg;
+    backdrop-filter: blur($blur) saturate(180%);
+    -webkit-backdrop-filter: blur($blur) saturate(180%);
+}
+
+/// Standard interactive lift used across cards and action tiles.
+@mixin hover-lift($distance: -2px, $shadow: var(--app-shadow-lg)) {
+    transition:
+        transform var(--app-transition-base),
+        box-shadow var(--app-transition-base),
+        border-color var(--app-transition-base);
+
+    &:hover {
+        transform: translateY($distance);
+        box-shadow: $shadow;
+    }
+}
+
+/// Clamp text to a fixed number of lines.
+@mixin line-clamp($lines: 1) {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/// Thin, unobtrusive scrollbars for scrollable panels.
+@mixin slim-scrollbar($thumb: var(--app-border-strong)) {
+    scrollbar-width: thin;
+    scrollbar-color: $thumb transparent;
+
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $thumb;
+        border-radius: 50rem;
+    }
+
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+}
+
+/// Respect users who prefer reduced motion.
+@mixin motion-safe {
+    @media (prefers-reduced-motion: no-preference) {
+        @content;
+    }
+}

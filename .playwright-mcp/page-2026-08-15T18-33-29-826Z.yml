@@ -1,0 +1,84 @@
+- generic [ref=f4e3]:
+  - complementary "Main navigation" [ref=f4e4]:
+    - link "Laravel" [ref=f4e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f4e13]:
+      - generic [ref=f4e14]:
+        - generic [ref=f4e15]: Overview
+        - navigation [ref=f4e16]:
+          - link "Dashboard" [ref=f4e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f4e24]:
+        - generic [ref=f4e25]: Account
+        - navigation [ref=f4e26]:
+          - link "Profile" [ref=f4e27] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f4e32] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f4e37]:
+    - banner [ref=f4e38]:
+      - button "Collapse navigation" [ref=f4e39] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f4e43] [cursor=pointer]
+      - button "Percival Denesik qa@example.test" [ref=f4e47] [cursor=pointer]:
+        - generic [ref=f4e48]: PD
+        - generic [ref=f4e49]:
+          - generic [ref=f4e50]: Percival Denesik
+          - generic [ref=f4e51]: qa@example.test
+    - main [ref=f4e54]:
+      - generic [ref=f4e55]:
+        - generic [ref=f4e56]:
+          - generic [ref=f4e57]: Catalog
+          - heading "Warehouses" [level=1] [ref=f4e58]
+          - paragraph [ref=f4e59]: Locations that hold inventory.
+        - link "New warehouse" [ref=f4e61] [cursor=pointer]:
+          - /url: /warehouse/create
+      - generic [ref=f4e63]:
+        - generic [ref=f4e64]:
+          - searchbox "Search warehouses…" [ref=f4e66]
+          - combobox "Filter by status" [ref=f4e67]:
+            - option "All statuses" [selected]
+            - option "Active"
+            - option "Inactive"
+          - generic [ref=f4e68]:
+            - button "Clear" [disabled]
+        - table [ref=f4e70]:
+          - rowgroup [ref=f4e71]:
+            - row [ref=f4e72]:
+              - columnheader [ref=f4e73]:
+                - button "Name" [ref=f4e74] [cursor=pointer]
+              - columnheader "Address" [ref=f4e78]
+              - columnheader [ref=f4e79]:
+                - button "Status" [ref=f4e80] [cursor=pointer]
+              - columnheader "Actions" [ref=f4e84]
+          - rowgroup [ref=f4e85]:
+            - row [ref=f4e86]:
+              - cell [ref=f4e87]:
+                - generic [ref=f4e88]:
+                  - paragraph [ref=f4e89]: Colombo Central
+                  - paragraph [ref=f4e90]: WH-001
+              - cell "123 Galle Road, Colombo" [ref=f4e91]
+              - cell "Active" [ref=f4e92]
+              - cell [ref=f4e95]:
+                - generic [ref=f4e96]:
+                  - link "Edit Colombo Central" [ref=f4e97] [cursor=pointer]:
+                    - /url: /warehouse/2/edit
+                  - button "Delete Colombo Central" [active] [ref=f4e101] [cursor=pointer]
+        - generic [ref=f4e106]:
+          - generic [ref=f4e107]: Showing 1–1 of 1
+          - generic [ref=f4e108]:
+            - text: Rows
+            - combobox "Rows" [ref=f4e109]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"
+      - generic [ref=f4e110]:
+        - button "Close dialog" [ref=f4e111] [cursor=pointer]
+        - dialog [ref=f4e112]:
+          - generic [ref=f4e113]:
+            - generic [ref=f4e117]:
+              - heading "Delete warehouse" [level=2] [ref=f4e118]
+              - paragraph [ref=f4e119]: This permanently removes "Colombo Central" from the warehouse list.
+            - button "Close" [ref=f4e120] [cursor=pointer]
+          - generic [ref=f4e124]:
+            - button "Cancel" [ref=f4e125] [cursor=pointer]
+            - button "Delete" [ref=f4e126] [cursor=pointer]

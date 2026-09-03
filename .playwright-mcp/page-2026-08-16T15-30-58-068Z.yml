@@ -1,0 +1,485 @@
+- generic [ref=f46e3]:
+  - complementary "Main navigation" [ref=f46e4]:
+    - link "Laravel" [ref=f46e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f46e13]:
+      - generic [ref=f46e14]:
+        - generic [ref=f46e15]: Overview
+        - navigation [ref=f46e16]:
+          - link "Dashboard" [ref=f46e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f46e24]:
+        - generic [ref=f46e25]: Catalog
+        - navigation [ref=f46e26]:
+          - link "Products" [ref=f46e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f46e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f46e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f46e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f46e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f46e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f46e60]:
+        - generic [ref=f46e61]: Inventory
+        - navigation [ref=f46e62]:
+          - link "Inventory" [ref=f46e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f46e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f46e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f46e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f46e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f46e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f46e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f46e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f46e115]:
+        - generic [ref=f46e116]: Purchasing
+        - navigation [ref=f46e117]:
+          - link "Purchase orders" [ref=f46e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f46e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f46e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f46e134]:
+        - generic [ref=f46e135]: Sales
+        - navigation [ref=f46e136]:
+          - link "Sales orders" [ref=f46e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f46e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f46e148]:
+        - generic [ref=f46e149]: Forecasting
+        - navigation [ref=f46e150]:
+          - link "Forecasts" [ref=f46e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f46e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f46e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f46e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f46e172]:
+        - generic [ref=f46e173]: Advanced intelligence
+        - navigation [ref=f46e174]:
+          - link "Supplier performance" [ref=f46e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f46e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f46e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f46e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f46e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f46e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f46e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f46e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f46e225]:
+        - generic [ref=f46e226]: Account
+        - navigation [ref=f46e227]:
+          - link "Profile" [ref=f46e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f46e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f46e238]:
+    - banner [ref=f46e239]:
+      - button "Collapse navigation" [ref=f46e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f46e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f46e248] [cursor=pointer]:
+        - generic [ref=f46e249]: MB
+        - generic [ref=f46e250]:
+          - generic [ref=f46e251]: Marilou Brakus
+          - generic [ref=f46e252]: qa@example.com
+    - main [ref=f46e255]:
+      - generic [ref=f46e256]:
+        - generic [ref=f46e257]:
+          - generic [ref=f46e258]: Catalog
+          - heading "Products" [level=1] [ref=f46e259]
+          - paragraph [ref=f46e260]: Simple and configurable products in the catalog.
+        - link "New product" [ref=f46e262] [cursor=pointer]:
+          - /url: /product/create
+      - generic [ref=f46e264]:
+        - generic [ref=f46e265]:
+          - searchbox "Search products…" [ref=f46e267]
+          - combobox "Filter by category" [ref=f46e268]:
+            - option "All categories" [selected]
+            - option "Air Conditioners"
+            - option "Air Coolers"
+            - option "Air Fryers"
+            - option "Dryers"
+            - option "Fans"
+            - option "Freezers"
+            - option "Geysers"
+            - option "Irons"
+            - option "Microwave Ovens"
+            - option "Mixers"
+            - option "Refrigerators"
+            - option "Rice Cookers"
+            - option "Speakers"
+            - option "Vacuum Cleaners"
+            - option "Washing Machines"
+            - option "Water Purifiers"
+          - combobox "Filter by brand" [ref=f46e269]:
+            - option "All brands" [selected]
+            - option "Abans"
+            - option "BLACK & DECKER"
+            - option "Delizia"
+            - option "Emelcold"
+            - option "Frigidaire"
+            - option "Haier"
+            - option "Harman Kardon"
+            - option "Havells"
+            - option "Honywell"
+            - option "Ignis"
+            - option "Jaipan"
+            - option "JBL"
+            - option "LG"
+            - option "Marshall"
+            - option "Mistral"
+            - option "Mitsubishi"
+            - option "Morphy Richards"
+            - option "Olsenmark"
+            - option "Panasonic"
+            - option "Philips"
+            - option "Pureit"
+            - option "Russell Hobbs"
+            - option "Sanford"
+            - option "Xiaomi"
+          - combobox "Filter by product type" [ref=f46e270]:
+            - option "All types" [selected]
+            - option "Simple"
+            - option "Configurable"
+          - combobox "Filter by status" [ref=f46e271]:
+            - option "All statuses" [selected]
+            - option "Active"
+            - option "Inactive"
+          - generic [ref=f46e272]:
+            - button "Clear" [disabled]
+        - table [ref=f46e274]:
+          - rowgroup [ref=f46e275]:
+            - row [ref=f46e276]:
+              - columnheader [ref=f46e277]:
+                - button "Product" [ref=f46e278] [cursor=pointer]
+              - columnheader "Category" [ref=f46e282]
+              - columnheader "Brand" [ref=f46e283]
+              - columnheader "Type" [ref=f46e284]
+              - columnheader [ref=f46e285]:
+                - button "Status" [ref=f46e286] [cursor=pointer]
+              - columnheader "Actions" [ref=f46e290]
+          - rowgroup [ref=f46e291]:
+            - row [ref=f46e292]:
+              - cell [ref=f46e293]:
+                - generic [ref=f46e294]:
+                  - paragraph [ref=f46e295]: ABANS 258L Curved Glass Top Freezer
+                  - paragraph [ref=f46e296]: —
+              - cell "Freezers" [ref=f46e297]
+              - cell "Abans" [ref=f46e298]
+              - cell "Simple" [ref=f46e299]
+              - cell "Active" [ref=f46e301]
+              - cell [ref=f46e304]:
+                - generic [ref=f46e305]:
+                  - link "Edit ABANS 258L Curved Glass Top Freezer" [ref=f46e306] [cursor=pointer]:
+                    - /url: /product/198/edit
+                  - button "Delete ABANS 258L Curved Glass Top Freezer" [ref=f46e310] [cursor=pointer]
+            - row [ref=f46e314]:
+              - cell [ref=f46e315]:
+                - generic [ref=f46e316]:
+                  - paragraph [ref=f46e317]: LG 25L Solo Microwave Oven - Black
+                  - paragraph [ref=f46e318]: —
+              - cell "Microwave Ovens" [ref=f46e319]
+              - cell "LG" [ref=f46e320]
+              - cell "Simple" [ref=f46e321]
+              - cell "Active" [ref=f46e323]
+              - cell [ref=f46e326]:
+                - generic [ref=f46e327]:
+                  - link "Edit LG 25L Solo Microwave Oven - Black" [ref=f46e328] [cursor=pointer]:
+                    - /url: /product/210/edit
+                  - button "Delete LG 25L Solo Microwave Oven - Black" [ref=f46e332] [cursor=pointer]
+            - row [ref=f46e336]:
+              - cell [ref=f46e337]:
+                - generic [ref=f46e338]:
+                  - paragraph [ref=f46e339]: LG 28L Microwave Oven - White
+                  - paragraph [ref=f46e340]: —
+              - cell "Microwave Ovens" [ref=f46e341]
+              - cell "LG" [ref=f46e342]
+              - cell "Simple" [ref=f46e343]
+              - cell "Active" [ref=f46e345]
+              - cell [ref=f46e348]:
+                - generic [ref=f46e349]:
+                  - link "Edit LG 28L Microwave Oven - White" [ref=f46e350] [cursor=pointer]:
+                    - /url: /product/205/edit
+                  - button "Delete LG 28L Microwave Oven - White" [ref=f46e354] [cursor=pointer]
+            - row [ref=f46e358]:
+              - cell [ref=f46e359]:
+                - generic [ref=f46e360]:
+                  - paragraph [ref=f46e361]: Haier Chest Freezer - 324L
+                  - paragraph [ref=f46e362]: —
+              - cell "Freezers" [ref=f46e363]
+              - cell "Haier" [ref=f46e364]
+              - cell "Simple" [ref=f46e365]
+              - cell "Active" [ref=f46e367]
+              - cell [ref=f46e370]:
+                - generic [ref=f46e371]:
+                  - link "Edit Haier Chest Freezer - 324L" [ref=f46e372] [cursor=pointer]:
+                    - /url: /product/201/edit
+                  - button "Delete Haier Chest Freezer - 324L" [ref=f46e376] [cursor=pointer]
+            - row [ref=f46e380]:
+              - cell [ref=f46e381]:
+                - generic [ref=f46e382]:
+                  - paragraph [ref=f46e383]: MISTRAL 50L Water Heater
+                  - paragraph [ref=f46e384]: —
+              - cell "Geysers" [ref=f46e385]
+              - cell "Mistral" [ref=f46e386]
+              - cell "Simple" [ref=f46e387]
+              - cell "Active" [ref=f46e389]
+              - cell [ref=f46e392]:
+                - generic [ref=f46e393]:
+                  - link "Edit MISTRAL 50L Water Heater" [ref=f46e394] [cursor=pointer]:
+                    - /url: /product/213/edit
+                  - button "Delete MISTRAL 50L Water Heater" [ref=f46e398] [cursor=pointer]
+            - row [ref=f46e402]:
+              - cell [ref=f46e403]:
+                - generic [ref=f46e404]:
+                  - paragraph [ref=f46e405]: LG 20L Solo Microwave Oven - Black
+                  - paragraph [ref=f46e406]: —
+              - cell "Microwave Ovens" [ref=f46e407]
+              - cell "LG" [ref=f46e408]
+              - cell "Simple" [ref=f46e409]
+              - cell "Active" [ref=f46e411]
+              - cell [ref=f46e414]:
+                - generic [ref=f46e415]:
+                  - link "Edit LG 20L Solo Microwave Oven - Black" [ref=f46e416] [cursor=pointer]:
+                    - /url: /product/211/edit
+                  - button "Delete LG 20L Solo Microwave Oven - Black" [ref=f46e420] [cursor=pointer]
+            - row [ref=f46e424]:
+              - cell [ref=f46e425]:
+                - generic [ref=f46e426]:
+                  - paragraph [ref=f46e427]: ABANS 400L Chest Freezer
+                  - paragraph [ref=f46e428]: —
+              - cell "Freezers" [ref=f46e429]
+              - cell "Abans" [ref=f46e430]
+              - cell "Simple" [ref=f46e431]
+              - cell "Active" [ref=f46e433]
+              - cell [ref=f46e436]:
+                - generic [ref=f46e437]:
+                  - link "Edit ABANS 400L Chest Freezer" [ref=f46e438] [cursor=pointer]:
+                    - /url: /product/199/edit
+                  - button "Delete ABANS 400L Chest Freezer" [ref=f46e442] [cursor=pointer]
+            - row [ref=f46e446]:
+              - cell [ref=f46e447]:
+                - generic [ref=f46e448]:
+                  - paragraph [ref=f46e449]: IGNIS 31L Convection Microwave
+                  - paragraph [ref=f46e450]: —
+              - cell "Microwave Ovens" [ref=f46e451]
+              - cell "Ignis" [ref=f46e452]
+              - cell "Simple" [ref=f46e453]
+              - cell "Active" [ref=f46e455]
+              - cell [ref=f46e458]:
+                - generic [ref=f46e459]:
+                  - link "Edit IGNIS 31L Convection Microwave" [ref=f46e460] [cursor=pointer]:
+                    - /url: /product/207/edit
+                  - button "Delete IGNIS 31L Convection Microwave" [ref=f46e464] [cursor=pointer]
+            - row [ref=f46e468]:
+              - cell [ref=f46e469]:
+                - generic [ref=f46e470]:
+                  - paragraph [ref=f46e471]: LG 36L Microwave Oven with Grill - Black
+                  - paragraph [ref=f46e472]: —
+              - cell "Microwave Ovens" [ref=f46e473]
+              - cell "LG" [ref=f46e474]
+              - cell "Simple" [ref=f46e475]
+              - cell "Active" [ref=f46e477]
+              - cell [ref=f46e480]:
+                - generic [ref=f46e481]:
+                  - link "Edit LG 36L Microwave Oven with Grill - Black" [ref=f46e482] [cursor=pointer]:
+                    - /url: /product/206/edit
+                  - button "Delete LG 36L Microwave Oven with Grill - Black" [ref=f46e486] [cursor=pointer]
+            - row [ref=f46e490]:
+              - cell [ref=f46e491]:
+                - generic [ref=f46e492]:
+                  - paragraph [ref=f46e493]: ABANS 358L Curved Glass Top Freezer
+                  - paragraph [ref=f46e494]: —
+              - cell "Freezers" [ref=f46e495]
+              - cell "Abans" [ref=f46e496]
+              - cell "Simple" [ref=f46e497]
+              - cell "Active" [ref=f46e499]
+              - cell [ref=f46e502]:
+                - generic [ref=f46e503]:
+                  - link "Edit ABANS 358L Curved Glass Top Freezer" [ref=f46e504] [cursor=pointer]:
+                    - /url: /product/197/edit
+                  - button "Delete ABANS 358L Curved Glass Top Freezer" [ref=f46e508] [cursor=pointer]
+            - row [ref=f46e512]:
+              - cell [ref=f46e513]:
+                - generic [ref=f46e514]:
+                  - paragraph [ref=f46e515]: LG 20L Grill Microwave Oven
+                  - paragraph [ref=f46e516]: —
+              - cell "Microwave Ovens" [ref=f46e517]
+              - cell "LG" [ref=f46e518]
+              - cell "Simple" [ref=f46e519]
+              - cell "Active" [ref=f46e521]
+              - cell [ref=f46e524]:
+                - generic [ref=f46e525]:
+                  - link "Edit LG 20L Grill Microwave Oven" [ref=f46e526] [cursor=pointer]:
+                    - /url: /product/209/edit
+                  - button "Delete LG 20L Grill Microwave Oven" [ref=f46e530] [cursor=pointer]
+            - row [ref=f46e534]:
+              - cell [ref=f46e535]:
+                - generic [ref=f46e536]:
+                  - paragraph [ref=f46e537]: Abans Water Geyser 10L - Square Type
+                  - paragraph [ref=f46e538]: —
+              - cell "Geysers" [ref=f46e539]
+              - cell "Abans" [ref=f46e540]
+              - cell "Simple" [ref=f46e541]
+              - cell "Active" [ref=f46e543]
+              - cell [ref=f46e546]:
+                - generic [ref=f46e547]:
+                  - link "Edit Abans Water Geyser 10L - Square Type" [ref=f46e548] [cursor=pointer]:
+                    - /url: /product/221/edit
+                  - button "Delete Abans Water Geyser 10L - Square Type" [ref=f46e552] [cursor=pointer]
+            - row [ref=f46e556]:
+              - cell [ref=f46e557]:
+                - generic [ref=f46e558]:
+                  - paragraph [ref=f46e559]: MISTRAL 80L Storage Water Heater
+                  - paragraph [ref=f46e560]: —
+              - cell "Geysers" [ref=f46e561]
+              - cell "Mistral" [ref=f46e562]
+              - cell "Simple" [ref=f46e563]
+              - cell "Active" [ref=f46e565]
+              - cell [ref=f46e568]:
+                - generic [ref=f46e569]:
+                  - link "Edit MISTRAL 80L Storage Water Heater" [ref=f46e570] [cursor=pointer]:
+                    - /url: /product/212/edit
+                  - button "Delete MISTRAL 80L Storage Water Heater" [ref=f46e574] [cursor=pointer]
+            - row [ref=f46e578]:
+              - cell [ref=f46e579]:
+                - generic [ref=f46e580]:
+                  - paragraph [ref=f46e581]: LG 25L Microwave Oven with Grill - Black
+                  - paragraph [ref=f46e582]: —
+              - cell "Microwave Ovens" [ref=f46e583]
+              - cell "LG" [ref=f46e584]
+              - cell "Simple" [ref=f46e585]
+              - cell "Active" [ref=f46e587]
+              - cell [ref=f46e590]:
+                - generic [ref=f46e591]:
+                  - link "Edit LG 25L Microwave Oven with Grill - Black" [ref=f46e592] [cursor=pointer]:
+                    - /url: /product/208/edit
+                  - button "Delete LG 25L Microwave Oven with Grill - Black" [ref=f46e596] [cursor=pointer]
+            - row [ref=f46e600]:
+              - cell [ref=f46e601]:
+                - generic [ref=f46e602]:
+                  - paragraph [ref=f46e603]: LG 39L Convection Microwave Oven - Black
+                  - paragraph [ref=f46e604]: —
+              - cell "Microwave Ovens" [ref=f46e605]
+              - cell "LG" [ref=f46e606]
+              - cell "Simple" [ref=f46e607]
+              - cell "Active" [ref=f46e609]
+              - cell [ref=f46e612]:
+                - generic [ref=f46e613]:
+                  - link "Edit LG 39L Convection Microwave Oven - Black" [ref=f46e614] [cursor=pointer]:
+                    - /url: /product/202/edit
+                  - button "Delete LG 39L Convection Microwave Oven - Black" [ref=f46e618] [cursor=pointer]
+            - row [ref=f46e622]:
+              - cell [ref=f46e623]:
+                - generic [ref=f46e624]:
+                  - paragraph [ref=f46e625]: ABANS 677L Chest Freezer
+                  - paragraph [ref=f46e626]: —
+              - cell "Freezers" [ref=f46e627]
+              - cell "Abans" [ref=f46e628]
+              - cell "Simple" [ref=f46e629]
+              - cell "Active" [ref=f46e631]
+              - cell [ref=f46e634]:
+                - generic [ref=f46e635]:
+                  - link "Edit ABANS 677L Chest Freezer" [ref=f46e636] [cursor=pointer]:
+                    - /url: /product/200/edit
+                  - button "Delete ABANS 677L Chest Freezer" [ref=f46e640] [cursor=pointer]
+            - row [ref=f46e644]:
+              - cell [ref=f46e645]:
+                - generic [ref=f46e646]:
+                  - paragraph [ref=f46e647]: ABANS 180L Upright Freezer
+                  - paragraph [ref=f46e648]: —
+              - cell "Freezers" [ref=f46e649]
+              - cell "Abans" [ref=f46e650]
+              - cell "Simple" [ref=f46e651]
+              - cell "Active" [ref=f46e653]
+              - cell [ref=f46e656]:
+                - generic [ref=f46e657]:
+                  - link "Edit ABANS 180L Upright Freezer" [ref=f46e658] [cursor=pointer]:
+                    - /url: /product/196/edit
+                  - button "Delete ABANS 180L Upright Freezer" [ref=f46e662] [cursor=pointer]
+            - row [ref=f46e666]:
+              - cell [ref=f46e667]:
+                - generic [ref=f46e668]:
+                  - paragraph [ref=f46e669]: LG 36L Solo Neo Chef Microwave Oven - Black
+                  - paragraph [ref=f46e670]: —
+              - cell "Microwave Ovens" [ref=f46e671]
+              - cell "LG" [ref=f46e672]
+              - cell "Simple" [ref=f46e673]
+              - cell "Active" [ref=f46e675]
+              - cell [ref=f46e678]:
+                - generic [ref=f46e679]:
+                  - link "Edit LG 36L Solo Neo Chef Microwave Oven - Black" [ref=f46e680] [cursor=pointer]:
+                    - /url: /product/204/edit
+                  - button "Delete LG 36L Solo Neo Chef Microwave Oven - Black" [ref=f46e684] [cursor=pointer]
+            - row [ref=f46e688]:
+              - cell [ref=f46e689]:
+                - generic [ref=f46e690]:
+                  - paragraph [ref=f46e691]: LG 32L All In One Microwave Oven - Black
+                  - paragraph [ref=f46e692]: —
+              - cell "Microwave Ovens" [ref=f46e693]
+              - cell "LG" [ref=f46e694]
+              - cell "Simple" [ref=f46e695]
+              - cell "Active" [ref=f46e697]
+              - cell [ref=f46e700]:
+                - generic [ref=f46e701]:
+                  - link "Edit LG 32L All In One Microwave Oven - Black" [ref=f46e702] [cursor=pointer]:
+                    - /url: /product/203/edit
+                  - button "Delete LG 32L All In One Microwave Oven - Black" [ref=f46e706] [cursor=pointer]
+            - row [ref=f46e710]:
+              - cell [ref=f46e711]:
+                - generic [ref=f46e712]:
+                  - paragraph [ref=f46e713]: HAIER 734L Chest Freezer without Divider
+                  - paragraph [ref=f46e714]: —
+              - cell "Freezers" [ref=f46e715]
+              - cell "Haier" [ref=f46e716]
+              - cell "Simple" [ref=f46e717]
+              - cell "Active" [ref=f46e719]
+              - cell [ref=f46e722]:
+                - generic [ref=f46e723]:
+                  - link "Edit HAIER 734L Chest Freezer without Divider" [ref=f46e724] [cursor=pointer]:
+                    - /url: /product/195/edit
+                  - button "Delete HAIER 734L Chest Freezer without Divider" [ref=f46e728] [cursor=pointer]
+        - generic [ref=f46e732]:
+          - generic [ref=f46e733]:
+            - generic [ref=f46e734]: Showing 1–20 of 149
+            - generic [ref=f46e735]:
+              - text: Rows
+              - combobox "Rows" [ref=f46e736]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+          - navigation "Pagination" [ref=f46e737]:
+            - list [ref=f46e738]:
+              - listitem [ref=f46e739]:
+                - button "Previous page" [disabled] [ref=f46e740]
+              - listitem [ref=f46e743]:
+                - button "1" [ref=f46e744] [cursor=pointer]
+              - listitem [ref=f46e745]:
+                - button "2" [ref=f46e746] [cursor=pointer]
+              - listitem [ref=f46e747]: …
+              - listitem [ref=f46e748]:
+                - button "8" [ref=f46e749] [cursor=pointer]
+              - listitem [ref=f46e750]:
+                - button "Next page" [ref=f46e751] [cursor=pointer]

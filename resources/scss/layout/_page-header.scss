@@ -1,0 +1,109 @@
+// =============================================================================
+// Page header
+// =============================================================================
+
+.app-page-header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.125rem;
+    min-height: 8.75rem;
+    padding: 1.375rem;
+    overflow: hidden;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-xl);
+    background: var(--app-gradient-panel);
+    box-shadow:
+        inset 0 1px var(--app-surface-highlight),
+        var(--app-shadow-sm);
+
+    &::after {
+        content: '';
+        position: absolute;
+        width: 12rem;
+        height: 12rem;
+        inset-block-start: -7.5rem;
+        inset-inline-end: -3rem;
+        border: 1px solid color-mix(in srgb, var(--app-brand) 16%, transparent);
+        border-radius: 50%;
+        box-shadow:
+            0 0 0 2rem color-mix(in srgb, var(--app-brand) 3%, transparent),
+            0 0 0 4rem color-mix(in srgb, var(--app-brand) 2%, transparent);
+        pointer-events: none;
+    }
+
+    @include media-breakpoint-up(md) {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        min-height: 9.5rem;
+        padding: 1.75rem 2rem;
+    }
+}
+
+.app-page-header__text {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+
+    .app-eyebrow {
+        padding: 0.3125rem 0.625rem;
+        border: 1px solid color-mix(in srgb, var(--app-brand) 20%, transparent);
+        border-radius: var(--app-radius-pill);
+        background-color: var(--app-brand-soft);
+        color: var(--app-brand-strong);
+
+        &::before {
+            content: '';
+            width: 0.375rem;
+            height: 0.375rem;
+            border-radius: 50%;
+            background: var(--app-gradient-brand);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--app-brand) 10%, transparent);
+        }
+    }
+}
+
+.app-page-header__actions {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+
+    @include media-breakpoint-down(sm) {
+        width: 100%;
+
+        .btn {
+            flex: 1 1 auto;
+        }
+    }
+
+    @include media-breakpoint-up(md) {
+        justify-content: flex-end;
+        flex: 0 0 auto;
+    }
+}
+
+.app-section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.app-divider {
+    height: 1px;
+    border: 0;
+    margin: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--app-border),
+        transparent
+    );
+    opacity: 1;
+}

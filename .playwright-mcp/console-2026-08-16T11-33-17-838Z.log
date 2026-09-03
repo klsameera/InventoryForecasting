@@ -1,0 +1,81 @@
+[     455ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/inventory-recommendation:133
+[     538ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/inventory-recommendation:203
+[ 7772761ms] [LOG] [vite] server connection lost. Polling for restart... @ http://127.0.0.1:8123/inventory-recommendation:203
+[ 7782376ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:8123/login:0
+[ 7792625ms] [LOG] [vite] server connection lost. Polling for restart... @ http://[::1]:5173/@vite/client:998
+[ 7803689ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:8123/login:0
+[ 7971682ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 7971714ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 7973795ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 7973869ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 7994435ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 7994515ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 8023450ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 8023775ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 8078128ms] [ERROR] [vite] ReferenceError: supplierPerformanceIndex is not defined
+    at http://[::1]:5173/resources/js/components/app-sidebar.tsx?t=1786888075846:188:10 @ http://127.0.0.1:8123/login:203
+[ 8078130ms] [ERROR] [vite] Failed to reload /resources/js/components/app-sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8123/login:203
+[ 8084129ms] [ERROR] [vite] ReferenceError: supplierPerformanceIndex is not defined
+    at http://[::1]:5173/resources/js/components/app-sidebar.tsx?t=1786888081885:188:10 @ http://127.0.0.1:8123/login:203
+[ 8084129ms] [ERROR] [vite] Failed to reload /resources/js/components/app-sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8123/login:203
+[ 9274868ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 9275082ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 9299435ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 9299540ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 9319973ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 9320101ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 9324744ms] [ERROR] [vite] ReferenceError: demandInsightsLostSales is not defined
+    at http://[::1]:5173/resources/js/components/app-sidebar.tsx?t=1786889322523:195:11 @ http://127.0.0.1:8123/login:203
+[ 9324745ms] [ERROR] [vite] Failed to reload /resources/js/components/app-sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8123/login:203
+[ 9329541ms] [ERROR] [vite] ReferenceError: demandInsightsLostSales is not defined
+    at http://[::1]:5173/resources/js/components/app-sidebar.tsx?t=1786889327327:195:11 @ http://127.0.0.1:8123/login:203
+[ 9329542ms] [ERROR] [vite] Failed to reload /resources/js/components/app-sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8123/login:203
+[ 9334133ms] [ERROR] [vite] ReferenceError: demandInsightsLostSales is not defined
+    at http://[::1]:5173/resources/js/components/app-sidebar.tsx?t=1786889331913:195:11 @ http://127.0.0.1:8123/login:203
+[ 9334134ms] [ERROR] [vite] Failed to reload /resources/js/components/app-sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8123/login:203
+[ 9544335ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 9544416ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 9551350ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 9551428ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 9575716ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 9575921ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 9594745ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 9594841ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 9608530ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 9608621ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 9613920ms] [ERROR] [vite] ReferenceError: productRelationshipSimilarity is not defined
+    at http://[::1]:5173/resources/js/components/app-sidebar.tsx?t=1786889611660:206:11 @ http://127.0.0.1:8123/login:203
+[ 9613921ms] [ERROR] [vite] Failed to reload /resources/js/components/app-sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8123/login:203
+[ 9622129ms] [ERROR] [vite] ReferenceError: productRelationshipSimilarity is not defined
+    at http://[::1]:5173/resources/js/components/app-sidebar.tsx?t=1786889619797:206:11 @ http://127.0.0.1:8123/login:203
+[ 9622129ms] [ERROR] [vite] Failed to reload /resources/js/components/app-sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8123/login:203
+[ 9791779ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 9791857ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 9798079ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 9798158ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 9819314ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[ 9819466ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[ 9824438ms] [ERROR] [vite] ReferenceError: priceElasticityIndex is not defined
+    at http://[::1]:5173/resources/js/components/app-sidebar.tsx?t=1786889822165:222:11 @ http://127.0.0.1:8123/login:203
+[ 9824438ms] [ERROR] [vite] Failed to reload /resources/js/components/app-sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8123/login:203
+[ 9828932ms] [ERROR] [vite] ReferenceError: priceElasticityIndex is not defined
+    at http://[::1]:5173/resources/js/components/app-sidebar.tsx?t=1786889826596:222:11 @ http://127.0.0.1:8123/login:203
+[ 9828932ms] [ERROR] [vite] Failed to reload /resources/js/components/app-sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8123/login:203
+[10081912ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[10081982ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[10088189ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[10088262ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[10110316ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[10110559ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[10133840ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[10134146ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[10165027ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[10165303ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[10176887ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[10177066ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/login:203
+[10181568ms] [ERROR] [vite] ReferenceError: promotionIndex is not defined
+    at http://[::1]:5173/resources/js/components/app-sidebar.tsx?t=1786890179323:228:11 @ http://127.0.0.1:8123/login:203
+[10181568ms] [ERROR] [vite] Failed to reload /resources/js/components/app-sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8123/login:203
+[10186031ms] [ERROR] [vite] ReferenceError: promotionIndex is not defined
+    at http://[::1]:5173/resources/js/components/app-sidebar.tsx?t=1786890183612:228:11 @ http://127.0.0.1:8123/login:203
+[10186032ms] [ERROR] [vite] Failed to reload /resources/js/components/app-sidebar.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:8123/login:203

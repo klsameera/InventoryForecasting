@@ -1,0 +1,178 @@
+- generic [ref=f45e3]:
+  - complementary "Main navigation" [ref=f45e4]:
+    - link "Laravel" [ref=f45e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f45e13]:
+      - generic [ref=f45e14]:
+        - generic [ref=f45e15]: Overview
+        - navigation [ref=f45e16]:
+          - link "Dashboard" [ref=f45e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f45e24]:
+        - generic [ref=f45e25]: Catalog
+        - navigation [ref=f45e26]:
+          - link "Products" [ref=f45e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f45e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f45e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f45e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f45e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f45e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f45e60]:
+        - generic [ref=f45e61]: Inventory
+        - navigation [ref=f45e62]:
+          - link "Inventory" [ref=f45e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f45e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f45e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f45e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f45e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f45e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f45e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f45e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f45e115]:
+        - generic [ref=f45e116]: Purchasing
+        - navigation [ref=f45e117]:
+          - link "Purchase orders" [ref=f45e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f45e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f45e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f45e134]:
+        - generic [ref=f45e135]: Sales
+        - navigation [ref=f45e136]:
+          - link "Sales orders" [ref=f45e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f45e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f45e148]:
+        - generic [ref=f45e149]: Forecasting
+        - navigation [ref=f45e150]:
+          - link "Forecasts" [ref=f45e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f45e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f45e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f45e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f45e172]:
+        - generic [ref=f45e173]: Advanced intelligence
+        - navigation [ref=f45e174]:
+          - link "Supplier performance" [ref=f45e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f45e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f45e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f45e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f45e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f45e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f45e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f45e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f45e225]:
+        - generic [ref=f45e226]: Account
+        - navigation [ref=f45e227]:
+          - link "Profile" [ref=f45e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f45e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f45e238]:
+    - banner [ref=f45e239]:
+      - button "Collapse navigation" [ref=f45e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f45e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f45e248] [cursor=pointer]:
+        - generic [ref=f45e249]: MB
+        - generic [ref=f45e250]:
+          - generic [ref=f45e251]: Marilou Brakus
+          - generic [ref=f45e252]: qa@example.com
+    - main [ref=f45e255]:
+      - generic [ref=f45e330]:
+        - generic [ref=f45e331]:
+          - generic [ref=f45e332]: Advanced intelligence
+          - 'heading "Impact: Vesak Appliance Fest" [level=1] [ref=f45e333]'
+          - paragraph [ref=f45e334]: 2026-05-15 – 2026-05-25, compared against an equal-length window immediately before it started.
+        - link "Back to promotions" [ref=f45e336] [cursor=pointer]:
+          - /url: /promotion
+      - table [ref=f45e341]:
+        - rowgroup [ref=f45e342]:
+          - row [ref=f45e343]:
+            - columnheader "SKU" [ref=f45e344]
+            - columnheader "Baseline daily rate" [ref=f45e345]
+            - columnheader "During daily rate" [ref=f45e346]
+            - columnheader "Change" [ref=f45e347]
+        - rowgroup [ref=f45e348]:
+          - row [ref=f45e349]:
+            - cell [ref=f45e350]:
+              - paragraph [ref=f45e351]: LGRF6018MTBK
+              - paragraph [ref=f45e352]: LG Inverter Refrigerator 668L - Matte Black
+            - cell "0.09" [ref=f45e353]
+            - cell "0.09" [ref=f45e354]
+            - cell "0.0%" [ref=f45e355]
+          - row [ref=f45e358]:
+            - cell [ref=f45e359]:
+              - paragraph [ref=f45e360]: ABACSTLG36CR
+              - paragraph [ref=f45e361]: ABANS 36000 BTU Air Conditioner - R410A Fix Speed
+            - cell "0.00" [ref=f45e362]
+            - cell "0.27" [ref=f45e363]
+            - cell "No baseline demand" [ref=f45e364]
+          - row [ref=f45e365]:
+            - cell [ref=f45e366]:
+              - paragraph [ref=f45e367]: LPBDJEJE250B5
+              - paragraph [ref=f45e368]: Black & Decker 250W Juicer Extractor (White)
+            - cell "2.27" [ref=f45e369]
+            - cell "2.09" [ref=f45e370]
+            - cell "-7.9%" [ref=f45e371]
+          - row [ref=f45e374]:
+            - cell [ref=f45e375]:
+              - paragraph [ref=f45e376]: ABMG3550MGWS
+              - paragraph [ref=f45e377]: Abans 3 in 1 Mixer Grinder
+            - cell "1.00" [ref=f45e378]
+            - cell "1.36" [ref=f45e379]
+            - cell "+36.0%" [ref=f45e380]
+          - row [ref=f45e383]:
+            - cell [ref=f45e384]:
+              - paragraph [ref=f45e385]: HLAFRFBXK12321
+              - paragraph [ref=f45e386]: Havells Profile Digital Air Fryer
+            - cell "1.18" [ref=f45e387]
+            - cell "0.36" [ref=f45e388]
+            - cell "-69.5%" [ref=f45e389]
+          - row [ref=f45e392]:
+            - cell [ref=f45e393]:
+              - paragraph [ref=f45e394]: ABFNMFYD207
+              - paragraph [ref=f45e395]: ABANS Misting Fan
+            - cell "1.00" [ref=f45e396]
+            - cell "1.09" [ref=f45e397]
+            - cell "+9.0%" [ref=f45e398]
+          - row [ref=f45e401]:
+            - cell [ref=f45e402]:
+              - paragraph [ref=f45e403]: LGWPUWW170EP
+              - paragraph [ref=f45e404]: LG RO 8L Water Purifier
+            - cell "0.91" [ref=f45e405]
+            - cell "0.55" [ref=f45e406]
+            - cell "-39.6%" [ref=f45e407]
+          - row [ref=f45e410]:
+            - cell [ref=f45e411]:
+              - paragraph [ref=f45e412]: LGHSVCA9TULTRA
+              - paragraph [ref=f45e413]: LG CordZero A9 Handstick Vacuum with All-In-One Tower
+            - cell "0.27" [ref=f45e414]
+            - cell "0.55" [ref=f45e415]
+            - cell "+103.7%" [ref=f45e416]

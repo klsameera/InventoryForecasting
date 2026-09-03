@@ -1,0 +1,109 @@
+- generic [ref=f32e2]:
+  - generic [ref=f32e3]:
+    - complementary "Main navigation" [ref=f32e4]:
+      - link "Laravel" [ref=f32e6] [cursor=pointer]:
+        - /url: /dashboard
+      - generic [ref=f32e13]:
+        - generic [ref=f32e14]:
+          - generic [ref=f32e15]: Overview
+          - navigation [ref=f32e16]:
+            - link "Dashboard" [ref=f32e17] [cursor=pointer]:
+              - /url: /dashboard
+        - generic [ref=f32e24]:
+          - generic [ref=f32e25]: Catalog
+          - navigation [ref=f32e26]:
+            - link "Products" [ref=f32e27] [cursor=pointer]:
+              - /url: /product
+            - link "Variants" [ref=f32e35] [cursor=pointer]:
+              - /url: /product-variant
+            - link "SKUs" [ref=f32e41] [cursor=pointer]:
+              - /url: /sku
+            - link "Categories" [ref=f32e47] [cursor=pointer]:
+              - /url: /category
+            - link "Brands" [ref=f32e52] [cursor=pointer]:
+              - /url: /brand
+            - link "Attributes" [ref=f32e57] [cursor=pointer]:
+              - /url: /attribute
+        - generic [ref=f32e60]:
+          - generic [ref=f32e61]: Inventory
+          - navigation [ref=f32e62]:
+            - link "Inventory" [ref=f32e63] [cursor=pointer]:
+              - /url: /inventory
+            - link "Stock movements" [ref=f32e75] [cursor=pointer]:
+              - /url: /stock-movement
+            - link "Adjustments" [ref=f32e80] [cursor=pointer]:
+              - /url: /stock-movement/create
+            - link "Warehouses" [ref=f32e86] [cursor=pointer]:
+              - /url: /warehouse
+        - generic [ref=f32e91]:
+          - generic [ref=f32e92]: Account
+          - navigation [ref=f32e93]:
+            - link "Profile" [ref=f32e94] [cursor=pointer]:
+              - /url: /settings/profile
+            - link "Security" [ref=f32e99] [cursor=pointer]:
+              - /url: /settings/security
+    - generic [ref=f32e104]:
+      - banner [ref=f32e105]:
+        - button "Collapse navigation" [ref=f32e106] [cursor=pointer]
+        - button "Switch to dark theme" [ref=f32e110] [cursor=pointer]
+        - button "Percival Denesik qa@example.test" [ref=f32e114] [cursor=pointer]:
+          - generic [ref=f32e115]: PD
+          - generic [ref=f32e116]:
+            - generic [ref=f32e117]: Percival Denesik
+            - generic [ref=f32e118]: qa@example.test
+      - main [ref=f32e121]:
+        - generic [ref=f32e157]:
+          - generic [ref=f32e158]:
+            - generic [ref=f32e159]: Catalog
+            - heading "Variants" [level=1] [ref=f32e160]
+            - paragraph [ref=f32e161]: Attribute combinations that make up configurable products.
+          - link "New variant" [ref=f32e163] [cursor=pointer]:
+            - /url: /product-variant/create
+        - generic [ref=f32e165]:
+          - generic [ref=f32e166]:
+            - searchbox "Search variants…" [ref=f32e168]
+            - combobox "Filter by product" [ref=f32e169]:
+              - option "All products" [selected]
+              - option "Skechers Go Walk"
+            - combobox "Filter by status" [ref=f32e170]:
+              - option "All statuses" [selected]
+              - option "Active"
+              - option "Inactive"
+            - generic [ref=f32e171]:
+              - button "Clear" [disabled]
+          - table [ref=f32e173]:
+            - rowgroup [ref=f32e174]:
+              - row [ref=f32e175]:
+                - columnheader [ref=f32e176]:
+                  - button "Variant" [ref=f32e177] [cursor=pointer]
+                - columnheader "Attributes" [ref=f32e181]
+                - columnheader "SKUs" [ref=f32e182]
+                - columnheader [ref=f32e183]:
+                  - button "Status" [ref=f32e184] [cursor=pointer]
+                - columnheader "Actions" [ref=f32e188]
+            - rowgroup [ref=f32e189]:
+              - row [ref=f32e190]:
+                - cell [ref=f32e191]:
+                  - generic [ref=f32e192]:
+                    - paragraph [ref=f32e193]: Size 42
+                    - paragraph [ref=f32e194]: Skechers Go Walk
+                - 'cell "null: 42" [ref=f32e195]'
+                - cell "0" [ref=f32e196]
+                - cell "Active" [ref=f32e197]
+                - cell [ref=f32e200]:
+                  - generic [ref=f32e201]:
+                    - link "Edit Size 42" [ref=f32e202] [cursor=pointer]:
+                      - /url: /product-variant/1/edit
+                    - button "Delete Size 42" [ref=f32e206] [cursor=pointer]
+          - generic [ref=f32e211]:
+            - generic [ref=f32e212]: Showing 1–1 of 1
+            - generic [ref=f32e213]:
+              - text: Rows
+              - combobox "Rows" [ref=f32e214]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+  - region "Notifications":
+    - status [ref=f32e215]:
+      - paragraph [ref=f32e219]: Variant created successfully
+      - button "Dismiss notification" [ref=f32e220] [cursor=pointer]

@@ -1,0 +1,129 @@
+- generic [ref=f7e3]:
+  - complementary "Main navigation" [ref=f7e4]:
+    - link "Laravel" [ref=f7e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f7e13]:
+      - generic [ref=f7e14]:
+        - generic [ref=f7e15]: Overview
+        - navigation [ref=f7e16]:
+          - link "Dashboard" [ref=f7e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f7e24]:
+        - generic [ref=f7e25]: Catalog
+        - navigation [ref=f7e26]:
+          - link "Products" [ref=f7e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f7e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f7e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f7e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f7e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f7e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f7e60]:
+        - generic [ref=f7e61]: Inventory
+        - navigation [ref=f7e62]:
+          - link "Inventory" [ref=f7e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f7e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f7e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f7e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f7e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f7e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f7e105]:
+        - generic [ref=f7e106]: Purchasing
+        - navigation [ref=f7e107]:
+          - link "Purchase orders" [ref=f7e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f7e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f7e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f7e124]:
+        - generic [ref=f7e125]: Sales
+        - navigation [ref=f7e126]:
+          - link "Sales orders" [ref=f7e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f7e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f7e138]:
+        - generic [ref=f7e139]: Account
+        - navigation [ref=f7e140]:
+          - link "Profile" [ref=f7e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f7e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f7e151]:
+    - banner [ref=f7e152]:
+      - button "Collapse navigation" [ref=f7e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f7e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f7e161] [cursor=pointer]:
+        - generic [ref=f7e162]: QT
+        - generic [ref=f7e163]:
+          - generic [ref=f7e164]: QA Tester
+          - generic [ref=f7e165]: qa@example.test
+    - main [ref=f7e168]:
+      - generic [ref=f7e169]:
+        - generic [ref=f7e170]:
+          - generic [ref=f7e171]: Purchasing
+          - heading "PO-000001" [level=1] [ref=f7e172]
+          - paragraph [ref=f7e173]: "Supplier: Northwind Footwear Co · Warehouse: Main DC"
+        - generic [ref=f7e175]:
+          - generic [ref=f7e176]: Draft
+          - button "Approve" [ref=f7e178] [cursor=pointer]
+          - button "Cancel order" [ref=f7e179] [cursor=pointer]
+      - generic [ref=f7e183]:
+        - generic [ref=f7e184]:
+          - generic [ref=f7e186]:
+            - generic [ref=f7e188]:
+              - text: Supplier
+              - generic [ref=f7e189]: "*"
+            - combobox "Supplier" [ref=f7e190]:
+              - option "Northwind Footwear Co" [selected]
+          - generic [ref=f7e192]:
+            - generic [ref=f7e194]:
+              - text: Receiving warehouse
+              - generic [ref=f7e195]: "*"
+            - combobox "Receiving warehouse" [ref=f7e196]:
+              - option "Main DC" [selected]
+              - option "North Store"
+              - option "Test WH"
+          - generic [ref=f7e198]:
+            - generic [ref=f7e200]:
+              - text: Order date
+              - generic [ref=f7e201]: "*"
+            - textbox "Order date" [ref=f7e202]: 2026-08-15
+          - generic [ref=f7e204]:
+            - generic [ref=f7e205]: Expected date
+            - textbox "Expected date" [ref=f7e207]
+            - paragraph [ref=f7e208]: Optional
+          - generic [ref=f7e210]:
+            - generic [ref=f7e211]: Tax
+            - spinbutton "Tax" [ref=f7e213]: "0"
+            - paragraph [ref=f7e214]: Optional
+        - generic [ref=f7e215]:
+          - generic [ref=f7e216]: Notes
+          - textbox "Notes" [ref=f7e218]
+          - paragraph [ref=f7e219]: Optional
+        - generic [ref=f7e220]:
+          - generic [ref=f7e221]: Line items
+          - generic [ref=f7e223]:
+            - generic [ref=f7e224]:
+              - combobox "SKU" [ref=f7e225]:
+                - option "Select SKU"
+                - option "TR-001 — Trail Runner" [selected]
+              - spinbutton "Quantity" [ref=f7e226]: "100"
+              - spinbutton "Unit cost" [ref=f7e227]: "20"
+              - button "Remove line item" [disabled]
+            - button "Add line item" [ref=f7e228] [cursor=pointer]
+        - generic [ref=f7e230]:
+          - button "Save changes" [ref=f7e231] [cursor=pointer]
+          - button "Delete" [ref=f7e232] [cursor=pointer]

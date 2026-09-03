@@ -1,0 +1,186 @@
+// =============================================================================
+// Authentication layout
+// =============================================================================
+
+.app-auth {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    isolation: isolate;
+    background-color: var(--app-canvas);
+    background-image: var(--app-gradient-grid);
+    background-size: 32px 32px;
+
+    @include media-breakpoint-up(lg) {
+        grid-template-columns: minmax(30rem, 0.92fr) minmax(34rem, 1.08fr);
+    }
+}
+
+.app-auth__panel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem 1rem 2.5rem;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background-image: var(--app-gradient-aurora);
+        pointer-events: none;
+    }
+
+    @include media-breakpoint-up(md) {
+        padding: 3rem 2rem;
+    }
+}
+
+.app-auth__card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 26rem;
+    padding: 1.5rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-2xl);
+    background-color: var(--app-surface-raised);
+    box-shadow:
+        inset 0 1px var(--app-surface-highlight),
+        var(--app-shadow-lg);
+
+    @include media-breakpoint-up(sm) {
+        padding: 2rem;
+    }
+}
+
+.app-auth__brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-block-end: 1.75rem;
+}
+
+.app-auth__heading {
+    font-size: 1.75rem;
+    font-weight: 720;
+    letter-spacing: -0.038em;
+    margin-block-end: 0.375rem;
+}
+
+.app-auth__description {
+    color: var(--app-text-muted);
+    margin-block-end: 1.75rem;
+}
+
+.app-auth__footer {
+    margin-block-start: 1.75rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--app-text-muted);
+}
+
+.app-auth__aside {
+    position: relative;
+    display: none;
+    overflow: hidden;
+    padding: 3.5rem;
+    color: #fff;
+    background-color: #07111f;
+    background-image: var(--app-gradient-sidebar);
+    border-inline-start: 1px solid rgb(255 255 255 / 8%);
+
+    @include media-breakpoint-up(lg) {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+            linear-gradient(rgb(255 255 255 / 4%) 1px, transparent 1px),
+            linear-gradient(90deg, rgb(255 255 255 / 4%) 1px, transparent 1px),
+            radial-gradient(
+                34rem 22rem at 82% 12%,
+                rgb(255 255 255 / 22%) 0%,
+                transparent 65%
+            ),
+            radial-gradient(
+                28rem 20rem at 8% 92%,
+                rgb(255 255 255 / 14%) 0%,
+                transparent 60%
+            );
+        pointer-events: none;
+        background-size: 38px 38px, 38px 38px, auto, auto;
+    }
+}
+
+.app-auth__aside-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 30rem;
+}
+
+.app-auth__quote {
+    font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+    font-weight: 680;
+    line-height: 1.22;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+}
+
+.app-auth__feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    padding: 1rem;
+    border: 1px solid rgb(255 255 255 / 10%);
+    border-radius: var(--app-radius-lg);
+    background-color: rgb(255 255 255 / 6%);
+    backdrop-filter: blur(12px);
+
+    & + & {
+        margin-block-start: 0.625rem;
+    }
+
+    svg {
+        flex: 0 0 auto;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-block-start: 0.125rem;
+        color: #67e8f9;
+    }
+}
+
+.app-auth__separator {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-block: 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--app-text-soft);
+
+    &::before,
+    &::after {
+        content: '';
+        flex: 1 1 auto;
+        height: 1px;
+        background-color: var(--app-border);
+    }
+
+    &::before {
+        margin-inline-end: 0.875rem;
+    }
+
+    &::after {
+        margin-inline-start: 0.875rem;
+    }
+}

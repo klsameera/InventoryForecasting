@@ -1,0 +1,119 @@
+- generic [ref=f33e3]:
+  - complementary "Main navigation" [ref=f33e4]:
+    - link "Laravel" [ref=f33e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f33e13]:
+      - generic [ref=f33e14]:
+        - generic [ref=f33e15]: Overview
+        - navigation [ref=f33e16]:
+          - link "Dashboard" [ref=f33e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f33e24]:
+        - generic [ref=f33e25]: Catalog
+        - navigation [ref=f33e26]:
+          - link "Products" [ref=f33e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f33e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f33e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f33e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f33e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f33e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f33e60]:
+        - generic [ref=f33e61]: Inventory
+        - navigation [ref=f33e62]:
+          - link "Inventory" [ref=f33e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f33e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f33e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f33e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f33e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f33e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f33e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f33e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f33e115]:
+        - generic [ref=f33e116]: Purchasing
+        - navigation [ref=f33e117]:
+          - link "Purchase orders" [ref=f33e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f33e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f33e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f33e134]:
+        - generic [ref=f33e135]: Sales
+        - navigation [ref=f33e136]:
+          - link "Sales orders" [ref=f33e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f33e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f33e148]:
+        - generic [ref=f33e149]: Forecasting
+        - navigation [ref=f33e150]:
+          - link "Forecasts" [ref=f33e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f33e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f33e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f33e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f33e172]:
+        - generic [ref=f33e173]: Advanced intelligence
+        - navigation [ref=f33e174]:
+          - link "Supplier performance" [ref=f33e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f33e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f33e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f33e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f33e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f33e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f33e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f33e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f33e225]:
+        - generic [ref=f33e226]: Account
+        - navigation [ref=f33e227]:
+          - link "Profile" [ref=f33e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f33e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f33e238]:
+    - banner [ref=f33e239]:
+      - button "Collapse navigation" [ref=f33e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f33e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f33e248] [cursor=pointer]:
+        - generic [ref=f33e249]: MB
+        - generic [ref=f33e250]:
+          - generic [ref=f33e251]: Marilou Brakus
+          - generic [ref=f33e252]: qa@example.com
+    - main [ref=f33e255]:
+      - generic [ref=f33e257]:
+        - generic [ref=f33e258]: Advanced intelligence
+        - heading "Product similarity" [level=1] [ref=f33e259]
+        - paragraph [ref=f33e260]: For a given SKU, the closest peer group this application can determine automatically — same category and size first, falling back to same brand and category, then category alone. The same fallback hierarchy cold-start forecasting already uses internally.
+      - generic [ref=f33e261]:
+        - generic [ref=f33e262]: Choose a SKU
+        - combobox "Choose a SKU" [ref=f33e263]:
+          - option "Select a SKU…"
+          - option "QA-P10-001" [selected]
+        - generic [ref=f33e264]:
+          - paragraph [ref=f33e269]: No similar products found
+          - paragraph [ref=f33e270]: No other SKU shares this one's category, brand or size.

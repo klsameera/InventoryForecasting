@@ -1,0 +1,10 @@
+[    4566ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://[::1]:5173/__laravel_vite_plugin__/fonts/1ae642874c4405bc.woff2:0
+[    4566ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://[::1]:5173/__laravel_vite_plugin__/fonts/35e14784385165f0.woff2:0
+[    4595ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://[::1]:5173/resources/scss/app.scss:0
+[    4596ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/login:133
+[    4596ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://[::1]:5173/__laravel_vite_plugin__/fonts/5839a8187fa3ac7d.woff2:0
+[    4596ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://[::1]:5173/__laravel_vite_plugin__/fonts/724893bec8691e6d.woff2:0
+[    4596ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://[::1]:5173/@vite/client:0
+[    4596ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://[::1]:5173/resources/js/app.tsx:0
+[    6610ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://[::1]:5173/resources/js/pages/auth/login.tsx:0
+[    6611ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://[::1]:5173/@react-refresh:0

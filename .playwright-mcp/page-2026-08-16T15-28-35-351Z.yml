@@ -1,0 +1,158 @@
+- generic [ref=f38e3]:
+  - complementary "Main navigation" [ref=f38e4]:
+    - link "Laravel" [ref=f38e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f38e13]:
+      - generic [ref=f38e14]:
+        - generic [ref=f38e15]: Overview
+        - navigation [ref=f38e16]:
+          - link "Dashboard" [ref=f38e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f38e24]:
+        - generic [ref=f38e25]: Catalog
+        - navigation [ref=f38e26]:
+          - link "Products" [ref=f38e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f38e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f38e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f38e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f38e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f38e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f38e60]:
+        - generic [ref=f38e61]: Inventory
+        - navigation [ref=f38e62]:
+          - link "Inventory" [ref=f38e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f38e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f38e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f38e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f38e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f38e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f38e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f38e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f38e115]:
+        - generic [ref=f38e116]: Purchasing
+        - navigation [ref=f38e117]:
+          - link "Purchase orders" [ref=f38e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f38e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f38e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f38e134]:
+        - generic [ref=f38e135]: Sales
+        - navigation [ref=f38e136]:
+          - link "Sales orders" [ref=f38e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f38e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f38e148]:
+        - generic [ref=f38e149]: Forecasting
+        - navigation [ref=f38e150]:
+          - link "Forecasts" [ref=f38e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f38e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f38e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f38e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f38e172]:
+        - generic [ref=f38e173]: Advanced intelligence
+        - navigation [ref=f38e174]:
+          - link "Supplier performance" [ref=f38e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f38e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f38e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f38e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f38e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f38e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f38e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f38e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f38e225]:
+        - generic [ref=f38e226]: Account
+        - navigation [ref=f38e227]:
+          - link "Profile" [ref=f38e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f38e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f38e238]:
+    - banner [ref=f38e239]:
+      - button "Collapse navigation" [ref=f38e240] [cursor=pointer]
+      - navigation "Breadcrumb" [ref=f38e244]:
+        - list [ref=f38e245]:
+          - listitem [ref=f38e246]: Dashboard
+      - button "Switch to dark theme" [ref=f38e247] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f38e251] [cursor=pointer]:
+        - generic [ref=f38e252]: MB
+        - generic [ref=f38e253]:
+          - generic [ref=f38e254]: Marilou Brakus
+          - generic [ref=f38e255]: qa@example.com
+    - main [ref=f38e258]:
+      - generic [ref=f38e259]:
+        - generic [ref=f38e261]:
+          - generic [ref=f38e262]: Overview
+          - heading "Dashboard" [level=1] [ref=f38e263]
+          - paragraph [ref=f38e264]: Demand, coverage and reorder signals across your catalogue.
+        - generic [ref=f38e265]:
+          - article [ref=f38e267]:
+            - paragraph [ref=f38e269]: SKUs tracked
+            - paragraph [ref=f38e281]: —
+          - article [ref=f38e283]:
+            - paragraph [ref=f38e285]: Forecast accuracy
+            - paragraph [ref=f38e290]: —
+          - article [ref=f38e292]:
+            - paragraph [ref=f38e294]: Reorder alerts
+            - paragraph [ref=f38e298]: —
+          - article [ref=f38e300]:
+            - paragraph [ref=f38e302]: Days of cover
+            - paragraph [ref=f38e310]: —
+        - generic [ref=f38e311]:
+          - generic [ref=f38e313]:
+            - generic [ref=f38e315]:
+              - heading "Demand trend" [level=2] [ref=f38e316]
+              - paragraph [ref=f38e317]: Units forecast against units sold.
+            - generic [ref=f38e319]:
+              - paragraph [ref=f38e324]: No demand history yet
+              - paragraph [ref=f38e325]: Once a forecasting module publishes its figures, the trend appears here.
+          - generic [ref=f38e327]:
+            - generic [ref=f38e329]:
+              - heading "Top movers" [level=2] [ref=f38e330]
+              - paragraph [ref=f38e331]: Highest volume this period.
+            - generic [ref=f38e333]:
+              - paragraph [ref=f38e338]: Nothing to compare yet
+              - paragraph [ref=f38e339]: Movement ranks appear once stock records exist.
+        - generic [ref=f38e340]:
+          - generic [ref=f38e342]:
+            - heading "Quick actions" [level=2] [ref=f38e343]
+            - paragraph [ref=f38e344]: Jump straight to the things you do most.
+          - generic [ref=f38e345]:
+            - link "Profile settings Update your name and email address" [ref=f38e346] [cursor=pointer]:
+              - /url: /settings/profile
+              - generic [ref=f38e351]:
+                - generic [ref=f38e352]: Profile settings
+                - generic [ref=f38e353]: Update your name and email address
+            - link "Security Passwords, two-factor and passkeys" [ref=f38e356] [cursor=pointer]:
+              - /url: /settings/security
+              - generic [ref=f38e361]:
+                - generic [ref=f38e362]: Security
+                - generic [ref=f38e363]: Passwords, two-factor and passkeys

@@ -1,0 +1,147 @@
+- generic [ref=f32e3]:
+  - complementary "Main navigation" [ref=f32e4]:
+    - link "Laravel" [ref=f32e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f32e13]:
+      - generic [ref=f32e14]:
+        - generic [ref=f32e15]: Overview
+        - navigation [ref=f32e16]:
+          - link "Dashboard" [ref=f32e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f32e24]:
+        - generic [ref=f32e25]: Catalog
+        - navigation [ref=f32e26]:
+          - link "Products" [ref=f32e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f32e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f32e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f32e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f32e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f32e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f32e60]:
+        - generic [ref=f32e61]: Inventory
+        - navigation [ref=f32e62]:
+          - link "Inventory" [ref=f32e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f32e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f32e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f32e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f32e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f32e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f32e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f32e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f32e115]:
+        - generic [ref=f32e116]: Purchasing
+        - navigation [ref=f32e117]:
+          - link "Purchase orders" [ref=f32e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f32e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f32e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f32e134]:
+        - generic [ref=f32e135]: Sales
+        - navigation [ref=f32e136]:
+          - link "Sales orders" [ref=f32e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f32e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f32e148]:
+        - generic [ref=f32e149]: Forecasting
+        - navigation [ref=f32e150]:
+          - link "Forecasts" [ref=f32e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f32e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f32e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f32e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f32e172]:
+        - generic [ref=f32e173]: Advanced intelligence
+        - navigation [ref=f32e174]:
+          - link "Supplier performance" [ref=f32e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f32e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f32e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f32e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f32e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f32e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f32e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f32e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f32e225]:
+        - generic [ref=f32e226]: Account
+        - navigation [ref=f32e227]:
+          - link "Profile" [ref=f32e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f32e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f32e238]:
+    - banner [ref=f32e239]:
+      - button "Collapse navigation" [ref=f32e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f32e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f32e248] [cursor=pointer]:
+        - generic [ref=f32e249]: MB
+        - generic [ref=f32e250]:
+          - generic [ref=f32e251]: Marilou Brakus
+          - generic [ref=f32e252]: qa@example.com
+    - main [ref=f32e255]:
+      - generic [ref=f32e257]:
+        - generic [ref=f32e258]: Advanced intelligence
+        - heading "Price elasticity" [level=1] [ref=f32e259]
+        - paragraph [ref=f32e260]: How much a SKU's demand moved with its actual selling price — the slope of ln(quantity) against ln(price) across its own real confirmed sales orders. A SKU that has only ever sold at one price has no variation to estimate this from and is excluded.
+      - generic [ref=f32e261]:
+        - generic [ref=f32e262]:
+          - searchbox "Search by SKU or product…" [ref=f32e264]
+          - combobox "Filter by SKU" [ref=f32e265]:
+            - option "All SKUs" [selected]
+            - option "QA-P10-001"
+          - combobox "Lookback window" [ref=f32e266]:
+            - option "Last 90 days"
+            - option "Last year" [selected]
+            - option "Last 2 years"
+          - generic [ref=f32e267]:
+            - button "Clear" [disabled]
+        - table [ref=f32e269]:
+          - rowgroup [ref=f32e270]:
+            - row [ref=f32e271]:
+              - columnheader "SKU" [ref=f32e272]
+              - columnheader "Price points" [ref=f32e273]
+              - columnheader "Elasticity" [ref=f32e274]
+              - columnheader "Reading" [ref=f32e275]
+          - rowgroup [ref=f32e276]:
+            - row [ref=f32e277]:
+              - cell [ref=f32e278]:
+                - generic [ref=f32e279]:
+                  - paragraph [ref=f32e280]: QA-P10-001
+                  - paragraph [ref=f32e281]: QA P10 Product
+              - cell "2" [ref=f32e282]
+              - cell "-2.00" [ref=f32e283]
+              - cell "Elastic (demand changes more than price)" [ref=f32e286]
+        - generic [ref=f32e288]:
+          - generic [ref=f32e289]: Showing 1–1 of 1
+          - generic [ref=f32e290]:
+            - text: Rows
+            - combobox "Rows" [ref=f32e291]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

@@ -1,0 +1,101 @@
+- generic [ref=f30e2]:
+  - generic [ref=f30e3]:
+    - complementary "Main navigation" [ref=f30e4]:
+      - link "Laravel" [ref=f30e6] [cursor=pointer]:
+        - /url: /dashboard
+      - generic [ref=f30e13]:
+        - generic [ref=f30e14]:
+          - generic [ref=f30e15]: Overview
+          - navigation [ref=f30e16]:
+            - link "Dashboard" [ref=f30e17] [cursor=pointer]:
+              - /url: /dashboard
+        - generic [ref=f30e24]:
+          - generic [ref=f30e25]: Catalog
+          - navigation [ref=f30e26]:
+            - link "Products" [ref=f30e27] [cursor=pointer]:
+              - /url: /product
+            - link "Variants" [ref=f30e35] [cursor=pointer]:
+              - /url: /product-variant
+            - link "SKUs" [ref=f30e41] [cursor=pointer]:
+              - /url: /sku
+            - link "Categories" [ref=f30e47] [cursor=pointer]:
+              - /url: /category
+            - link "Brands" [ref=f30e52] [cursor=pointer]:
+              - /url: /brand
+            - link "Attributes" [ref=f30e57] [cursor=pointer]:
+              - /url: /attribute
+        - generic [ref=f30e60]:
+          - generic [ref=f30e61]: Inventory
+          - navigation [ref=f30e62]:
+            - link "Inventory" [ref=f30e63] [cursor=pointer]:
+              - /url: /inventory
+            - link "Stock movements" [ref=f30e75] [cursor=pointer]:
+              - /url: /stock-movement
+            - link "Adjustments" [ref=f30e80] [cursor=pointer]:
+              - /url: /stock-movement/create
+            - link "Warehouses" [ref=f30e86] [cursor=pointer]:
+              - /url: /warehouse
+        - generic [ref=f30e91]:
+          - generic [ref=f30e92]: Account
+          - navigation [ref=f30e93]:
+            - link "Profile" [ref=f30e94] [cursor=pointer]:
+              - /url: /settings/profile
+            - link "Security" [ref=f30e99] [cursor=pointer]:
+              - /url: /settings/security
+    - generic [ref=f30e104]:
+      - banner [ref=f30e105]:
+        - button "Collapse navigation" [ref=f30e106] [cursor=pointer]
+        - button "Switch to dark theme" [ref=f30e110] [cursor=pointer]
+        - button "Percival Denesik qa@example.test" [ref=f30e114] [cursor=pointer]:
+          - generic [ref=f30e115]: PD
+          - generic [ref=f30e116]:
+            - generic [ref=f30e117]: Percival Denesik
+            - generic [ref=f30e118]: qa@example.test
+      - main [ref=f30e121]:
+        - generic [ref=f30e171]:
+          - generic [ref=f30e172]:
+            - generic [ref=f30e173]: Catalog
+            - heading "Attributes" [level=1] [ref=f30e174]
+            - paragraph [ref=f30e175]: Size, color and other properties variants are built from.
+          - link "New attribute" [ref=f30e177] [cursor=pointer]:
+            - /url: /attribute/create
+        - generic [ref=f30e179]:
+          - generic [ref=f30e180]:
+            - searchbox "Search attributes…" [ref=f30e182]
+            - generic [ref=f30e183]:
+              - button "Clear" [disabled]
+          - table [ref=f30e185]:
+            - rowgroup [ref=f30e186]:
+              - row [ref=f30e187]:
+                - columnheader [ref=f30e188]:
+                  - button "Name" [ref=f30e189] [cursor=pointer]
+                - columnheader "Type" [ref=f30e193]
+                - columnheader "Values" [ref=f30e194]
+                - columnheader "Forecast relevant" [ref=f30e195]
+                - columnheader "Actions" [ref=f30e196]
+            - rowgroup [ref=f30e197]:
+              - row [ref=f30e198]:
+                - cell [ref=f30e199]:
+                  - generic [ref=f30e200]:
+                    - paragraph [ref=f30e201]: Size
+                    - paragraph [ref=f30e202]: ATTR-SIZE
+                - cell "select" [ref=f30e203]
+                - cell "2" [ref=f30e205]
+                - cell "No" [ref=f30e206]
+                - cell [ref=f30e209]:
+                  - generic [ref=f30e210]:
+                    - link "Edit Size" [ref=f30e211] [cursor=pointer]:
+                      - /url: /attribute/1/edit
+                    - button "Delete Size" [ref=f30e215] [cursor=pointer]
+          - generic [ref=f30e220]:
+            - generic [ref=f30e221]: Showing 1–1 of 1
+            - generic [ref=f30e222]:
+              - text: Rows
+              - combobox "Rows" [ref=f30e223]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+  - region "Notifications":
+    - status [ref=f30e224]:
+      - paragraph [ref=f30e228]: Attribute created successfully
+      - button "Dismiss notification" [ref=f30e229] [cursor=pointer]

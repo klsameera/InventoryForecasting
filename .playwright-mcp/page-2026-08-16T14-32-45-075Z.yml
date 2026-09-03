@@ -1,0 +1,134 @@
+- generic [ref=f35e3]:
+  - complementary "Main navigation" [ref=f35e4]:
+    - link "Laravel" [ref=f35e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f35e13]:
+      - generic [ref=f35e14]:
+        - generic [ref=f35e15]: Overview
+        - navigation [ref=f35e16]:
+          - link "Dashboard" [ref=f35e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f35e24]:
+        - generic [ref=f35e25]: Catalog
+        - navigation [ref=f35e26]:
+          - link "Products" [ref=f35e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f35e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f35e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f35e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f35e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f35e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f35e60]:
+        - generic [ref=f35e61]: Inventory
+        - navigation [ref=f35e62]:
+          - link "Inventory" [ref=f35e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f35e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f35e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f35e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f35e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f35e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f35e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f35e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f35e115]:
+        - generic [ref=f35e116]: Purchasing
+        - navigation [ref=f35e117]:
+          - link "Purchase orders" [ref=f35e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f35e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f35e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f35e134]:
+        - generic [ref=f35e135]: Sales
+        - navigation [ref=f35e136]:
+          - link "Sales orders" [ref=f35e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f35e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f35e148]:
+        - generic [ref=f35e149]: Forecasting
+        - navigation [ref=f35e150]:
+          - link "Forecasts" [ref=f35e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f35e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f35e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f35e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f35e172]:
+        - generic [ref=f35e173]: Advanced intelligence
+        - navigation [ref=f35e174]:
+          - link "Supplier performance" [ref=f35e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f35e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f35e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f35e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f35e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f35e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f35e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f35e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f35e225]:
+        - generic [ref=f35e226]: Account
+        - navigation [ref=f35e227]:
+          - link "Profile" [ref=f35e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f35e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f35e238]:
+    - banner [ref=f35e239]:
+      - button "Collapse navigation" [ref=f35e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f35e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f35e248] [cursor=pointer]:
+        - generic [ref=f35e249]: MB
+        - generic [ref=f35e250]:
+          - generic [ref=f35e251]: Marilou Brakus
+          - generic [ref=f35e252]: qa@example.com
+    - main [ref=f35e255]:
+      - generic [ref=f35e257]:
+        - generic [ref=f35e258]: Advanced intelligence
+        - heading "Cannibalization candidates" [level=1] [ref=f35e259]
+        - paragraph [ref=f35e260]: Pairs of SKUs in the same category whose daily demand correlates negatively over the window — one selling more tends to coincide with the other selling less. A statistical candidate worth a look, not proof of cause and effect.
+      - generic [ref=f35e261]:
+        - generic [ref=f35e262]:
+          - searchbox "Search by SKU or product…" [ref=f35e264]
+          - combobox "Filter by category" [ref=f35e265]:
+            - option "All categories" [selected]
+            - option "QA P10 Category"
+          - combobox "Lookback window" [ref=f35e266]:
+            - option "Last 30 days"
+            - option "Last 90 days" [selected]
+            - option "Last 180 days"
+          - generic [ref=f35e267]:
+            - button "Clear" [disabled]
+        - generic [ref=f35e268]:
+          - paragraph [ref=f35e273]: No cannibalization candidates found
+          - paragraph [ref=f35e274]: No same-category pair had a strong enough negative correlation with enough overlapping history in this window.
+        - generic [ref=f35e276]:
+          - generic [ref=f35e277]: No results
+          - generic [ref=f35e278]:
+            - text: Rows
+            - combobox "Rows" [ref=f35e279]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

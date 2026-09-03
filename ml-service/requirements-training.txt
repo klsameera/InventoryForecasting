@@ -1,0 +1,13 @@
+# Training-only dependencies, on top of the serving set.
+#
+# Kept separate because a deployed serving container needs neither the
+# parquet reader (training data arrives as a file, predictions arrive over
+# HTTP) nor the training progress tooling.
+#
+#   pip install -r requirements-training.txt --extra-index-url https://download.pytorch.org/whl/cpu
+
+-r requirements.txt
+
+pyarrow==15.0.2
+scikit-learn==1.4.2
+tensorboard==2.16.2

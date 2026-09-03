@@ -1,0 +1,104 @@
+// =============================================================================
+// Cards
+// =============================================================================
+
+.card {
+    background-color: var(--app-surface);
+    background-image: var(--app-gradient-surface);
+    border-color: var(--app-border);
+    box-shadow:
+        inset 0 1px var(--app-surface-highlight),
+        var(--app-shadow-sm);
+}
+
+.app-card {
+    position: relative;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-xl);
+    background-color: var(--app-surface);
+    background-image: var(--app-gradient-surface);
+    box-shadow:
+        inset 0 1px var(--app-surface-highlight),
+        var(--app-shadow-sm);
+    overflow: hidden;
+    transition:
+        border-color var(--app-transition-base),
+        box-shadow var(--app-transition-base),
+        transform var(--app-transition-base);
+}
+
+.app-card--glass {
+    border-color: var(--app-border-subtle);
+
+    @include glass-surface;
+}
+
+.app-card--interactive {
+    @include hover-lift;
+
+    &:hover {
+        border-color: color-mix(in srgb, var(--app-brand) 26%, var(--app-border));
+    }
+}
+
+.app-card--gradient {
+    border: 0;
+    color: #fff;
+    background: var(--app-gradient-brand);
+    box-shadow: var(--app-shadow-brand);
+
+    .app-card__title,
+    .app-metric {
+        color: #fff;
+    }
+}
+
+.app-card--flush {
+    overflow: hidden;
+}
+
+.app-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.375rem;
+    border-block-end: 1px solid var(--app-border-subtle);
+}
+
+.app-card__title {
+    font-size: 1.0313rem;
+    font-weight: 680;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--app-text);
+}
+
+.app-card__subtitle {
+    font-size: 0.8438rem;
+    color: var(--app-text-muted);
+    line-height: 1.5;
+    margin: 0.1875rem 0 0;
+}
+
+.app-card__body {
+    padding: 1.375rem;
+}
+
+.app-card__body--tight {
+    padding: 1rem 1.375rem;
+}
+
+.app-card__footer {
+    padding: 1rem 1.375rem;
+    border-block-start: 1px solid var(--app-border-subtle);
+    background-color: var(--app-surface-muted);
+}
+
+.app-card__accent {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    height: 3px;
+    background: var(--app-gradient-brand);
+}

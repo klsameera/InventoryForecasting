@@ -1,0 +1,461 @@
+- generic [ref=f44e3]:
+  - complementary "Main navigation" [ref=f44e4]:
+    - link "Laravel" [ref=f44e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f44e13]:
+      - generic [ref=f44e14]:
+        - generic [ref=f44e15]: Overview
+        - navigation [ref=f44e16]:
+          - link "Dashboard" [ref=f44e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f44e24]:
+        - generic [ref=f44e25]: Catalog
+        - navigation [ref=f44e26]:
+          - link "Products" [ref=f44e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f44e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f44e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f44e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f44e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f44e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f44e60]:
+        - generic [ref=f44e61]: Inventory
+        - navigation [ref=f44e62]:
+          - link "Inventory" [ref=f44e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f44e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f44e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f44e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f44e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f44e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f44e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f44e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f44e115]:
+        - generic [ref=f44e116]: Purchasing
+        - navigation [ref=f44e117]:
+          - link "Purchase orders" [ref=f44e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f44e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f44e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f44e134]:
+        - generic [ref=f44e135]: Sales
+        - navigation [ref=f44e136]:
+          - link "Sales orders" [ref=f44e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f44e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f44e148]:
+        - generic [ref=f44e149]: Forecasting
+        - navigation [ref=f44e150]:
+          - link "Forecasts" [ref=f44e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f44e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f44e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f44e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f44e172]:
+        - generic [ref=f44e173]: Advanced intelligence
+        - navigation [ref=f44e174]:
+          - link "Supplier performance" [ref=f44e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f44e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f44e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f44e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f44e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f44e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f44e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f44e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f44e225]:
+        - generic [ref=f44e226]: Account
+        - navigation [ref=f44e227]:
+          - link "Profile" [ref=f44e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f44e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f44e238]:
+    - banner [ref=f44e239]:
+      - button "Collapse navigation" [ref=f44e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f44e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f44e248] [cursor=pointer]:
+        - generic [ref=f44e249]: MB
+        - generic [ref=f44e250]:
+          - generic [ref=f44e251]: Marilou Brakus
+          - generic [ref=f44e252]: qa@example.com
+    - main [ref=f44e255]:
+      - generic [ref=f44e257]:
+        - generic [ref=f44e258]: Advanced intelligence
+        - heading "Price elasticity" [level=1] [ref=f44e259]
+        - paragraph [ref=f44e260]: How much a SKU's demand moved with its actual selling price — the slope of ln(quantity) against ln(price) across its own real confirmed sales orders. A SKU that has only ever sold at one price has no variation to estimate this from and is excluded.
+      - generic [ref=f44e261]:
+        - generic [ref=f44e262]:
+          - searchbox "Search by SKU or product…" [ref=f44e264]
+          - combobox "Filter by SKU" [ref=f44e265]:
+            - option "All SKUs" [selected]
+            - option "ABACSTLG30CR"
+            - option "ABACSTLG36CR"
+            - option "ABCKRC100G01"
+            - option "ABCKRC80G01"
+            - option "ABCKRCT40"
+            - option "ABFNIN600TII"
+            - option "ABFNIN750TII"
+            - option "ABFNIN750TWII"
+            - option "ABFNMFYD207"
+            - option "ABFR750XN"
+            - option "ABFRCH400AEL"
+            - option "ABFRCH923XN"
+            - option "ABFRDPCB260AEL"
+            - option "ABFRDPCB360AEL"
+            - option "ABKMLB9001B"
+            - option "ABMG3550MGWS"
+            - option "ABRFURFR180J"
+            - option "ABVCEV800"
+            - option "ABVCWDRY7730L"
+            - option "ABWG10LSQT"
+            - option "ABWG15LSQT"
+            - option "ABWG30LCYT"
+            - option "ABWG50LCYT"
+            - option "ABWGWHDSZF20LJ15Y6U"
+            - option "ABWHDSZF20LJ30Y6A"
+            - option "ABWHDSZF20LJ50Y6A"
+            - option "DTFNIN50TS"
+            - option "DZACLD200ACR"
+            - option "ELVC930"
+            - option "ELVCZ1230"
+            - option "ELWM705HQWA"
+            - option "ELWMDRY754H3WB"
+            - option "EMIACSG302"
+            - option "EMIACSG353"
+            - option "FDSTNM5126WS"
+            - option "HKPMCITATION200BLKEU"
+            - option "HKPMCITATION200GRYEU"
+            - option "HLAFRFBXK12321"
+            - option "HLAFRFBXK12321WS"
+            - option "HLMG06021WS"
+            - option "HRFRCH350DMS5"
+            - option "HRFRCH719HSEP"
+            - option "HRFRCH719W"
+            - option "HRFRCHHFC788DMS5"
+            - option "HWACL151"
+            - option "HWACL20AE"
+            - option "HWACL30XC"
+            - option "HWACL604AE"
+            - option "IGDRYIGT10RCDW"
+            - option "IGMOMJF31GDCX3"
+            - option "INIRZYGTJ01KL"
+            - option "JBLPMBOOMBOX2SQUAD"
+            - option "JBLPMPARTYBOX1000EU"
+            - option "JBLPMPARTYBOX100EU"
+            - option "JBLPMPARTYBOX310EU"
+            - option "JBLPMPARTYBOX710EU"
+            - option "JBLPMPARTYBOXGOBUK"
+            - option "JBLSPPBSTAGE320"
+            - option "JPMGFRUTTICA"
+            - option "JPPREMIUM"
+            - option "LGACINQ09JA3BD"
+            - option "LGACINQ12JA17C"
+            - option "LGACINQ12JA3FB"
+            - option "LGACINQ18JL3BD"
+            - option "LGACINQ18KL2FA"
+            - option "LGACINQ18KL3FA"
+            - option "LGACINQ24K22FA"
+            - option "LGACINQ24K23BD"
+            - option "LGHSVCA9TULTRA"
+            - option "LGHVCA9KPRO"
+            - option "LGMO2043DB"
+            - option "LGMO2044DB"
+            - option "LGMO2595DIS"
+            - option "LGMO2846SL"
+            - option "LGMO3965BGS"
+            - option "LGMO6565DIS"
+            - option "LGMO7636GIS"
+            - option "LGMOMJEN326TL"
+            - option "LGMOMS3636GIS"
+            - option "LGRF6011NSNBS"
+            - option "LGRF6012PZPN3"
+            - option "LGRF6018MTBK"
+            - option "LGRF6181DSDGS"
+            - option "LGRFB4059PZPS"
+            - option "LGRFDDM5097PZ"
+            - option "LGRFGSB6432WB"
+            - option "LGRFGSL6172PZ"
+            - option "LGRFGSX6172NS"
+            - option "LGRFQ6011MC"
+            - option "LGVCVR66900TWVV"
+            - option "LGWD2719RVTV"
+            - option "LGWDRV1329AD5S"
+            - option "LGWM1329AN7S"
+            - option "LGWMDRYTDC8066S"
+            - option "LGWMFAU1408S4W"
+            - option "LGWMFAU1450S2K"
+            - option "LGWMFAUFL1007S5W"
+            - option "LGWMINW069FD2M"
+            - option "LGWMINWS069FD2FS"
+            - option "LGWPUWW170EP"
+            - option "LPBDAFRY400B5"
+            - option "LPBDAFRYAF200B5"
+            - option "LPBDIRSTGST2000B5WS"
+            - option "LPBDJEJE250B5"
+            - option "LPICHMAAVC10"
+            - option "LPIMVCJUGVC20"
+            - option "LPINIRYD012V"
+            - option "LPPUWFWFILTERG"
+            - option "LPPUWFWFILTERS"
+            - option "LPUNWPUCLASSICG2"
+            - option "LPUNWPUPMUVG2"
+            - option "LPUNWPUULTIMARO"
+            - option "LPWPPAK9100BL"
+            - option "LPWPPAK9101W"
+            - option "MARSPWOBURN3BK"
+            - option "MBFNPD16GAPCYRD"
+            - option "MBFNPD16GAPSFGY"
+            - option "MBFNPD16GUPCYRD"
+            - option "MBFNPD16GUPSFGY"
+            - option "MIACLMAC200R"
+            - option "MIACLMAC200RW"
+            - option "MIAFRY98"
+            - option "MICKRC100"
+            - option "MICKRC42"
+            - option "MICKRC56"
+            - option "MICKRC78"
+            - option "MIFNPD16J15R"
+            - option "MIWHC30A"
+            - option "MIWHC50A"
+            - option "MIWHC80A"
+            - option "MRMG640151"
+            - option "OMAFRYOMAF2254J"
+            - option "PLAFRY9216"
+            - option "PLAFRYHD9721"
+            - option "PLIRST392020"
+            - option "PLIRST51449"
+            - option "PLIRST523"
+            - option "PNCKRCSRGA321"
+            - option "PNCKRCSRGA421"
+            - option "PNCKRCSRGA721"
+            - option "RHAFRY26510"
+            - option "RHIRST2804056"
+            - option "RHSTPOP2164473"
+            - option "RHSTPOP2164474"
+            - option "SFDIR2913GS"
+            - option "SFHMSF1364SMWS"
+            - option "SFIRSTSF2910GS"
+            - option "SFMTGSF5855MG"
+            - option "SFVCW891VC"
+          - combobox "Lookback window" [ref=f44e266]:
+            - option "Last 90 days"
+            - option "Last year" [selected]
+            - option "Last 2 years"
+          - generic [ref=f44e267]:
+            - button "Clear" [disabled]
+        - table [ref=f44e269]:
+          - rowgroup [ref=f44e270]:
+            - row [ref=f44e271]:
+              - columnheader "SKU" [ref=f44e272]
+              - columnheader "Price points" [ref=f44e273]
+              - columnheader "Elasticity" [ref=f44e274]
+              - columnheader "Reading" [ref=f44e275]
+          - rowgroup [ref=f44e276]:
+            - row [ref=f44e277]:
+              - cell [ref=f44e278]:
+                - generic [ref=f44e279]:
+                  - paragraph [ref=f44e280]: IGDRYIGT10RCDW
+                  - paragraph [ref=f44e281]: Ignis 10KG Condenser Dryer
+              - cell "4" [ref=f44e282]
+              - cell "-44.10" [ref=f44e283]
+              - cell "Elastic (demand changes more than price)" [ref=f44e286]
+            - row [ref=f44e287]:
+              - cell [ref=f44e288]:
+                - generic [ref=f44e289]:
+                  - paragraph [ref=f44e290]: JBLPMPARTYBOX1000EU
+                  - paragraph [ref=f44e291]: JBL PartyBox 1000
+              - cell "3" [ref=f44e292]
+              - cell "-43.45" [ref=f44e293]
+              - cell "Elastic (demand changes more than price)" [ref=f44e296]
+            - row [ref=f44e297]:
+              - cell [ref=f44e298]:
+                - generic [ref=f44e299]:
+                  - paragraph [ref=f44e300]: LGRF6012PZPN3
+                  - paragraph [ref=f44e301]: LG 601L Refrigerator - Platinum Silver
+              - cell "2" [ref=f44e302]
+              - cell "-42.32" [ref=f44e303]
+              - cell "Elastic (demand changes more than price)" [ref=f44e306]
+            - row [ref=f44e307]:
+              - cell [ref=f44e308]:
+                - generic [ref=f44e309]:
+                  - paragraph [ref=f44e310]: HWACL151
+                  - paragraph [ref=f44e311]: HONEYWELL 15L Air Cooler - White
+              - cell "6" [ref=f44e312]
+              - cell "-37.85" [ref=f44e313]
+              - cell "Elastic (demand changes more than price)" [ref=f44e316]
+            - row [ref=f44e317]:
+              - cell [ref=f44e318]:
+                - generic [ref=f44e319]:
+                  - paragraph [ref=f44e320]: LGRFGSB6432WB
+                  - paragraph [ref=f44e321]: LG 643L Inverter Refrigerator - Western Black
+              - cell "3" [ref=f44e322]
+              - cell "-35.19" [ref=f44e323]
+              - cell "Elastic (demand changes more than price)" [ref=f44e326]
+            - row [ref=f44e327]:
+              - cell [ref=f44e328]:
+                - generic [ref=f44e329]:
+                  - paragraph [ref=f44e330]: LGWDRV1329AD5S
+                  - paragraph [ref=f44e331]: LG 10.2KG Commercial Electric Dryer
+              - cell "5" [ref=f44e332]
+              - cell "-28.99" [ref=f44e333]
+              - cell "Elastic (demand changes more than price)" [ref=f44e336]
+            - row [ref=f44e337]:
+              - cell [ref=f44e338]:
+                - generic [ref=f44e339]:
+                  - paragraph [ref=f44e340]: JBLPMPARTYBOX100EU
+                  - paragraph [ref=f44e341]: JBL PartyBox 100 Speaker
+              - cell "3" [ref=f44e342]
+              - cell "-25.26" [ref=f44e343]
+              - cell "Elastic (demand changes more than price)" [ref=f44e346]
+            - row [ref=f44e347]:
+              - cell [ref=f44e348]:
+                - generic [ref=f44e349]:
+                  - paragraph [ref=f44e350]: DTFNIN50TS
+                  - paragraph [ref=f44e351]: ABANS 20 inch Commercial Fan Industrial Guard - Black
+              - cell "7" [ref=f44e352]
+              - cell "-21.94" [ref=f44e353]
+              - cell "Elastic (demand changes more than price)" [ref=f44e356]
+            - row [ref=f44e357]:
+              - cell [ref=f44e358]:
+                - generic [ref=f44e359]:
+                  - paragraph [ref=f44e360]: LGACINQ24K23BD
+                  - paragraph [ref=f44e361]: LG 24000BTU Air Conditioner Dual Cool R32 Inverter
+              - cell "4" [ref=f44e362]
+              - cell "-19.02" [ref=f44e363]
+              - cell "Elastic (demand changes more than price)" [ref=f44e366]
+            - row [ref=f44e367]:
+              - cell [ref=f44e368]:
+                - generic [ref=f44e369]:
+                  - paragraph [ref=f44e370]: LGACINQ12JA17C
+                  - paragraph [ref=f44e371]: LG 12000 BTU Air Conditioner - UV Nano Inverter
+              - cell "6" [ref=f44e372]
+              - cell "-16.95" [ref=f44e373]
+              - cell "Elastic (demand changes more than price)" [ref=f44e376]
+            - row [ref=f44e377]:
+              - cell [ref=f44e378]:
+                - generic [ref=f44e379]:
+                  - paragraph [ref=f44e380]: LGMO6565DIS
+                  - paragraph [ref=f44e381]: LG 25L Microwave Oven with Grill - Black
+              - cell "7" [ref=f44e382]
+              - cell "-16.85" [ref=f44e383]
+              - cell "Elastic (demand changes more than price)" [ref=f44e386]
+            - row [ref=f44e387]:
+              - cell [ref=f44e388]:
+                - generic [ref=f44e389]:
+                  - paragraph [ref=f44e390]: RHSTPOP2164473
+                  - paragraph [ref=f44e391]: Russell Hobbs 2600w One Temperature Iron (Red)
+              - cell "5" [ref=f44e392]
+              - cell "-15.29" [ref=f44e393]
+              - cell "Elastic (demand changes more than price)" [ref=f44e396]
+            - row [ref=f44e397]:
+              - cell [ref=f44e398]:
+                - generic [ref=f44e399]:
+                  - paragraph [ref=f44e400]: HRFRCH350DMS5
+                  - paragraph [ref=f44e401]: Haier Chest Freezer - 324L
+              - cell "7" [ref=f44e402]
+              - cell "-15.18" [ref=f44e403]
+              - cell "Elastic (demand changes more than price)" [ref=f44e406]
+            - row [ref=f44e407]:
+              - cell [ref=f44e408]:
+                - generic [ref=f44e409]:
+                  - paragraph [ref=f44e410]: ELWM705HQWA
+                  - paragraph [ref=f44e411]: ELECTROLUX 7KG Domestic Venting Dryer
+              - cell "6" [ref=f44e412]
+              - cell "-14.32" [ref=f44e413]
+              - cell "Elastic (demand changes more than price)" [ref=f44e416]
+            - row [ref=f44e417]:
+              - cell [ref=f44e418]:
+                - generic [ref=f44e419]:
+                  - paragraph [ref=f44e420]: ABFNIN750TII
+                  - paragraph [ref=f44e421]: ABANS 30 Inch DFP Series Industrial Fan 3 Blade - Black
+              - cell "6" [ref=f44e422]
+              - cell "-12.99" [ref=f44e423]
+              - cell "Elastic (demand changes more than price)" [ref=f44e426]
+            - row [ref=f44e427]:
+              - cell [ref=f44e428]:
+                - generic [ref=f44e429]:
+                  - paragraph [ref=f44e430]: LGHSVCA9TULTRA
+                  - paragraph [ref=f44e431]: LG CordZero A9 Handstick Vacuum with All-In-One Tower
+              - cell "3" [ref=f44e432]
+              - cell "-12.94" [ref=f44e433]
+              - cell "Elastic (demand changes more than price)" [ref=f44e436]
+            - row [ref=f44e437]:
+              - cell [ref=f44e438]:
+                - generic [ref=f44e439]:
+                  - paragraph [ref=f44e440]: MICKRC42
+                  - paragraph [ref=f44e441]: MISTRAL 4.2L (2.8KG) Rice Cooker - White
+              - cell "2" [ref=f44e442]
+              - cell "-12.50" [ref=f44e443]
+              - cell "Elastic (demand changes more than price)" [ref=f44e446]
+            - row [ref=f44e447]:
+              - cell [ref=f44e448]:
+                - generic [ref=f44e449]:
+                  - paragraph [ref=f44e450]: LPICHMAAVC10
+                  - paragraph [ref=f44e451]: Xiaomi Incom Deerma VC01 Lightweight Cordless Stick Handheld Vacuum Cleaner
+              - cell "9" [ref=f44e452]
+              - cell "-12.38" [ref=f44e453]
+              - cell "Elastic (demand changes more than price)" [ref=f44e456]
+            - row [ref=f44e457]:
+              - cell [ref=f44e458]:
+                - generic [ref=f44e459]:
+                  - paragraph [ref=f44e460]: ABWGWHDSZF20LJ15Y6U
+                  - paragraph [ref=f44e461]: ABANS 15L Electric Water Heater
+              - cell "6" [ref=f44e462]
+              - cell "-12.28" [ref=f44e463]
+              - cell "Elastic (demand changes more than price)" [ref=f44e466]
+            - row [ref=f44e467]:
+              - cell [ref=f44e468]:
+                - generic [ref=f44e469]:
+                  - paragraph [ref=f44e470]: ABVCWDRY7730L
+                  - paragraph [ref=f44e471]: Abans 30L Wet & Dry Vacuum Cleaner
+              - cell "8" [ref=f44e472]
+              - cell "-11.31" [ref=f44e473]
+              - cell "Elastic (demand changes more than price)" [ref=f44e476]
+        - generic [ref=f44e477]:
+          - generic [ref=f44e478]:
+            - generic [ref=f44e479]: Showing 1–20 of 149
+            - generic [ref=f44e480]:
+              - text: Rows
+              - combobox "Rows" [ref=f44e481]:
+                - option "20" [selected]
+                - option "50"
+                - option "100"
+          - navigation "Pagination" [ref=f44e482]:
+            - list [ref=f44e483]:
+              - listitem [ref=f44e484]:
+                - button "Previous page" [disabled] [ref=f44e485]
+              - listitem [ref=f44e488]:
+                - button "1" [ref=f44e489] [cursor=pointer]
+              - listitem [ref=f44e490]:
+                - button "2" [ref=f44e491] [cursor=pointer]
+              - listitem [ref=f44e492]: …
+              - listitem [ref=f44e493]:
+                - button "8" [ref=f44e494] [cursor=pointer]
+              - listitem [ref=f44e495]:
+                - button "Next page" [ref=f44e496] [cursor=pointer]

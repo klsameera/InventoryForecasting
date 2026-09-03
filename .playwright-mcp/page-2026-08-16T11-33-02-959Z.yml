@@ -1,0 +1,127 @@
+- generic [ref=f3e3]:
+  - complementary "Main navigation" [ref=f3e4]:
+    - link "Laravel" [ref=f3e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f3e13]:
+      - generic [ref=f3e14]:
+        - generic [ref=f3e15]: Overview
+        - navigation [ref=f3e16]:
+          - link "Dashboard" [ref=f3e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f3e24]:
+        - generic [ref=f3e25]: Catalog
+        - navigation [ref=f3e26]:
+          - link "Products" [ref=f3e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f3e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f3e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f3e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f3e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f3e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f3e60]:
+        - generic [ref=f3e61]: Inventory
+        - navigation [ref=f3e62]:
+          - link "Inventory" [ref=f3e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f3e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f3e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f3e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f3e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f3e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f3e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f3e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f3e115]:
+        - generic [ref=f3e116]: Purchasing
+        - navigation [ref=f3e117]:
+          - link "Purchase orders" [ref=f3e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f3e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f3e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f3e134]:
+        - generic [ref=f3e135]: Sales
+        - navigation [ref=f3e136]:
+          - link "Sales orders" [ref=f3e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f3e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f3e148]:
+        - generic [ref=f3e149]: Forecasting
+        - navigation [ref=f3e150]:
+          - link "Forecasts" [ref=f3e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f3e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f3e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f3e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f3e172]:
+        - generic [ref=f3e173]: Account
+        - navigation [ref=f3e174]:
+          - link "Profile" [ref=f3e175] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f3e180] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f3e185]:
+    - banner [ref=f3e186]:
+      - button "Collapse navigation" [ref=f3e187] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f3e191] [cursor=pointer]
+      - button "Miss Antonina Wisoky qa@example.com" [ref=f3e195] [cursor=pointer]:
+        - generic [ref=f3e196]: MW
+        - generic [ref=f3e197]:
+          - generic [ref=f3e198]: Miss Antonina Wisoky
+          - generic [ref=f3e199]: qa@example.com
+    - main [ref=f3e202]:
+      - generic [ref=f3e203]:
+        - generic [ref=f3e204]:
+          - generic [ref=f3e205]: Forecasting
+          - heading "Central allocation" [level=1] [ref=f3e206]
+          - paragraph [ref=f3e207]: SKUs with an open purchase recommendation in two or more warehouses — combined need for a single consolidated supplier order, broken down by location. A straight sum of each warehouse's own recommended quantity, not a new formula.
+        - link "Back to recommendations" [ref=f3e209] [cursor=pointer]:
+          - /url: /inventory-recommendation
+      - generic [ref=f3e212]:
+        - generic [ref=f3e213]:
+          - searchbox "Search by SKU or product…" [ref=f3e215]
+          - generic [ref=f3e216]:
+            - button "Clear" [disabled]
+        - table [ref=f3e218]:
+          - rowgroup [ref=f3e219]:
+            - row [ref=f3e220]:
+              - columnheader "SKU" [ref=f3e221]
+              - columnheader "Warehouses needing" [ref=f3e222]
+              - columnheader "Combined need" [ref=f3e223]
+              - columnheader "Per-warehouse breakdown" [ref=f3e224]
+          - rowgroup [ref=f3e225]:
+            - row [ref=f3e226]:
+              - cell [ref=f3e227]:
+                - generic [ref=f3e228]:
+                  - paragraph [ref=f3e229]: QA-P9-CENTRAL-002
+                  - paragraph [ref=f3e230]: QA Phase9 Product
+              - cell "2" [ref=f3e231]
+              - cell "500" [ref=f3e232]
+              - cell [ref=f3e233]:
+                - generic [ref=f3e234]:
+                  - generic [ref=f3e235]: "QA Colombo: 250"
+                  - generic [ref=f3e237]: "QA Kandy: 250"
+        - generic [ref=f3e240]:
+          - generic [ref=f3e241]: Showing 1–1 of 1
+          - generic [ref=f3e242]:
+            - text: Rows
+            - combobox "Rows" [ref=f3e243]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

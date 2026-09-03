@@ -1,0 +1,48 @@
+// =============================================================================
+// Global theme entry point
+// -----------------------------------------------------------------------------
+// Load order matters:
+//   1. Project tokens that override Bootstrap's Sass variables.
+//   2. Bootstrap itself (compiled with those overrides).
+//   3. Project mixins, base layer, layout, components and utilities.
+//
+// Never import Bootstrap anywhere else, and never add a second entry stylesheet.
+// =============================================================================
+
+@import 'abstracts/variables';
+
+@import 'bootstrap/scss/bootstrap';
+
+@import 'abstracts/mixins';
+
+@import 'base/tokens';
+@import 'base/reset';
+@import 'base/typography';
+
+@import 'layout/app-shell';
+@import 'layout/sidebar';
+@import 'layout/topbar';
+@import 'layout/page-header';
+@import 'layout/auth';
+@import 'layout/marketing';
+
+@import 'components/brand';
+@import 'components/buttons';
+@import 'components/cards';
+@import 'components/stat-card';
+@import 'components/forms';
+@import 'components/tables';
+@import 'components/badges';
+@import 'components/tabs';
+@import 'components/modals';
+@import 'components/dropdowns';
+@import 'components/pagination';
+@import 'components/empty-state';
+@import 'components/loaders';
+@import 'components/alerts';
+@import 'components/toasts';
+@import 'components/avatar';
+@import 'components/charts';
+
+@import 'utilities/animations';
+@import 'utilities/helpers';

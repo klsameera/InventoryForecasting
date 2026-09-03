@@ -1,0 +1,313 @@
+// =============================================================================
+// Forms
+// =============================================================================
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--app-text);
+}
+
+.form-control,
+.form-select {
+    min-height: 2.75rem;
+    background-color: var(--app-surface);
+    border-color: var(--app-border-strong);
+    color: var(--app-text);
+    transition:
+        border-color var(--app-transition-fast),
+        box-shadow var(--app-transition-fast),
+        background-color var(--app-transition-fast);
+    box-shadow: inset 0 1px 2px color-mix(in srgb, var(--app-text) 4%, transparent);
+
+    &::placeholder {
+        color: var(--app-text-soft);
+    }
+
+    &:hover:not(:disabled):not(:focus) {
+        border-color: color-mix(in srgb, var(--app-brand) 32%, var(--app-border-strong));
+    }
+
+    &:focus {
+        background-color: var(--app-surface-raised);
+        box-shadow:
+            0 0 0 4px rgba($primary, 0.12),
+            var(--app-shadow-sm);
+    }
+
+    &:disabled {
+        color: var(--app-text-soft);
+        background-color: var(--app-surface-sunken);
+    }
+}
+
+textarea.form-control {
+    min-height: 6.5rem;
+    resize: vertical;
+}
+
+.form-text {
+    color: var(--app-text-muted);
+}
+
+.form-check-input {
+    cursor: pointer;
+    border-color: var(--app-border-strong);
+    transition:
+        background-color var(--app-transition-fast),
+        border-color var(--app-transition-fast),
+        box-shadow var(--app-transition-fast);
+
+    &:focus {
+        box-shadow: 0 0 0 4px rgba($primary, 0.12);
+    }
+}
+
+.form-check-label {
+    cursor: pointer;
+    color: var(--app-text-muted);
+    font-size: 0.9063rem;
+}
+
+// Field wrapper ----------------------------------------------------------------
+.app-field {
+    display: flex;
+    flex-direction: column;
+
+    & + & {
+        margin-block-start: 1.25rem;
+    }
+}
+
+.app-field__label-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.app-field__required {
+    color: $danger;
+    font-weight: 700;
+}
+
+.app-field__error {
+    display: flex;
+    align-items: center;
+    gap: 0.3125rem;
+    margin-block-start: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 550;
+    color: $danger;
+    animation: app-slide-down var(--app-transition-fast) both;
+
+    svg {
+        width: 0.875rem;
+        height: 0.875rem;
+        flex: 0 0 auto;
+    }
+}
+
+.app-field__hint {
+    margin-block-start: 0.375rem;
+    font-size: 0.8125rem;
+    color: var(--app-text-muted);
+}
+
+.app-field.is-invalid {
+    .form-control,
+    .form-select {
+        border-color: $danger;
+
+        &:focus {
+            box-shadow: 0 0 0 4px rgba($danger, 0.14);
+        }
+    }
+}
+
+// Form sections ----------------------------------------------------------------
+.app-form-section {
+    display: grid;
+    gap: 1.5rem;
+    padding-block: 1.75rem;
+    border-block-end: 1px solid var(--app-border-subtle);
+
+    &:last-child {
+        border-block-end: 0;
+        padding-block-end: 0;
+    }
+
+    &:first-child {
+        padding-block-start: 0;
+    }
+
+    @include media-breakpoint-up(lg) {
+        grid-template-columns: 16rem 1fr;
+        gap: 2.5rem;
+    }
+}
+
+.app-form-section__aside {
+    h3 {
+        font-size: 0.9375rem;
+        font-weight: 650;
+        margin-block-end: 0.25rem;
+    }
+
+    p {
+        font-size: 0.8438rem;
+        color: var(--app-text-muted);
+        margin: 0;
+    }
+}
+
+.app-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    flex-wrap: wrap;
+}
+
+// Password input ---------------------------------------------------------------
+.app-password {
+    position: relative;
+
+    .form-control {
+        padding-inline-end: 2.75rem;
+    }
+}
+
+.app-password__toggle {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-end: 0.375rem;
+    translate: 0 -50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 0;
+    border-radius: var(--app-radius-sm);
+    background-color: transparent;
+    color: var(--app-text-soft);
+    transition:
+        color var(--app-transition-fast),
+        background-color var(--app-transition-fast);
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    &:hover {
+        background-color: var(--app-surface-sunken);
+        color: var(--app-text);
+    }
+}
+
+// OTP input --------------------------------------------------------------------
+.app-otp {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.app-otp__slot {
+    width: 3rem;
+    height: 3.5rem;
+    padding: 0;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 650;
+    font-variant-numeric: tabular-nums;
+    border: 1px solid var(--app-border-strong);
+    border-radius: var(--app-radius-md);
+    background-color: var(--app-surface);
+    color: var(--app-text);
+    transition:
+        border-color var(--app-transition-fast),
+        box-shadow var(--app-transition-fast);
+
+    &:focus {
+        outline: none;
+        border-color: var(--app-brand);
+        box-shadow: 0 0 0 4px rgba($primary, 0.16);
+    }
+
+    &:disabled {
+        background-color: var(--app-surface-sunken);
+    }
+}
+
+// Authenticator QR ------------------------------------------------------------
+.app-qr {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 12rem;
+    height: 12rem;
+}
+
+.app-qr__code {
+    width: 100%;
+    height: 100%;
+    padding: 0.5rem;
+    border-radius: var(--app-radius-sm);
+    background-color: #fff;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+// Filter bar -------------------------------------------------------------------
+.app-filters {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1.125rem 1.375rem;
+    border-block-end: 1px solid var(--app-border-subtle);
+    background-color: var(--app-surface-muted);
+    background-image: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--app-brand) 4%, transparent),
+        transparent 44%
+    );
+
+    @include media-breakpoint-up(md) {
+        grid-template-columns: minmax(12rem, 1.5fr) repeat(
+                auto-fit,
+                minmax(9rem, 1fr)
+            );
+        align-items: end;
+    }
+}
+
+.app-filters__search {
+    position: relative;
+
+    svg {
+        position: absolute;
+        inset-block-start: 50%;
+        inset-inline-start: 0.75rem;
+        translate: 0 -50%;
+        width: 1rem;
+        height: 1rem;
+        color: var(--app-text-soft);
+        pointer-events: none;
+    }
+
+    .form-control {
+        padding-inline-start: 2.25rem;
+        background-color: var(--app-surface-raised);
+    }
+}
+
+.app-filters__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}

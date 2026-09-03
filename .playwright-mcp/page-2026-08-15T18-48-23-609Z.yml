@@ -1,0 +1,106 @@
+- generic [ref=f31e3]:
+  - complementary "Main navigation" [ref=f31e4]:
+    - link "Laravel" [ref=f31e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f31e13]:
+      - generic [ref=f31e14]:
+        - generic [ref=f31e15]: Overview
+        - navigation [ref=f31e16]:
+          - link "Dashboard" [ref=f31e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f31e24]:
+        - generic [ref=f31e25]: Catalog
+        - navigation [ref=f31e26]:
+          - link "Products" [ref=f31e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f31e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f31e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f31e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f31e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f31e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f31e60]:
+        - generic [ref=f31e61]: Inventory
+        - navigation [ref=f31e62]:
+          - link "Inventory" [ref=f31e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Stock movements" [ref=f31e75] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f31e80] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Warehouses" [ref=f31e86] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f31e91]:
+        - generic [ref=f31e92]: Account
+        - navigation [ref=f31e93]:
+          - link "Profile" [ref=f31e94] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f31e99] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f31e104]:
+    - banner [ref=f31e105]:
+      - button "Collapse navigation" [ref=f31e106] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f31e110] [cursor=pointer]
+      - button "Percival Denesik qa@example.test" [ref=f31e114] [cursor=pointer]:
+        - generic [ref=f31e115]: PD
+        - generic [ref=f31e116]:
+          - generic [ref=f31e117]: Percival Denesik
+          - generic [ref=f31e118]: qa@example.test
+    - main [ref=f31e121]:
+      - generic [ref=f31e123]:
+        - generic [ref=f31e124]: Catalog
+        - heading "New product" [level=1] [ref=f31e125]
+        - paragraph [ref=f31e126]: Simple products get a SKU directly; configurable products get variants first.
+      - generic [ref=f31e130]:
+        - generic [ref=f31e131]:
+          - generic [ref=f31e133]:
+            - text: Name
+            - generic [ref=f31e134]: "*"
+          - textbox "Name" [ref=f31e135]:
+            - /placeholder: iPhone 16 Pro
+        - generic [ref=f31e136]:
+          - generic [ref=f31e138]:
+            - generic [ref=f31e140]:
+              - text: Category
+              - generic [ref=f31e141]: "*"
+            - combobox "Category" [ref=f31e142]:
+              - option "Select a category" [disabled] [selected]
+              - option "Footwear"
+          - generic [ref=f31e144]:
+            - generic [ref=f31e145]: Brand
+            - combobox "Brand" [ref=f31e147]:
+              - option "No brand" [selected]
+              - option "Skechers"
+        - generic [ref=f31e148]:
+          - generic [ref=f31e150]:
+            - text: Product type
+            - generic [ref=f31e151]: "*"
+          - generic [ref=f31e152]:
+            - generic [ref=f31e153]:
+              - radio "Simple — one SKU" [checked] [ref=f31e154] [cursor=pointer]
+              - generic [ref=f31e155] [cursor=pointer]: Simple — one SKU
+            - generic [ref=f31e156]:
+              - radio "Configurable — multiple variants" [ref=f31e157] [cursor=pointer]
+              - generic [ref=f31e158] [cursor=pointer]: Configurable — multiple variants
+        - generic [ref=f31e159]:
+          - generic [ref=f31e161]:
+            - generic [ref=f31e162]: Model number
+            - textbox "Model number" [ref=f31e164]
+          - generic [ref=f31e166]:
+            - generic [ref=f31e167]: Model year
+            - spinbutton "Model year" [ref=f31e169]
+        - generic [ref=f31e170]:
+          - generic [ref=f31e172]:
+            - generic [ref=f31e173]: Launch date
+            - textbox "Launch date" [ref=f31e175]
+          - generic [ref=f31e177]:
+            - generic [ref=f31e178]: End-of-life date
+            - textbox "End-of-life date" [ref=f31e180]
+        - generic [ref=f31e182]:
+          - checkbox "Active" [checked] [ref=f31e183] [cursor=pointer]
+          - generic [ref=f31e184] [cursor=pointer]: Active
+        - button "Create product" [ref=f31e186] [cursor=pointer]

@@ -1,0 +1,97 @@
+// =============================================================================
+// Toasts
+// =============================================================================
+
+.app-toast-host {
+    position: fixed;
+    inset-block-end: 1rem;
+    inset-inline: 1rem;
+    z-index: 1090;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    pointer-events: none;
+
+    @include media-breakpoint-up(sm) {
+        inset-inline: auto 1.5rem;
+        inset-block-end: 1.5rem;
+        width: 22rem;
+    }
+}
+
+.app-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-lg);
+    background-color: var(--app-surface-raised);
+    backdrop-filter: blur(20px) saturate(140%);
+    box-shadow: var(--app-shadow-lg);
+    pointer-events: auto;
+    animation: app-toast-in var(--app-transition-slow) both;
+
+    > svg {
+        flex: 0 0 auto;
+        width: 1.125rem;
+        height: 1.125rem;
+        margin-block-start: 0.0625rem;
+    }
+}
+
+.app-toast.is-leaving {
+    animation: app-toast-out var(--app-transition-base) both;
+}
+
+.app-toast__message {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 0.875rem;
+    font-weight: 550;
+    color: var(--app-text);
+}
+
+.app-toast__close {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 0;
+    border-radius: var(--app-radius-xs);
+    background: none;
+    color: var(--app-text-soft);
+    transition:
+        background-color var(--app-transition-fast),
+        color var(--app-transition-fast);
+
+    svg {
+        width: 0.875rem;
+        height: 0.875rem;
+    }
+
+    &:hover {
+        background-color: var(--app-surface-sunken);
+        color: var(--app-text);
+    }
+}
+
+@each $name,
+    $color
+        in (
+            'success': $success,
+            'error': $danger,
+            'warning': $warning,
+            'info': $info
+        )
+{
+    .app-toast--#{$name} > svg {
+        color: $color;
+    }
+
+    .app-toast--#{$name} {
+        border-inline-start: 3px solid $color;
+    }
+}

@@ -1,0 +1,139 @@
+- generic [ref=f1e69]:
+  - complementary "Main navigation" [ref=f1e70]:
+    - link "Laravel" [ref=f1e72] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f1e79]:
+      - generic [ref=f1e80]:
+        - generic [ref=f1e81]: Overview
+        - navigation [ref=f1e82]:
+          - link "Dashboard" [ref=f1e83] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f1e90]:
+        - generic [ref=f1e91]: Catalog
+        - navigation [ref=f1e92]:
+          - link "Products" [ref=f1e93] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f1e101] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f1e107] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f1e113] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f1e118] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f1e123] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f1e126]:
+        - generic [ref=f1e127]: Inventory
+        - navigation [ref=f1e128]:
+          - link "Inventory" [ref=f1e129] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f1e141] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f1e145] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f1e151] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f1e157] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f1e162] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f1e168] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f1e176] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f1e181]:
+        - generic [ref=f1e182]: Purchasing
+        - navigation [ref=f1e183]:
+          - link "Purchase orders" [ref=f1e184] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f1e189] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f1e196] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f1e200]:
+        - generic [ref=f1e201]: Sales
+        - navigation [ref=f1e202]:
+          - link "Sales orders" [ref=f1e203] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f1e209] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f1e214]:
+        - generic [ref=f1e215]: Forecasting
+        - navigation [ref=f1e216]:
+          - link "Forecasts" [ref=f1e217] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f1e222] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f1e226] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f1e231] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f1e238]:
+        - generic [ref=f1e239]: Account
+        - navigation [ref=f1e240]:
+          - link "Profile" [ref=f1e241] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f1e246] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f1e251]:
+    - banner [ref=f1e252]:
+      - button "Collapse navigation" [ref=f1e253] [cursor=pointer]
+      - navigation "Breadcrumb" [ref=f1e257]:
+        - list [ref=f1e258]:
+          - listitem [ref=f1e259]: Dashboard
+      - button "Switch to dark theme" [ref=f1e260] [cursor=pointer]
+      - button "Miss Antonina Wisoky qa@example.com" [ref=f1e264] [cursor=pointer]:
+        - generic [ref=f1e265]: MW
+        - generic [ref=f1e266]:
+          - generic [ref=f1e267]: Miss Antonina Wisoky
+          - generic [ref=f1e268]: qa@example.com
+    - main [ref=f1e271]:
+      - generic [ref=f1e272]:
+        - generic [ref=f1e274]:
+          - generic [ref=f1e275]: Overview
+          - heading "Dashboard" [level=1] [ref=f1e276]
+          - paragraph [ref=f1e277]: Demand, coverage and reorder signals across your catalogue.
+        - generic [ref=f1e278]:
+          - article [ref=f1e280]:
+            - paragraph [ref=f1e282]: SKUs tracked
+            - paragraph [ref=f1e294]: —
+          - article [ref=f1e296]:
+            - paragraph [ref=f1e298]: Forecast accuracy
+            - paragraph [ref=f1e303]: —
+          - article [ref=f1e305]:
+            - paragraph [ref=f1e307]: Reorder alerts
+            - paragraph [ref=f1e311]: —
+          - article [ref=f1e313]:
+            - paragraph [ref=f1e315]: Days of cover
+            - paragraph [ref=f1e323]: —
+        - generic [ref=f1e324]:
+          - generic [ref=f1e326]:
+            - generic [ref=f1e328]:
+              - heading "Demand trend" [level=2] [ref=f1e329]
+              - paragraph [ref=f1e330]: Units forecast against units sold.
+            - generic [ref=f1e332]:
+              - paragraph [ref=f1e337]: No demand history yet
+              - paragraph [ref=f1e338]: Once a forecasting module publishes its figures, the trend appears here.
+          - generic [ref=f1e340]:
+            - generic [ref=f1e342]:
+              - heading "Top movers" [level=2] [ref=f1e343]
+              - paragraph [ref=f1e344]: Highest volume this period.
+            - generic [ref=f1e346]:
+              - paragraph [ref=f1e351]: Nothing to compare yet
+              - paragraph [ref=f1e352]: Movement ranks appear once stock records exist.
+        - generic [ref=f1e353]:
+          - generic [ref=f1e355]:
+            - heading "Quick actions" [level=2] [ref=f1e356]
+            - paragraph [ref=f1e357]: Jump straight to the things you do most.
+          - generic [ref=f1e358]:
+            - link "Profile settings Update your name and email address" [ref=f1e359] [cursor=pointer]:
+              - /url: /settings/profile
+              - generic [ref=f1e364]:
+                - generic [ref=f1e365]: Profile settings
+                - generic [ref=f1e366]: Update your name and email address
+            - link "Security Passwords, two-factor and passkeys" [ref=f1e369] [cursor=pointer]:
+              - /url: /settings/security
+              - generic [ref=f1e374]:
+                - generic [ref=f1e375]: Security
+                - generic [ref=f1e376]: Passwords, two-factor and passkeys

@@ -1,0 +1,122 @@
+- generic [ref=f17e3]:
+  - complementary "Main navigation" [ref=f17e4]:
+    - link "Laravel" [ref=f17e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f17e13]:
+      - generic [ref=f17e14]:
+        - generic [ref=f17e15]: Overview
+        - navigation [ref=f17e16]:
+          - link "Dashboard" [ref=f17e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f17e24]:
+        - generic [ref=f17e25]: Catalog
+        - navigation [ref=f17e26]:
+          - link "Products" [ref=f17e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f17e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f17e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f17e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f17e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f17e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f17e60]:
+        - generic [ref=f17e61]: Inventory
+        - navigation [ref=f17e62]:
+          - link "Inventory" [ref=f17e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f17e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f17e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f17e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f17e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f17e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f17e105]:
+        - generic [ref=f17e106]: Purchasing
+        - navigation [ref=f17e107]:
+          - link "Purchase orders" [ref=f17e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f17e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f17e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f17e124]:
+        - generic [ref=f17e125]: Sales
+        - navigation [ref=f17e126]:
+          - link "Sales orders" [ref=f17e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f17e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f17e138]:
+        - generic [ref=f17e139]: Account
+        - navigation [ref=f17e140]:
+          - link "Profile" [ref=f17e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f17e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f17e151]:
+    - banner [ref=f17e152]:
+      - button "Collapse navigation" [ref=f17e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f17e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f17e161] [cursor=pointer]:
+        - generic [ref=f17e162]: QT
+        - generic [ref=f17e163]:
+          - generic [ref=f17e164]: QA Tester
+          - generic [ref=f17e165]: qa@example.test
+    - main [ref=f17e168]:
+      - generic [ref=f17e169]:
+        - generic [ref=f17e170]:
+          - generic [ref=f17e171]: Inventory
+          - heading "Stock transfers" [level=1] [ref=f17e172]
+          - paragraph [ref=f17e173]: Move stock between warehouses, from draft through receiving.
+        - link "New transfer" [ref=f17e175] [cursor=pointer]:
+          - /url: /stock-transfer/create
+      - generic [ref=f17e177]:
+        - generic [ref=f17e178]:
+          - searchbox "Search by transfer number…" [ref=f17e180]
+          - combobox "Filter by status" [ref=f17e181]:
+            - option "All statuses" [selected]
+            - option "Draft"
+            - option "Approved"
+            - option "Dispatched"
+            - option "Received"
+            - option "Cancelled"
+          - generic [ref=f17e182]:
+            - button "Clear" [disabled]
+        - table [ref=f17e184]:
+          - rowgroup [ref=f17e185]:
+            - row [ref=f17e186]:
+              - columnheader [ref=f17e187]:
+                - button "Transfer number" [ref=f17e188] [cursor=pointer]
+              - columnheader "From" [ref=f17e192]
+              - columnheader "To" [ref=f17e193]
+              - columnheader [ref=f17e194]:
+                - button "Date" [ref=f17e195] [cursor=pointer]
+              - columnheader "Lines" [ref=f17e199]
+              - columnheader [ref=f17e200]:
+                - button "Status" [ref=f17e201] [cursor=pointer]
+          - rowgroup [ref=f17e205]:
+            - row [ref=f17e206]:
+              - cell [ref=f17e207]:
+                - link "TRF-000001" [ref=f17e208] [cursor=pointer]:
+                  - /url: /stock-transfer/1/edit
+              - cell "Main DC" [ref=f17e209]
+              - cell "North Store" [ref=f17e210]
+              - cell "2026-08-15" [ref=f17e211]
+              - cell "1" [ref=f17e212]
+              - cell "Received" [ref=f17e213]
+        - generic [ref=f17e217]:
+          - generic [ref=f17e218]: Showing 1–1 of 1
+          - generic [ref=f17e219]:
+            - text: Rows
+            - combobox "Rows" [ref=f17e220]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

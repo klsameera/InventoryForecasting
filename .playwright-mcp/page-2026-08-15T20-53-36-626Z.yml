@@ -1,0 +1,111 @@
+- generic [ref=f19e3]:
+  - complementary "Main navigation" [ref=f19e4]:
+    - link "Laravel" [ref=f19e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f19e13]:
+      - generic [ref=f19e14]:
+        - generic [ref=f19e15]: Overview
+        - navigation [ref=f19e16]:
+          - link "Dashboard" [ref=f19e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f19e24]:
+        - generic [ref=f19e25]: Catalog
+        - navigation [ref=f19e26]:
+          - link "Products" [ref=f19e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f19e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f19e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f19e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f19e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f19e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f19e60]:
+        - generic [ref=f19e61]: Inventory
+        - navigation [ref=f19e62]:
+          - link "Inventory" [ref=f19e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f19e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f19e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f19e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f19e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f19e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f19e105]:
+        - generic [ref=f19e106]: Purchasing
+        - navigation [ref=f19e107]:
+          - link "Purchase orders" [ref=f19e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f19e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f19e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f19e124]:
+        - generic [ref=f19e125]: Sales
+        - navigation [ref=f19e126]:
+          - link "Sales orders" [ref=f19e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f19e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f19e138]:
+        - generic [ref=f19e139]: Account
+        - navigation [ref=f19e140]:
+          - link "Profile" [ref=f19e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f19e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f19e151]:
+    - banner [ref=f19e152]:
+      - button "Collapse navigation" [ref=f19e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f19e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f19e161] [cursor=pointer]:
+        - generic [ref=f19e162]: QT
+        - generic [ref=f19e163]:
+          - generic [ref=f19e164]: QA Tester
+          - generic [ref=f19e165]: qa@example.test
+    - main [ref=f19e168]:
+      - generic [ref=f19e169]:
+        - generic [ref=f19e170]:
+          - generic [ref=f19e171]: Sales
+          - heading "Sales returns" [level=1] [ref=f19e172]
+          - paragraph [ref=f19e173]: Every return recorded against a confirmed sales order. Immutable once posted.
+        - link "Record return" [ref=f19e175] [cursor=pointer]:
+          - /url: /sales-return/create
+      - generic [ref=f19e177]:
+        - generic [ref=f19e178]:
+          - searchbox "Search by return number…" [ref=f19e180]
+          - generic [ref=f19e181]:
+            - button "Clear" [disabled]
+        - table [ref=f19e183]:
+          - rowgroup [ref=f19e184]:
+            - row [ref=f19e185]:
+              - columnheader "Return number" [ref=f19e186]
+              - columnheader "Sales order" [ref=f19e187]
+              - columnheader "Warehouse" [ref=f19e188]
+              - columnheader "Date" [ref=f19e189]
+              - columnheader "Reason" [ref=f19e190]
+              - columnheader "Lines" [ref=f19e191]
+          - rowgroup [ref=f19e192]:
+            - row [ref=f19e193]:
+              - cell [ref=f19e194]:
+                - paragraph [ref=f19e195]: SR-000001
+              - cell "SO-000001" [ref=f19e196]
+              - cell "Main DC" [ref=f19e197]
+              - cell "2026-08-15" [ref=f19e198]
+              - cell "—" [ref=f19e199]
+              - cell "1" [ref=f19e200]
+        - generic [ref=f19e202]:
+          - generic [ref=f19e203]: Showing 1–1 of 1
+          - generic [ref=f19e204]:
+            - text: Rows
+            - combobox "Rows" [ref=f19e205]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

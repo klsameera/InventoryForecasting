@@ -1,0 +1,204 @@
+// =============================================================================
+// Buttons
+// =============================================================================
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4375rem;
+    min-height: 2.625rem;
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+    transition:
+        background-color var(--app-transition-fast),
+        border-color var(--app-transition-fast),
+        color var(--app-transition-fast),
+        box-shadow var(--app-transition-fast),
+        transform var(--app-transition-fast);
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+        flex: 0 0 auto;
+    }
+
+    &:active {
+        transform: translateY(1px) scale(0.99);
+    }
+
+    &:disabled,
+    &.disabled {
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+.btn-lg svg {
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.btn-sm svg {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+// Primary gradient action ------------------------------------------------------
+.btn-gradient {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--app-brand) 45%, transparent);
+    color: #fff;
+    background: var(--app-gradient-brand);
+    box-shadow: var(--app-shadow-brand);
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0 0 auto;
+        height: 1px;
+        background-color: rgb(255 255 255 / 30%);
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        translate: -120% 0;
+        background: var(--app-gradient-sheen);
+        transition: translate var(--app-transition-slow);
+    }
+
+    &:hover,
+    &:focus-visible {
+        color: #fff;
+        background: var(--app-gradient-brand-hover);
+        box-shadow:
+            0 4px 10px color-mix(in srgb, var(--app-brand) 24%, transparent),
+            var(--app-shadow-lg);
+        transform: translateY(-1px);
+    }
+
+    &:hover::after {
+        translate: 120% 0;
+    }
+
+    &:disabled,
+    &.disabled {
+        color: #fff;
+        opacity: $btn-disabled-opacity;
+    }
+}
+
+// Neutral surface action -------------------------------------------------------
+.btn-surface {
+    border: 1px solid var(--app-border);
+    background-color: var(--app-surface);
+    color: var(--app-text);
+    box-shadow:
+        inset 0 1px var(--app-surface-highlight),
+        var(--app-shadow-xs);
+
+    &:hover,
+    &:focus-visible {
+        border-color: var(--app-border-strong);
+        background-color: var(--app-surface-muted);
+        color: var(--app-text);
+        box-shadow: var(--app-shadow-sm);
+        transform: translateY(-1px);
+    }
+}
+
+// Quiet action -----------------------------------------------------------------
+.btn-quiet {
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: var(--app-text-muted);
+
+    &:hover,
+    &:focus-visible {
+        border-color: var(--app-border);
+        background-color: var(--app-surface);
+        color: var(--app-text);
+    }
+}
+
+.btn-quiet-danger {
+    border: 1px solid transparent;
+    background-color: transparent;
+    color: $danger;
+
+    &:hover,
+    &:focus-visible {
+        background-color: rgba($danger, 0.1);
+        color: $danger;
+    }
+}
+
+// Soft tonal actions -----------------------------------------------------------
+@each $name,
+    $color
+        in (
+            'primary': $primary,
+            'success': $success,
+            'danger': $danger,
+            'warning': $warning,
+            'info': $info
+        )
+{
+    .btn-soft-#{$name} {
+        border: 1px solid transparent;
+        background-color: rgba($color, 0.1);
+        color: $color;
+
+        &:hover,
+        &:focus-visible {
+            background-color: rgba($color, 0.16);
+            color: $color;
+        }
+    }
+}
+
+.btn-icon {
+    min-height: 0;
+    width: 2.375rem;
+    height: 2.375rem;
+    padding: 0;
+
+    &.btn-sm {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    &.btn-lg {
+        width: 2.75rem;
+        height: 2.75rem;
+    }
+}
+
+.btn-group-pills {
+    display: inline-flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border-radius: var(--app-radius-md);
+    background-color: var(--app-surface-sunken);
+
+    .btn {
+        border: 0;
+        border-radius: var(--app-radius-sm);
+        background-color: transparent;
+        color: var(--app-text-muted);
+        box-shadow: none;
+
+        &:hover {
+            color: var(--app-text);
+        }
+
+        &.is-active {
+            background-color: var(--app-surface);
+            color: var(--app-text);
+            box-shadow: var(--app-shadow-xs);
+        }
+    }
+}

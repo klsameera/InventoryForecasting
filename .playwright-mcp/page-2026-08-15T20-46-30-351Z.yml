@@ -1,0 +1,111 @@
+- generic [ref=f6e3]:
+  - complementary "Main navigation" [ref=f6e4]:
+    - link "Laravel" [ref=f6e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f6e13]:
+      - generic [ref=f6e14]:
+        - generic [ref=f6e15]: Overview
+        - navigation [ref=f6e16]:
+          - link "Dashboard" [ref=f6e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f6e24]:
+        - generic [ref=f6e25]: Catalog
+        - navigation [ref=f6e26]:
+          - link "Products" [ref=f6e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f6e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f6e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f6e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f6e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f6e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f6e60]:
+        - generic [ref=f6e61]: Inventory
+        - navigation [ref=f6e62]:
+          - link "Inventory" [ref=f6e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f6e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f6e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f6e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f6e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f6e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f6e105]:
+        - generic [ref=f6e106]: Purchasing
+        - navigation [ref=f6e107]:
+          - link "Purchase orders" [ref=f6e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f6e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f6e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f6e124]:
+        - generic [ref=f6e125]: Sales
+        - navigation [ref=f6e126]:
+          - link "Sales orders" [ref=f6e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f6e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f6e138]:
+        - generic [ref=f6e139]: Account
+        - navigation [ref=f6e140]:
+          - link "Profile" [ref=f6e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f6e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f6e151]:
+    - banner [ref=f6e152]:
+      - button "Collapse navigation" [ref=f6e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f6e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f6e161] [cursor=pointer]:
+        - generic [ref=f6e162]: QT
+        - generic [ref=f6e163]:
+          - generic [ref=f6e164]: QA Tester
+          - generic [ref=f6e165]: qa@example.test
+    - main [ref=f6e168]:
+      - generic [ref=f6e170]:
+        - generic [ref=f6e171]: Catalog
+        - heading "New attribute" [level=1] [ref=f6e172]
+        - paragraph [ref=f6e173]: Define a property, e.g. Size or Color, and its possible values.
+      - generic [ref=f6e177]:
+        - generic [ref=f6e178]:
+          - generic [ref=f6e180]:
+            - text: Name
+            - generic [ref=f6e181]: "*"
+          - textbox "Name" [ref=f6e182]:
+            - /placeholder: Size
+        - generic [ref=f6e183]:
+          - generic [ref=f6e185]:
+            - text: Code
+            - generic [ref=f6e186]: "*"
+          - textbox "Code" [ref=f6e187]:
+            - /placeholder: ATTR-SIZE
+          - paragraph [ref=f6e188]: A short unique identifier, e.g. ATTR-SIZE.
+        - generic [ref=f6e189]:
+          - generic [ref=f6e191]:
+            - text: Data type
+            - generic [ref=f6e192]: "*"
+          - combobox "Data type" [ref=f6e193]:
+            - option "Select" [selected]
+            - option "Text"
+            - option "Number"
+            - option "Boolean"
+        - generic [ref=f6e195]:
+          - checkbox "Forecast relevant" [ref=f6e196] [cursor=pointer]
+          - generic [ref=f6e197] [cursor=pointer]: Forecast relevant
+        - generic [ref=f6e198]:
+          - generic [ref=f6e199]: Values
+          - generic [ref=f6e201]:
+            - generic [ref=f6e202]:
+              - textbox "e.g. 42" [ref=f6e203]
+              - button "Remove value" [disabled]
+            - button "Add value" [ref=f6e204] [cursor=pointer]
+        - button "Create attribute" [ref=f6e207] [cursor=pointer]

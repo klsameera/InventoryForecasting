@@ -1,0 +1,107 @@
+- generic [ref=f1e3]:
+  - complementary "Main navigation" [ref=f1e4]:
+    - link "Laravel" [ref=f1e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f1e13]:
+      - generic [ref=f1e14]:
+        - generic [ref=f1e15]: Overview
+        - navigation [ref=f1e16]:
+          - link "Dashboard" [ref=f1e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f1e24]:
+        - generic [ref=f1e25]: Catalog
+        - navigation [ref=f1e26]:
+          - link "Products" [ref=f1e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f1e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f1e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f1e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f1e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f1e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f1e60]:
+        - generic [ref=f1e61]: Inventory
+        - navigation [ref=f1e62]:
+          - link "Inventory" [ref=f1e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f1e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f1e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f1e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f1e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f1e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f1e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f1e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f1e115]:
+        - generic [ref=f1e116]: Purchasing
+        - navigation [ref=f1e117]:
+          - link "Purchase orders" [ref=f1e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f1e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f1e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f1e134]:
+        - generic [ref=f1e135]: Sales
+        - navigation [ref=f1e136]:
+          - link "Sales orders" [ref=f1e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f1e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f1e148]:
+        - generic [ref=f1e149]: Forecasting
+        - navigation [ref=f1e150]:
+          - link "Forecasts" [ref=f1e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f1e156] [cursor=pointer]:
+            - /url: /forecast-run
+      - generic [ref=f1e160]:
+        - generic [ref=f1e161]: Account
+        - navigation [ref=f1e162]:
+          - link "Profile" [ref=f1e163] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f1e168] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f1e173]:
+    - banner [ref=f1e174]:
+      - button "Collapse navigation" [ref=f1e175] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f1e179] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f1e183] [cursor=pointer]:
+        - generic [ref=f1e184]: QT
+        - generic [ref=f1e185]:
+          - generic [ref=f1e186]: QA Tester
+          - generic [ref=f1e187]: qa@example.test
+    - main [ref=f1e190]:
+      - generic [ref=f1e192]:
+        - generic [ref=f1e193]: Forecasting
+        - heading "New forecast run" [level=1] [ref=f1e194]
+        - paragraph [ref=f1e195]: Queues a background job that asks the ML service for a demand prediction per SKU. Leave warehouses unchecked to forecast all of them.
+      - generic [ref=f1e199]:
+        - generic [ref=f1e200]:
+          - generic [ref=f1e202]:
+            - text: Forecast horizon
+            - generic [ref=f1e203]: "*"
+          - combobox "Forecast horizon" [ref=f1e204]:
+            - option "7 days"
+            - option "14 days"
+            - option "30 days" [selected]
+            - option "60 days"
+            - option "90 days"
+            - option "180 days"
+        - generic [ref=f1e205]:
+          - generic [ref=f1e206]: Warehouses
+          - generic [ref=f1e209]:
+            - checkbox "Main" [ref=f1e210] [cursor=pointer]
+            - generic [ref=f1e211] [cursor=pointer]: Main
+          - paragraph [ref=f1e212]: Optional — leave all unchecked to include every warehouse.
+        - button "Queue forecast run" [ref=f1e214] [cursor=pointer]

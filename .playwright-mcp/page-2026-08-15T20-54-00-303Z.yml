@@ -1,0 +1,99 @@
+- generic [ref=f21e3]:
+  - complementary "Main navigation" [ref=f21e4]:
+    - link "Laravel" [ref=f21e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f21e13]:
+      - generic [ref=f21e14]:
+        - generic [ref=f21e15]: Overview
+        - navigation [ref=f21e16]:
+          - link "Dashboard" [ref=f21e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f21e24]:
+        - generic [ref=f21e25]: Catalog
+        - navigation [ref=f21e26]:
+          - link "Products" [ref=f21e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f21e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f21e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f21e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f21e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f21e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f21e60]:
+        - generic [ref=f21e61]: Inventory
+        - navigation [ref=f21e62]:
+          - link "Inventory" [ref=f21e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f21e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f21e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f21e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f21e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f21e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f21e105]:
+        - generic [ref=f21e106]: Purchasing
+        - navigation [ref=f21e107]:
+          - link "Purchase orders" [ref=f21e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f21e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f21e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f21e124]:
+        - generic [ref=f21e125]: Sales
+        - navigation [ref=f21e126]:
+          - link "Sales orders" [ref=f21e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f21e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f21e138]:
+        - generic [ref=f21e139]: Account
+        - navigation [ref=f21e140]:
+          - link "Profile" [ref=f21e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f21e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f21e151]:
+    - banner [ref=f21e152]:
+      - button "Collapse navigation" [ref=f21e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f21e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f21e161] [cursor=pointer]:
+        - generic [ref=f21e162]: QT
+        - generic [ref=f21e163]:
+          - generic [ref=f21e164]: QA Tester
+          - generic [ref=f21e165]: qa@example.test
+    - main [ref=f21e168]:
+      - generic [ref=f21e170]:
+        - generic [ref=f21e171]: Purchasing
+        - heading "Edit Northwind Footwear Co" [level=1] [ref=f21e172]
+        - paragraph [ref=f21e173]: Update this supplier's details and the SKUs they supply.
+      - generic [ref=f21e177]:
+        - generic [ref=f21e178]:
+          - generic [ref=f21e180]:
+            - text: Supplier name
+            - generic [ref=f21e181]: "*"
+          - textbox "Supplier name" [ref=f21e182]: Northwind Footwear Co
+        - generic [ref=f21e183]:
+          - generic [ref=f21e185]:
+            - text: Default lead time (days)
+            - generic [ref=f21e186]: "*"
+          - spinbutton "Default lead time (days)" [ref=f21e187]: "7"
+        - generic [ref=f21e188]:
+          - generic [ref=f21e189]: Minimum order value
+          - spinbutton "Minimum order value" [ref=f21e191]
+          - paragraph [ref=f21e192]: Optional
+        - generic [ref=f21e194]:
+          - checkbox "Active" [checked] [ref=f21e195] [cursor=pointer]
+          - generic [ref=f21e196] [cursor=pointer]: Active
+        - generic [ref=f21e197]:
+          - generic [ref=f21e198]: SKUs supplied
+          - button "Add SKU" [ref=f21e201] [cursor=pointer]
+        - button "Save changes" [ref=f21e204] [cursor=pointer]

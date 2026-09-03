@@ -1,0 +1,225 @@
+// =============================================================================
+// Stat cards & shortcut tiles
+// =============================================================================
+
+.app-stat {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9375rem;
+    padding: 1.375rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-xl);
+    background-color: var(--app-surface);
+    background-image: var(--app-gradient-surface);
+    box-shadow:
+        inset 0 1px var(--app-surface-highlight),
+        var(--app-shadow-sm);
+    overflow: hidden;
+
+    @include hover-lift(-3px, var(--app-shadow-md));
+
+    &::before {
+        content: '';
+        position: absolute;
+        width: 8rem;
+        height: 8rem;
+        inset-block-start: -5.5rem;
+        inset-inline-end: -3.5rem;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle,
+            color-mix(in srgb, var(--app-brand) 12%, transparent),
+            transparent 70%
+        );
+        pointer-events: none;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0 auto auto 0;
+        width: 36%;
+        height: 2px;
+        border-radius: var(--app-radius-pill);
+        background: var(--app-gradient-brand);
+        opacity: 0.82;
+    }
+}
+
+.app-stat__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.app-stat__label {
+    font-size: 0.8125rem;
+    font-weight: 620;
+    color: var(--app-text-muted);
+    margin: 0;
+}
+
+.app-stat__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.625rem;
+    height: 2.625rem;
+    flex: 0 0 auto;
+    border: 1px solid color-mix(in srgb, var(--app-brand) 18%, transparent);
+    border-radius: var(--app-radius-lg);
+    background-color: var(--app-brand-soft);
+    color: var(--app-brand-strong);
+
+    svg {
+        width: 1.125rem;
+        height: 1.125rem;
+    }
+}
+
+@each $name,
+    $color
+        in (
+            'success': $success,
+            'warning': $warning,
+            'danger': $danger,
+            'info': $info
+        )
+{
+    .app-stat__icon--#{$name} {
+        background-color: rgba($color, 0.12);
+        color: $color;
+    }
+}
+
+.app-stat__value {
+    font-size: 1.875rem;
+    font-weight: 730;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--app-text);
+}
+
+.app-stat__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-size: 0.8125rem;
+    color: var(--app-text-muted);
+}
+
+.app-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.1875rem;
+    padding: 0.125rem 0.4375rem;
+    border-radius: var(--app-radius-pill);
+    font-size: 0.75rem;
+    font-weight: 650;
+
+    svg {
+        width: 0.8125rem;
+        height: 0.8125rem;
+    }
+}
+
+.app-trend--up {
+    background-color: rgba($success, 0.12);
+    color: $success;
+}
+
+.app-trend--down {
+    background-color: rgba($danger, 0.12);
+    color: $danger;
+}
+
+.app-trend--flat {
+    background-color: var(--app-surface-sunken);
+    color: var(--app-text-muted);
+}
+
+// Shortcut tiles ---------------------------------------------------------------
+.app-shortcut {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    width: 100%;
+    height: 100%;
+    padding: 1rem 1.125rem;
+    text-align: start;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius-xl);
+    background-color: var(--app-surface);
+    background-image: var(--app-gradient-surface);
+    color: var(--app-text);
+    overflow: hidden;
+
+    @include hover-lift(-3px, var(--app-shadow-md));
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset-block: 0;
+        inset-inline-start: 0;
+        width: 3px;
+        background: var(--app-gradient-brand);
+        opacity: 0;
+        transition: opacity var(--app-transition-base);
+    }
+
+    &:hover {
+        border-color: color-mix(in srgb, var(--app-brand) 28%, var(--app-border));
+        color: var(--app-text);
+
+        &::before {
+            opacity: 1;
+        }
+    }
+}
+
+.app-shortcut__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.625rem;
+    height: 2.625rem;
+    flex: 0 0 auto;
+    border: 1px solid color-mix(in srgb, var(--app-brand) 38%, transparent);
+    border-radius: var(--app-radius-lg);
+    background: var(--app-gradient-brand);
+    color: #fff;
+    box-shadow: var(--app-shadow-brand);
+
+    svg {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+}
+
+.app-shortcut__title {
+    font-size: 0.9375rem;
+    font-weight: 650;
+    margin: 0;
+}
+
+.app-shortcut__description {
+    font-size: 0.8125rem;
+    color: var(--app-text-muted);
+    margin: 0.0625rem 0 0;
+}
+
+.app-shortcut__chevron {
+    margin-inline-start: auto;
+    color: var(--app-text-soft);
+    transition: transform var(--app-transition-base);
+
+    .app-shortcut:hover & {
+        transform: translateX(3px);
+        color: var(--app-brand);
+    }
+}

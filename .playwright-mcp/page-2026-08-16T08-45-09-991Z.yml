@@ -1,0 +1,137 @@
+- generic [ref=e69]:
+  - complementary "Main navigation" [ref=e70]:
+    - link "Laravel" [ref=e72] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e81]: Overview
+        - navigation [ref=e82]:
+          - link "Dashboard" [ref=e83] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=e90]:
+        - generic [ref=e91]: Catalog
+        - navigation [ref=e92]:
+          - link "Products" [ref=e93] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=e101] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=e107] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=e113] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=e118] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=e123] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=e126]:
+        - generic [ref=e127]: Inventory
+        - navigation [ref=e128]:
+          - link "Inventory" [ref=e129] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=e141] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=e145] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=e151] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=e157] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=e162] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=e168] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=e176] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=e181]:
+        - generic [ref=e182]: Purchasing
+        - navigation [ref=e183]:
+          - link "Purchase orders" [ref=e184] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=e189] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=e196] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=e200]:
+        - generic [ref=e201]: Sales
+        - navigation [ref=e202]:
+          - link "Sales orders" [ref=e203] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=e209] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=e214]:
+        - generic [ref=e215]: Forecasting
+        - navigation [ref=e216]:
+          - link "Forecasts" [ref=e217] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=e222] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=e226] [cursor=pointer]:
+            - /url: /inventory-recommendation
+      - generic [ref=e231]:
+        - generic [ref=e232]: Account
+        - navigation [ref=e233]:
+          - link "Profile" [ref=e234] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=e239] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=e244]:
+    - banner [ref=e245]:
+      - button "Collapse navigation" [ref=e246] [cursor=pointer]
+      - navigation "Breadcrumb" [ref=e250]:
+        - list [ref=e251]:
+          - listitem [ref=e252]: Dashboard
+      - button "Switch to dark theme" [ref=e253] [cursor=pointer]
+      - button "Santino Murphy qa@example.test" [ref=e257] [cursor=pointer]:
+        - generic [ref=e258]: SM
+        - generic [ref=e259]:
+          - generic [ref=e260]: Santino Murphy
+          - generic [ref=e261]: qa@example.test
+    - main [ref=e264]:
+      - generic [ref=e265]:
+        - generic [ref=e267]:
+          - generic [ref=e268]: Overview
+          - heading "Dashboard" [level=1] [ref=e269]
+          - paragraph [ref=e270]: Demand, coverage and reorder signals across your catalogue.
+        - generic [ref=e271]:
+          - article [ref=e273]:
+            - paragraph [ref=e275]: SKUs tracked
+            - paragraph [ref=e287]: —
+          - article [ref=e289]:
+            - paragraph [ref=e291]: Forecast accuracy
+            - paragraph [ref=e296]: —
+          - article [ref=e298]:
+            - paragraph [ref=e300]: Reorder alerts
+            - paragraph [ref=e304]: —
+          - article [ref=e306]:
+            - paragraph [ref=e308]: Days of cover
+            - paragraph [ref=e316]: —
+        - generic [ref=e317]:
+          - generic [ref=e319]:
+            - generic [ref=e321]:
+              - heading "Demand trend" [level=2] [ref=e322]
+              - paragraph [ref=e323]: Units forecast against units sold.
+            - generic [ref=e325]:
+              - paragraph [ref=e330]: No demand history yet
+              - paragraph [ref=e331]: Once a forecasting module publishes its figures, the trend appears here.
+          - generic [ref=e333]:
+            - generic [ref=e335]:
+              - heading "Top movers" [level=2] [ref=e336]
+              - paragraph [ref=e337]: Highest volume this period.
+            - generic [ref=e339]:
+              - paragraph [ref=e344]: Nothing to compare yet
+              - paragraph [ref=e345]: Movement ranks appear once stock records exist.
+        - generic [ref=e346]:
+          - generic [ref=e348]:
+            - heading "Quick actions" [level=2] [ref=e349]
+            - paragraph [ref=e350]: Jump straight to the things you do most.
+          - generic [ref=e351]:
+            - link "Profile settings Update your name and email address" [ref=e352] [cursor=pointer]:
+              - /url: /settings/profile
+              - generic [ref=e357]:
+                - generic [ref=e358]: Profile settings
+                - generic [ref=e359]: Update your name and email address
+            - link "Security Passwords, two-factor and passkeys" [ref=e362] [cursor=pointer]:
+              - /url: /settings/security
+              - generic [ref=e367]:
+                - generic [ref=e368]: Security
+                - generic [ref=e369]: Passwords, two-factor and passkeys

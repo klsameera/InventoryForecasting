@@ -1,0 +1,13 @@
+[     443ms] [LOG] 🔍 Browser logger active (MCP server detected). Posting to: http://127.0.0.1:8123/_boost/browser-logs @ http://127.0.0.1:8123/stock-transfer/create:133
+[     515ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:8123/stock-transfer/create:203
+[   30749ms] TypeError: Failed to construct 'FormData': parameter 1 is not of type 'HTMLFormElement'.
+    at getFormData (http://[::1]:5173/node_modules/.vite/deps/@inertiajs_react.js?v=29c5121d:21690:37)
+    at getData (http://[::1]:5173/node_modules/.vite/deps/@inertiajs_react.js?v=29c5121d:21691:50)
+    at http://[::1]:5173/node_modules/.vite/deps/@inertiajs_react.js?v=29c5121d:21697:79
+    at exports.startTransition (http://[::1]:5173/node_modules/.vite/deps/react.js?v=29c5121d:682:23)
+    at deferStateUpdate (http://[::1]:5173/node_modules/.vite/deps/@inertiajs_react.js?v=29c5121d:21662:68)
+    at HTMLFormElement.updateDirtyState (http://[::1]:5173/node_modules/.vite/deps/@inertiajs_react.js?v=29c5121d:21697:3)
+    at removeChild (http://[::1]:5173/node_modules/.vite/deps/@inertiajs_react.js?v=29c5121d:17250:19)
+    at runWithFiberInDEV (http://[::1]:5173/node_modules/.vite/deps/@inertiajs_react.js?v=29c5121d:7517:66)
+    at commitDeletionEffectsOnFiber (http://[::1]:5173/node_modules/.vite/deps/@inertiajs_react.js?v=29c5121d:13776:7)
+    at recursivelyTraverseDeletionEffects (http://[::1]:5173/node_modules/.vite/deps/@inertiajs_react.js?v=29c5121d:13738:50)

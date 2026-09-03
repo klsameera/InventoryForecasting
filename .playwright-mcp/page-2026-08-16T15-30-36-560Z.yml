@@ -1,0 +1,332 @@
+- generic [ref=f45e3]:
+  - complementary "Main navigation" [ref=f45e4]:
+    - link "Laravel" [ref=f45e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f45e13]:
+      - generic [ref=f45e14]:
+        - generic [ref=f45e15]: Overview
+        - navigation [ref=f45e16]:
+          - link "Dashboard" [ref=f45e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f45e24]:
+        - generic [ref=f45e25]: Catalog
+        - navigation [ref=f45e26]:
+          - link "Products" [ref=f45e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f45e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f45e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f45e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f45e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f45e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f45e60]:
+        - generic [ref=f45e61]: Inventory
+        - navigation [ref=f45e62]:
+          - link "Inventory" [ref=f45e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f45e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f45e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f45e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f45e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f45e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f45e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f45e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f45e115]:
+        - generic [ref=f45e116]: Purchasing
+        - navigation [ref=f45e117]:
+          - link "Purchase orders" [ref=f45e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f45e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f45e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f45e134]:
+        - generic [ref=f45e135]: Sales
+        - navigation [ref=f45e136]:
+          - link "Sales orders" [ref=f45e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f45e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f45e148]:
+        - generic [ref=f45e149]: Forecasting
+        - navigation [ref=f45e150]:
+          - link "Forecasts" [ref=f45e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f45e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f45e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f45e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f45e172]:
+        - generic [ref=f45e173]: Advanced intelligence
+        - navigation [ref=f45e174]:
+          - link "Supplier performance" [ref=f45e175] [cursor=pointer]:
+            - /url: /supplier-performance
+          - link "Lost sales" [ref=f45e180] [cursor=pointer]:
+            - /url: /demand-insights/lost-sales
+          - link "Demand anomalies" [ref=f45e185] [cursor=pointer]:
+            - /url: /demand-insights/anomalies
+          - link "Product similarity" [ref=f45e189] [cursor=pointer]:
+            - /url: /product-relationship/similarity
+          - link "Cannibalization" [ref=f45e194] [cursor=pointer]:
+            - /url: /product-relationship/cannibalization
+          - link "Successors" [ref=f45e205] [cursor=pointer]:
+            - /url: /product-relationship/successors
+          - link "Price elasticity" [ref=f45e215] [cursor=pointer]:
+            - /url: /price-elasticity
+          - link "Promotions" [ref=f45e219] [cursor=pointer]:
+            - /url: /promotion
+      - generic [ref=f45e225]:
+        - generic [ref=f45e226]: Account
+        - navigation [ref=f45e227]:
+          - link "Profile" [ref=f45e228] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f45e233] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f45e238]:
+    - banner [ref=f45e239]:
+      - button "Collapse navigation" [ref=f45e240] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f45e244] [cursor=pointer]
+      - button "Marilou Brakus qa@example.com" [ref=f45e248] [cursor=pointer]:
+        - generic [ref=f45e249]: MB
+        - generic [ref=f45e250]:
+          - generic [ref=f45e251]: Marilou Brakus
+          - generic [ref=f45e252]: qa@example.com
+    - main [ref=f45e255]:
+      - generic [ref=f45e256]:
+        - generic [ref=f45e257]:
+          - generic [ref=f45e258]: Advanced intelligence
+          - heading "Promotions" [level=1] [ref=f45e259]
+          - paragraph [ref=f45e260]: Discounts recorded against a set of SKUs — once a promotion has ended, its real effect on demand can be measured against a matching pre-promotion baseline.
+        - link "New promotion" [ref=f45e262] [cursor=pointer]:
+          - /url: /promotion/create
+      - generic [ref=f45e264]:
+        - generic [ref=f45e265]:
+          - searchbox "Search by name…" [ref=f45e267]
+          - combobox "Filter by SKU" [ref=f45e268]:
+            - option "All SKUs" [selected]
+            - option "ABACSTLG30CR"
+            - option "ABACSTLG36CR"
+            - option "ABCKRC100G01"
+            - option "ABCKRC80G01"
+            - option "ABCKRCT40"
+            - option "ABFNIN600TII"
+            - option "ABFNIN750TII"
+            - option "ABFNIN750TWII"
+            - option "ABFNMFYD207"
+            - option "ABFR750XN"
+            - option "ABFRCH400AEL"
+            - option "ABFRCH923XN"
+            - option "ABFRDPCB260AEL"
+            - option "ABFRDPCB360AEL"
+            - option "ABKMLB9001B"
+            - option "ABMG3550MGWS"
+            - option "ABRFURFR180J"
+            - option "ABVCEV800"
+            - option "ABVCWDRY7730L"
+            - option "ABWG10LSQT"
+            - option "ABWG15LSQT"
+            - option "ABWG30LCYT"
+            - option "ABWG50LCYT"
+            - option "ABWGWHDSZF20LJ15Y6U"
+            - option "ABWHDSZF20LJ30Y6A"
+            - option "ABWHDSZF20LJ50Y6A"
+            - option "DTFNIN50TS"
+            - option "DZACLD200ACR"
+            - option "ELVC930"
+            - option "ELVCZ1230"
+            - option "ELWM705HQWA"
+            - option "ELWMDRY754H3WB"
+            - option "EMIACSG302"
+            - option "EMIACSG353"
+            - option "FDSTNM5126WS"
+            - option "HKPMCITATION200BLKEU"
+            - option "HKPMCITATION200GRYEU"
+            - option "HLAFRFBXK12321"
+            - option "HLAFRFBXK12321WS"
+            - option "HLMG06021WS"
+            - option "HRFRCH350DMS5"
+            - option "HRFRCH719HSEP"
+            - option "HRFRCH719W"
+            - option "HRFRCHHFC788DMS5"
+            - option "HWACL151"
+            - option "HWACL20AE"
+            - option "HWACL30XC"
+            - option "HWACL604AE"
+            - option "IGDRYIGT10RCDW"
+            - option "IGMOMJF31GDCX3"
+            - option "INIRZYGTJ01KL"
+            - option "JBLPMBOOMBOX2SQUAD"
+            - option "JBLPMPARTYBOX1000EU"
+            - option "JBLPMPARTYBOX100EU"
+            - option "JBLPMPARTYBOX310EU"
+            - option "JBLPMPARTYBOX710EU"
+            - option "JBLPMPARTYBOXGOBUK"
+            - option "JBLSPPBSTAGE320"
+            - option "JPMGFRUTTICA"
+            - option "JPPREMIUM"
+            - option "LGACINQ09JA3BD"
+            - option "LGACINQ12JA17C"
+            - option "LGACINQ12JA3FB"
+            - option "LGACINQ18JL3BD"
+            - option "LGACINQ18KL2FA"
+            - option "LGACINQ18KL3FA"
+            - option "LGACINQ24K22FA"
+            - option "LGACINQ24K23BD"
+            - option "LGHSVCA9TULTRA"
+            - option "LGHVCA9KPRO"
+            - option "LGMO2043DB"
+            - option "LGMO2044DB"
+            - option "LGMO2595DIS"
+            - option "LGMO2846SL"
+            - option "LGMO3965BGS"
+            - option "LGMO6565DIS"
+            - option "LGMO7636GIS"
+            - option "LGMOMJEN326TL"
+            - option "LGMOMS3636GIS"
+            - option "LGRF6011NSNBS"
+            - option "LGRF6012PZPN3"
+            - option "LGRF6018MTBK"
+            - option "LGRF6181DSDGS"
+            - option "LGRFB4059PZPS"
+            - option "LGRFDDM5097PZ"
+            - option "LGRFGSB6432WB"
+            - option "LGRFGSL6172PZ"
+            - option "LGRFGSX6172NS"
+            - option "LGRFQ6011MC"
+            - option "LGVCVR66900TWVV"
+            - option "LGWD2719RVTV"
+            - option "LGWDRV1329AD5S"
+            - option "LGWM1329AN7S"
+            - option "LGWMDRYTDC8066S"
+            - option "LGWMFAU1408S4W"
+            - option "LGWMFAU1450S2K"
+            - option "LGWMFAUFL1007S5W"
+            - option "LGWMINW069FD2M"
+            - option "LGWMINWS069FD2FS"
+            - option "LGWPUWW170EP"
+            - option "LPBDAFRY400B5"
+            - option "LPBDAFRYAF200B5"
+            - option "LPBDIRSTGST2000B5WS"
+            - option "LPBDJEJE250B5"
+            - option "LPICHMAAVC10"
+            - option "LPIMVCJUGVC20"
+            - option "LPINIRYD012V"
+            - option "LPPUWFWFILTERG"
+            - option "LPPUWFWFILTERS"
+            - option "LPUNWPUCLASSICG2"
+            - option "LPUNWPUPMUVG2"
+            - option "LPUNWPUULTIMARO"
+            - option "LPWPPAK9100BL"
+            - option "LPWPPAK9101W"
+            - option "MARSPWOBURN3BK"
+            - option "MBFNPD16GAPCYRD"
+            - option "MBFNPD16GAPSFGY"
+            - option "MBFNPD16GUPCYRD"
+            - option "MBFNPD16GUPSFGY"
+            - option "MIACLMAC200R"
+            - option "MIACLMAC200RW"
+            - option "MIAFRY98"
+            - option "MICKRC100"
+            - option "MICKRC42"
+            - option "MICKRC56"
+            - option "MICKRC78"
+            - option "MIFNPD16J15R"
+            - option "MIWHC30A"
+            - option "MIWHC50A"
+            - option "MIWHC80A"
+            - option "MRMG640151"
+            - option "OMAFRYOMAF2254J"
+            - option "PLAFRY9216"
+            - option "PLAFRYHD9721"
+            - option "PLIRST392020"
+            - option "PLIRST51449"
+            - option "PLIRST523"
+            - option "PNCKRCSRGA321"
+            - option "PNCKRCSRGA421"
+            - option "PNCKRCSRGA721"
+            - option "RHAFRY26510"
+            - option "RHIRST2804056"
+            - option "RHSTPOP2164473"
+            - option "RHSTPOP2164474"
+            - option "SFDIR2913GS"
+            - option "SFHMSF1364SMWS"
+            - option "SFIRSTSF2910GS"
+            - option "SFMTGSF5855MG"
+            - option "SFVCW891VC"
+          - generic [ref=f45e269]:
+            - button "Clear" [disabled]
+        - table [ref=f45e271]:
+          - rowgroup [ref=f45e272]:
+            - row [ref=f45e273]:
+              - columnheader "Name" [ref=f45e274]
+              - columnheader "Discount" [ref=f45e275]
+              - columnheader "Dates" [ref=f45e276]
+              - columnheader "SKUs" [ref=f45e277]
+              - columnheader "Status" [ref=f45e278]
+              - columnheader "Actions" [ref=f45e279]
+          - rowgroup [ref=f45e280]:
+            - row [ref=f45e281]:
+              - cell [ref=f45e282]:
+                - link "Vesak Appliance Fest" [ref=f45e283] [cursor=pointer]:
+                  - /url: /promotion/11/edit
+              - cell "16%" [ref=f45e284]
+              - cell "2026-05-15 – 2026-05-25" [ref=f45e285]
+              - cell "8" [ref=f45e286]
+              - cell "Ended" [ref=f45e287]
+              - cell [ref=f45e290]:
+                - link "View impact" [ref=f45e291] [cursor=pointer]:
+                  - /url: /promotion/11/impact
+            - row [ref=f45e292]:
+              - cell [ref=f45e293]:
+                - link "Avurudu Home Sale" [ref=f45e294] [cursor=pointer]:
+                  - /url: /promotion/10/edit
+              - cell "18%" [ref=f45e295]
+              - cell "2026-04-10 – 2026-04-24" [ref=f45e296]
+              - cell "8" [ref=f45e297]
+              - cell "Ended" [ref=f45e298]
+              - cell [ref=f45e301]:
+                - link "View impact" [ref=f45e302] [cursor=pointer]:
+                  - /url: /promotion/10/impact
+            - row [ref=f45e303]:
+              - cell [ref=f45e304]:
+                - link "New Year Mega Sale" [ref=f45e305] [cursor=pointer]:
+                  - /url: /promotion/13/edit
+              - cell "22%" [ref=f45e306]
+              - cell "2026-01-02 – 2026-01-14" [ref=f45e307]
+              - cell "8" [ref=f45e308]
+              - cell "Ended" [ref=f45e309]
+              - cell [ref=f45e312]:
+                - link "View impact" [ref=f45e313] [cursor=pointer]:
+                  - /url: /promotion/13/impact
+            - row [ref=f45e314]:
+              - cell [ref=f45e315]:
+                - link "Black Friday Electronics" [ref=f45e316] [cursor=pointer]:
+                  - /url: /promotion/12/edit
+              - cell "15%" [ref=f45e317]
+              - cell "2025-11-24 – 2025-12-01" [ref=f45e318]
+              - cell "8" [ref=f45e319]
+              - cell "Ended" [ref=f45e320]
+              - cell [ref=f45e323]:
+                - link "View impact" [ref=f45e324] [cursor=pointer]:
+                  - /url: /promotion/12/impact
+        - generic [ref=f45e326]:
+          - generic [ref=f45e327]: Showing 1–4 of 4
+          - generic [ref=f45e328]:
+            - text: Rows
+            - combobox "Rows" [ref=f45e329]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

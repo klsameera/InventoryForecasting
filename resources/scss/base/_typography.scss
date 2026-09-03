@@ -1,0 +1,87 @@
+// =============================================================================
+// Typography
+// =============================================================================
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--app-text);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+}
+
+h1,
+.h1 {
+    letter-spacing: -0.025em;
+}
+
+a {
+    text-decoration: none;
+    transition: color var(--app-transition-fast);
+}
+
+.app-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+    font-size: 0.6563rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--app-text-soft);
+}
+
+.app-text-muted {
+    color: var(--app-text-muted) !important;
+}
+
+.app-text-soft {
+    color: var(--app-text-soft) !important;
+}
+
+.app-text-gradient {
+    background: var(--app-gradient-brand);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.app-text-mono {
+    font-family: $font-family-monospace;
+    font-variant-ligatures: none;
+}
+
+.app-title {
+    font-size: clamp(1.55rem, 2vw, 2rem);
+    font-weight: 720;
+    line-height: 1.16;
+    letter-spacing: -0.038em;
+    margin-bottom: 0;
+
+}
+
+.app-subtitle {
+    color: var(--app-text-muted);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    margin-bottom: 0;
+    max-width: 68ch;
+}
+
+.app-section-title {
+    font-size: 1rem;
+    font-weight: 680;
+    letter-spacing: -0.01em;
+    margin-bottom: 0;
+}
+
+.app-metric {
+    font-size: 1.875rem;
+    font-weight: 720;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--app-text);
+}

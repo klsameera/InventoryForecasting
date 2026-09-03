@@ -1,0 +1,91 @@
+- generic [ref=f30e3]:
+  - complementary "Main navigation" [ref=f30e4]:
+    - link "Laravel" [ref=f30e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f30e13]:
+      - generic [ref=f30e14]:
+        - generic [ref=f30e15]: Overview
+        - navigation [ref=f30e16]:
+          - link "Dashboard" [ref=f30e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f30e24]:
+        - generic [ref=f30e25]: Catalog
+        - navigation [ref=f30e26]:
+          - link "Products" [ref=f30e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f30e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f30e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f30e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f30e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f30e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f30e60]:
+        - generic [ref=f30e61]: Inventory
+        - navigation [ref=f30e62]:
+          - link "Inventory" [ref=f30e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Stock movements" [ref=f30e75] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f30e80] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Warehouses" [ref=f30e86] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f30e91]:
+        - generic [ref=f30e92]: Account
+        - navigation [ref=f30e93]:
+          - link "Profile" [ref=f30e94] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f30e99] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f30e104]:
+    - banner [ref=f30e105]:
+      - button "Collapse navigation" [ref=f30e106] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f30e110] [cursor=pointer]
+      - button "Percival Denesik qa@example.test" [ref=f30e114] [cursor=pointer]:
+        - generic [ref=f30e115]: PD
+        - generic [ref=f30e116]:
+          - generic [ref=f30e117]: Percival Denesik
+          - generic [ref=f30e118]: qa@example.test
+    - main [ref=f30e121]:
+      - generic [ref=f30e123]:
+        - generic [ref=f30e124]: Catalog
+        - heading "New attribute" [level=1] [ref=f30e125]
+        - paragraph [ref=f30e126]: Define a property, e.g. Size or Color, and its possible values.
+      - generic [ref=f30e130]:
+        - generic [ref=f30e131]:
+          - generic [ref=f30e133]:
+            - text: Name
+            - generic [ref=f30e134]: "*"
+          - textbox "Name" [ref=f30e135]:
+            - /placeholder: Size
+        - generic [ref=f30e136]:
+          - generic [ref=f30e138]:
+            - text: Code
+            - generic [ref=f30e139]: "*"
+          - textbox "Code" [ref=f30e140]:
+            - /placeholder: ATTR-SIZE
+          - paragraph [ref=f30e141]: A short unique identifier, e.g. ATTR-SIZE.
+        - generic [ref=f30e142]:
+          - generic [ref=f30e144]:
+            - text: Data type
+            - generic [ref=f30e145]: "*"
+          - combobox "Data type" [ref=f30e146]:
+            - option "Select" [selected]
+            - option "Text"
+            - option "Number"
+            - option "Boolean"
+        - generic [ref=f30e148]:
+          - checkbox "Forecast relevant" [ref=f30e149] [cursor=pointer]
+          - generic [ref=f30e150] [cursor=pointer]: Forecast relevant
+        - generic [ref=f30e151]:
+          - generic [ref=f30e152]: Values
+          - generic [ref=f30e154]:
+            - generic [ref=f30e155]:
+              - textbox "e.g. 42" [ref=f30e156]
+              - button "Remove value" [disabled]
+            - button "Add value" [ref=f30e157] [cursor=pointer]
+        - button "Create attribute" [ref=f30e160] [cursor=pointer]

@@ -1,0 +1,85 @@
+- generic [ref=f5e3]:
+  - complementary "Main navigation" [ref=f5e4]:
+    - link "Laravel" [ref=f5e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f5e13]:
+      - generic [ref=f5e14]:
+        - generic [ref=f5e15]: Overview
+        - navigation [ref=f5e16]:
+          - link "Dashboard" [ref=f5e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f5e24]:
+        - generic [ref=f5e25]: Account
+        - navigation [ref=f5e26]:
+          - link "Profile" [ref=f5e27] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f5e32] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f5e37]:
+    - banner [ref=f5e38]:
+      - button "Collapse navigation" [ref=f5e39] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f5e43] [cursor=pointer]
+      - button "Percival Denesik qa@example.test" [ref=f5e47] [cursor=pointer]:
+        - generic [ref=f5e48]: PD
+        - generic [ref=f5e49]:
+          - generic [ref=f5e50]: Percival Denesik
+          - generic [ref=f5e51]: qa@example.test
+    - main [ref=f5e54]:
+      - generic [ref=f5e55]:
+        - generic [ref=f5e56]:
+          - generic [ref=f5e57]: Catalog
+          - heading "Warehouses" [level=1] [ref=f5e58]
+          - paragraph [ref=f5e59]: Locations that hold inventory.
+        - link "New warehouse" [ref=f5e61] [cursor=pointer]:
+          - /url: /warehouse/create
+      - generic [ref=f5e63]:
+        - generic [ref=f5e64]:
+          - searchbox "Search warehouses…" [ref=f5e66]
+          - combobox "Filter by status" [ref=f5e67]:
+            - option "All statuses" [selected]
+            - option "Active"
+            - option "Inactive"
+          - generic [ref=f5e68]:
+            - button "Clear" [disabled]
+        - table [ref=f5e70]:
+          - rowgroup [ref=f5e71]:
+            - row [ref=f5e72]:
+              - columnheader [ref=f5e73]:
+                - button "Name" [ref=f5e74] [cursor=pointer]
+              - columnheader "Address" [ref=f5e78]
+              - columnheader [ref=f5e79]:
+                - button "Status" [ref=f5e80] [cursor=pointer]
+              - columnheader "Actions" [ref=f5e84]
+          - rowgroup [ref=f5e85]:
+            - row [ref=f5e86]:
+              - cell [ref=f5e87]:
+                - generic [ref=f5e88]:
+                  - paragraph [ref=f5e89]: Kandy Branch
+                  - paragraph [ref=f5e90]: WH-002
+              - cell "190 Abernathy Ferry North Andrew, ID 05173-3628" [ref=f5e91]
+              - cell "Active" [ref=f5e92]
+              - cell [ref=f5e95]:
+                - generic [ref=f5e96]:
+                  - link "Edit Kandy Branch" [ref=f5e97] [cursor=pointer]:
+                    - /url: /warehouse/3/edit
+                  - button "Delete Kandy Branch" [ref=f5e101] [cursor=pointer]
+            - row [ref=f5e105]:
+              - cell [ref=f5e106]:
+                - generic [ref=f5e107]:
+                  - paragraph [ref=f5e108]: Galle Branch
+                  - paragraph [ref=f5e109]: WH-003
+              - cell "54910 Edmond Center Oberbrunnerfort, SD 82851" [ref=f5e110]
+              - cell "Active" [ref=f5e111]
+              - cell [ref=f5e114]:
+                - generic [ref=f5e115]:
+                  - link "Edit Galle Branch" [ref=f5e116] [cursor=pointer]:
+                    - /url: /warehouse/4/edit
+                  - button "Delete Galle Branch" [ref=f5e120] [cursor=pointer]
+        - generic [ref=f5e125]:
+          - generic [ref=f5e126]: Showing 1–2 of 2
+          - generic [ref=f5e127]:
+            - text: Rows
+            - combobox "Rows" [ref=f5e128]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

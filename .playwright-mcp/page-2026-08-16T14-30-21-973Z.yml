@@ -1,0 +1,48 @@
+- generic [ref=f28e3]:
+  - generic [ref=f28e5]:
+    - link "Laravel" [ref=f28e6] [cursor=pointer]:
+      - /url: /
+    - heading "Welcome back" [level=1] [ref=f28e13]
+    - paragraph [ref=f28e14]: Enter your details to pick up where you left off.
+    - button "Sign in with a passkey" [ref=f28e15] [cursor=pointer]
+    - generic [ref=f28e19]: Or continue with email
+    - generic [ref=f28e20]:
+      - generic [ref=f28e21]:
+        - generic [ref=f28e23]:
+          - text: Email address
+          - generic [ref=f28e24]: "*"
+        - textbox "Email address" [active] [ref=f28e25]:
+          - /placeholder: you@company.com
+      - generic [ref=f28e26]:
+        - generic [ref=f28e27]:
+          - generic [ref=f28e28]:
+            - text: Password
+            - generic [ref=f28e29]: "*"
+          - link "Forgot password?" [ref=f28e30] [cursor=pointer]:
+            - /url: /forgot-password
+        - generic [ref=f28e31]:
+          - textbox "Password" [ref=f28e32]:
+            - /placeholder: Your password
+          - button "Show password" [ref=f28e33] [cursor=pointer]
+      - generic [ref=f28e37]:
+        - checkbox "Keep me signed in" [ref=f28e38] [cursor=pointer]
+        - generic [ref=f28e39] [cursor=pointer]: Keep me signed in
+      - button "Log in" [ref=f28e40] [cursor=pointer]
+    - paragraph [ref=f28e41]:
+      - text: Don't have an account?
+      - link "Create one" [ref=f28e42] [cursor=pointer]:
+        - /url: /register
+  - complementary [ref=f28e43]:
+    - generic [ref=f28e44]:
+      - generic [ref=f28e45]: Inventory Forecasting
+      - paragraph [ref=f28e46]: Know what to reorder, how much, and when — before the shelf runs empty.
+    - generic [ref=f28e47]:
+      - generic [ref=f28e52]:
+        - paragraph [ref=f28e53]: Forecasts you can act on
+        - paragraph [ref=f28e54]: Demand signals, coverage and reorder points in a single view.
+      - generic [ref=f28e59]:
+        - paragraph [ref=f28e60]: Secure by default
+        - paragraph [ref=f28e61]: Two-factor authentication and passkeys are built in from day one.
+      - generic [ref=f28e66]:
+        - paragraph [ref=f28e67]: Sign in without a password
+        - paragraph [ref=f28e68]: Passkeys let your team in with a tap or a glance.

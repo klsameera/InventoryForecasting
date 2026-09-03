@@ -1,0 +1,111 @@
+- generic [ref=f20e3]:
+  - complementary "Main navigation" [ref=f20e4]:
+    - link "Laravel" [ref=f20e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f20e13]:
+      - generic [ref=f20e14]:
+        - generic [ref=f20e15]: Overview
+        - navigation [ref=f20e16]:
+          - link "Dashboard" [ref=f20e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f20e24]:
+        - generic [ref=f20e25]: Catalog
+        - navigation [ref=f20e26]:
+          - link "Products" [ref=f20e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f20e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f20e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f20e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f20e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f20e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f20e60]:
+        - generic [ref=f20e61]: Inventory
+        - navigation [ref=f20e62]:
+          - link "Inventory" [ref=f20e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f20e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f20e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f20e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f20e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f20e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f20e105]:
+        - generic [ref=f20e106]: Purchasing
+        - navigation [ref=f20e107]:
+          - link "Purchase orders" [ref=f20e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f20e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f20e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f20e124]:
+        - generic [ref=f20e125]: Sales
+        - navigation [ref=f20e126]:
+          - link "Sales orders" [ref=f20e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f20e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f20e138]:
+        - generic [ref=f20e139]: Account
+        - navigation [ref=f20e140]:
+          - link "Profile" [ref=f20e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f20e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f20e151]:
+    - banner [ref=f20e152]:
+      - button "Collapse navigation" [ref=f20e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f20e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f20e161] [cursor=pointer]:
+        - generic [ref=f20e162]: QT
+        - generic [ref=f20e163]:
+          - generic [ref=f20e164]: QA Tester
+          - generic [ref=f20e165]: qa@example.test
+    - main [ref=f20e168]:
+      - generic [ref=f20e169]:
+        - generic [ref=f20e170]:
+          - generic [ref=f20e171]: Purchasing
+          - heading "Goods receipts" [level=1] [ref=f20e172]
+          - paragraph [ref=f20e173]: Every delivery received against a purchase order. Immutable once posted.
+        - link "Record receipt" [ref=f20e175] [cursor=pointer]:
+          - /url: /goods-receipt/create
+      - generic [ref=f20e177]:
+        - generic [ref=f20e178]:
+          - searchbox "Search by receipt number…" [ref=f20e180]
+          - generic [ref=f20e181]:
+            - button "Clear" [disabled]
+        - table [ref=f20e183]:
+          - rowgroup [ref=f20e184]:
+            - row [ref=f20e185]:
+              - columnheader "Receipt number" [ref=f20e186]
+              - columnheader "Purchase order" [ref=f20e187]
+              - columnheader "Supplier" [ref=f20e188]
+              - columnheader "Warehouse" [ref=f20e189]
+              - columnheader "Received" [ref=f20e190]
+              - columnheader "Lines" [ref=f20e191]
+          - rowgroup [ref=f20e192]:
+            - row [ref=f20e193]:
+              - cell [ref=f20e194]:
+                - paragraph [ref=f20e195]: GR-000001
+              - cell "PO-000001" [ref=f20e196]
+              - cell "Northwind Footwear Co" [ref=f20e197]
+              - cell "Main DC" [ref=f20e198]
+              - cell "2026-08-15" [ref=f20e199]
+              - cell "1" [ref=f20e200]
+        - generic [ref=f20e202]:
+          - generic [ref=f20e203]: Showing 1–1 of 1
+          - generic [ref=f20e204]:
+            - text: Rows
+            - combobox "Rows" [ref=f20e205]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

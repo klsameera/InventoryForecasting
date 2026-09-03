@@ -1,0 +1,74 @@
+// =============================================================================
+// Dropdowns
+// =============================================================================
+
+.dropdown-menu {
+    border-color: var(--app-border);
+    background-color: var(--app-surface-raised);
+    backdrop-filter: blur(20px) saturate(140%);
+    box-shadow: var(--app-shadow-lg);
+    animation: app-dropdown-in var(--app-transition-fast) both;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--app-radius-sm);
+    min-height: 2.5rem;
+    font-weight: 520;
+    color: var(--app-text-muted);
+    transition:
+        background-color var(--app-transition-fast),
+        color var(--app-transition-fast);
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+        flex: 0 0 auto;
+    }
+
+    &:hover,
+    &:focus {
+        background-color: var(--app-surface-sunken);
+        color: var(--app-text);
+    }
+
+    &.active {
+        background-color: var(--app-brand-soft);
+        color: var(--app-brand-strong);
+    }
+}
+
+.dropdown-item--danger {
+    color: $danger;
+
+    &:hover,
+    &:focus {
+        background-color: rgba($danger, 0.1);
+        color: $danger;
+    }
+}
+
+.dropdown-header {
+    padding: 0.625rem 0.75rem 0.375rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--app-text-soft);
+}
+
+.dropdown-divider {
+    border-color: var(--app-border-subtle);
+    margin-block: 0.25rem;
+}
+
+.app-dropdown-user {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.75rem;
+    border-block-end: 1px solid var(--app-border-subtle);
+    margin-block-end: 0.25rem;
+}

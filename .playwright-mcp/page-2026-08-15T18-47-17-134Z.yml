@@ -1,0 +1,104 @@
+- generic [ref=f29e3]:
+  - complementary "Main navigation" [ref=f29e4]:
+    - link "Laravel" [ref=f29e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f29e13]:
+      - generic [ref=f29e14]:
+        - generic [ref=f29e15]: Overview
+        - navigation [ref=f29e16]:
+          - link "Dashboard" [ref=f29e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f29e24]:
+        - generic [ref=f29e25]: Catalog
+        - navigation [ref=f29e26]:
+          - link "Products" [ref=f29e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f29e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f29e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f29e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f29e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f29e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f29e60]:
+        - generic [ref=f29e61]: Inventory
+        - navigation [ref=f29e62]:
+          - link "Inventory" [ref=f29e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Stock movements" [ref=f29e75] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f29e80] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Warehouses" [ref=f29e86] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f29e91]:
+        - generic [ref=f29e92]: Account
+        - navigation [ref=f29e93]:
+          - link "Profile" [ref=f29e94] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f29e99] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f29e104]:
+    - banner [ref=f29e105]:
+      - button "Collapse navigation" [ref=f29e106] [cursor=pointer]
+      - navigation "Breadcrumb" [ref=f29e110]:
+        - list [ref=f29e111]:
+          - listitem [ref=f29e112]: Dashboard
+      - button "Switch to dark theme" [ref=f29e113] [cursor=pointer]
+      - button "Percival Denesik qa@example.test" [ref=f29e117] [cursor=pointer]:
+        - generic [ref=f29e118]: PD
+        - generic [ref=f29e119]:
+          - generic [ref=f29e120]: Percival Denesik
+          - generic [ref=f29e121]: qa@example.test
+    - main [ref=f29e124]:
+      - generic [ref=f29e125]:
+        - generic [ref=f29e127]:
+          - generic [ref=f29e128]: Overview
+          - heading "Dashboard" [level=1] [ref=f29e129]
+          - paragraph [ref=f29e130]: Demand, coverage and reorder signals across your catalogue.
+        - generic [ref=f29e131]:
+          - article [ref=f29e133]:
+            - paragraph [ref=f29e135]: SKUs tracked
+            - paragraph [ref=f29e147]: —
+          - article [ref=f29e149]:
+            - paragraph [ref=f29e151]: Forecast accuracy
+            - paragraph [ref=f29e156]: —
+          - article [ref=f29e158]:
+            - paragraph [ref=f29e160]: Reorder alerts
+            - paragraph [ref=f29e164]: —
+          - article [ref=f29e166]:
+            - paragraph [ref=f29e168]: Days of cover
+            - paragraph [ref=f29e176]: —
+        - generic [ref=f29e177]:
+          - generic [ref=f29e179]:
+            - generic [ref=f29e181]:
+              - heading "Demand trend" [level=2] [ref=f29e182]
+              - paragraph [ref=f29e183]: Units forecast against units sold.
+            - generic [ref=f29e185]:
+              - paragraph [ref=f29e190]: No demand history yet
+              - paragraph [ref=f29e191]: Once a forecasting module publishes its figures, the trend appears here.
+          - generic [ref=f29e193]:
+            - generic [ref=f29e195]:
+              - heading "Top movers" [level=2] [ref=f29e196]
+              - paragraph [ref=f29e197]: Highest volume this period.
+            - generic [ref=f29e199]:
+              - paragraph [ref=f29e204]: Nothing to compare yet
+              - paragraph [ref=f29e205]: Movement ranks appear once stock records exist.
+        - generic [ref=f29e206]:
+          - generic [ref=f29e208]:
+            - heading "Quick actions" [level=2] [ref=f29e209]
+            - paragraph [ref=f29e210]: Jump straight to the things you do most.
+          - generic [ref=f29e211]:
+            - link "Profile settings Update your name and email address" [ref=f29e212] [cursor=pointer]:
+              - /url: /settings/profile
+              - generic [ref=f29e217]:
+                - generic [ref=f29e218]: Profile settings
+                - generic [ref=f29e219]: Update your name and email address
+            - link "Security Passwords, two-factor and passkeys" [ref=f29e222] [cursor=pointer]:
+              - /url: /settings/security
+              - generic [ref=f29e227]:
+                - generic [ref=f29e228]: Security
+                - generic [ref=f29e229]: Passwords, two-factor and passkeys

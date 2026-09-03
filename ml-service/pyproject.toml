@@ -1,0 +1,8 @@
+[project]
+name = "inventory-forecasting-ml-service"
+version = "0.1.0"
+description = "Phase 5 scaffold: Laravel <-> Python forecast integration, with a deterministic baseline standing in for a trained model."
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

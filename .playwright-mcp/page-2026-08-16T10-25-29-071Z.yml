@@ -1,0 +1,194 @@
+- generic [ref=f1e3]:
+  - complementary "Main navigation" [ref=f1e4]:
+    - link "Laravel" [ref=f1e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f1e13]:
+      - generic [ref=f1e14]:
+        - generic [ref=f1e15]: Overview
+        - navigation [ref=f1e16]:
+          - link "Dashboard" [ref=f1e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f1e24]:
+        - generic [ref=f1e25]: Catalog
+        - navigation [ref=f1e26]:
+          - link "Products" [ref=f1e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f1e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f1e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f1e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f1e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f1e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f1e60]:
+        - generic [ref=f1e61]: Inventory
+        - navigation [ref=f1e62]:
+          - link "Inventory" [ref=f1e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f1e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f1e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f1e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f1e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f1e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f1e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f1e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f1e115]:
+        - generic [ref=f1e116]: Purchasing
+        - navigation [ref=f1e117]:
+          - link "Purchase orders" [ref=f1e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f1e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f1e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f1e134]:
+        - generic [ref=f1e135]: Sales
+        - navigation [ref=f1e136]:
+          - link "Sales orders" [ref=f1e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f1e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f1e148]:
+        - generic [ref=f1e149]: Forecasting
+        - navigation [ref=f1e150]:
+          - link "Forecasts" [ref=f1e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f1e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f1e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+      - generic [ref=f1e165]:
+        - generic [ref=f1e166]: Account
+        - navigation [ref=f1e167]:
+          - link "Profile" [ref=f1e168] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f1e173] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f1e178]:
+    - banner [ref=f1e179]:
+      - button "Collapse navigation" [ref=f1e180] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f1e184] [cursor=pointer]
+      - button "Justen Rippin qa@example.test" [ref=f1e188] [cursor=pointer]:
+        - generic [ref=f1e189]: JR
+        - generic [ref=f1e190]:
+          - generic [ref=f1e191]: Justen Rippin
+          - generic [ref=f1e192]: qa@example.test
+    - main [ref=f1e195]:
+      - generic [ref=f1e196]:
+        - generic [ref=f1e197]:
+          - generic [ref=f1e198]: Forecasting
+          - heading "Purchase recommendations" [level=1] [ref=f1e199]
+          - paragraph [ref=f1e200]: What to buy, how much to reduce, or what to clear — from forecast, stock, supplier terms and ageing/overstock risk. Requires a completed forecast for a SKU before it can be recommended.
+        - button "Generate recommendations" [ref=f1e202] [cursor=pointer]
+      - generic [ref=f1e208]:
+        - generic [ref=f1e209]:
+          - searchbox "Search by SKU…" [ref=f1e211]
+          - combobox "Filter by warehouse" [ref=f1e212]:
+            - option "All warehouses" [selected]
+            - option "Main"
+          - combobox "Filter by SKU" [ref=f1e213]:
+            - option "All SKUs" [selected]
+            - option "OLD-001"
+            - option "RUN-001"
+          - combobox "Filter by status" [ref=f1e214]:
+            - option "All statuses" [selected]
+            - option "New"
+            - option "Reviewed"
+            - option "Accepted"
+            - option "Modified"
+            - option "Rejected"
+            - option "Completed"
+          - combobox "Filter by recommendation type" [ref=f1e215]:
+            - option "All types" [selected]
+            - option "Purchase"
+            - option "Reduce purchase"
+            - option "Do not reorder"
+            - option "Clearance"
+          - combobox "Filter by stockout risk" [ref=f1e216]:
+            - option "Any stockout risk" [selected]
+            - option "Critical"
+            - option "Moderate"
+            - option "None"
+          - combobox "Filter by overstock risk" [ref=f1e217]:
+            - option "Any overstock risk" [selected]
+            - option "Critical"
+            - option "Moderate"
+            - option "None"
+          - generic [ref=f1e218]:
+            - button "Clear" [disabled]
+        - table [ref=f1e220]:
+          - rowgroup [ref=f1e221]:
+            - row [ref=f1e222]:
+              - columnheader "SKU" [ref=f1e223]
+              - columnheader "Warehouse" [ref=f1e224]
+              - columnheader "Type" [ref=f1e225]
+              - columnheader "Current" [ref=f1e226]
+              - columnheader "Incoming" [ref=f1e227]
+              - columnheader "30d Forecast" [ref=f1e228]
+              - columnheader "Recommended" [ref=f1e229]
+              - columnheader "By" [ref=f1e230]
+              - columnheader "Risks" [ref=f1e231]
+              - columnheader "Status" [ref=f1e232]
+              - columnheader "Actions" [ref=f1e233]
+          - rowgroup [ref=f1e234]:
+            - row [ref=f1e235]:
+              - cell [ref=f1e236]:
+                - generic [ref=f1e237]:
+                  - paragraph [ref=f1e238]: OLD-001
+                  - paragraph [ref=f1e239]: Old Model
+              - cell "Main" [ref=f1e240]
+              - cell "Clearance" [ref=f1e241]
+              - cell "1000" [ref=f1e244]
+              - cell "0" [ref=f1e245]
+              - cell "30" [ref=f1e246]
+              - cell [ref=f1e247]:
+                - paragraph [ref=f1e249]: "0"
+              - cell "2026-08-16" [ref=f1e250]
+              - cell [ref=f1e251]:
+                - generic [ref=f1e252]:
+                  - generic [ref=f1e253]: "Overstock: Critical"
+                  - generic [ref=f1e255]: "Ageing: 91/100"
+              - cell "New" [ref=f1e257]
+              - cell [ref=f1e260]:
+                - generic [ref=f1e261]:
+                  - button "Accept recommendation" [ref=f1e262] [cursor=pointer]
+                  - button "Modify" [ref=f1e265] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f1e266] [cursor=pointer]
+            - row [ref=f1e270]:
+              - cell [ref=f1e271]:
+                - generic [ref=f1e272]:
+                  - paragraph [ref=f1e273]: RUN-001
+                  - paragraph [ref=f1e274]: Runner
+              - cell "Main" [ref=f1e275]
+              - cell "Purchase" [ref=f1e276]
+              - cell "30" [ref=f1e279]
+              - cell "0" [ref=f1e280]
+              - cell "300" [ref=f1e281]
+              - cell [ref=f1e282]:
+                - paragraph [ref=f1e284]: "320"
+              - cell "2026-08-16" [ref=f1e285]
+              - 'cell "Stockout: Critical" [ref=f1e286]'
+              - cell "New" [ref=f1e290]
+              - cell [ref=f1e293]:
+                - generic [ref=f1e294]:
+                  - button "Accept recommendation" [ref=f1e295] [cursor=pointer]
+                  - button "Modify" [ref=f1e298] [cursor=pointer]
+                  - button "Reject recommendation" [ref=f1e299] [cursor=pointer]
+        - generic [ref=f1e304]:
+          - generic [ref=f1e305]: Showing 1–2 of 2
+          - generic [ref=f1e306]:
+            - text: Rows
+            - combobox "Rows" [ref=f1e307]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

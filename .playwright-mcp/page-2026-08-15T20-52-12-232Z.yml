@@ -1,0 +1,145 @@
+- generic [ref=f14e3]:
+  - complementary "Main navigation" [ref=f14e4]:
+    - link "Laravel" [ref=f14e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f14e13]:
+      - generic [ref=f14e14]:
+        - generic [ref=f14e15]: Overview
+        - navigation [ref=f14e16]:
+          - link "Dashboard" [ref=f14e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f14e24]:
+        - generic [ref=f14e25]: Catalog
+        - navigation [ref=f14e26]:
+          - link "Products" [ref=f14e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f14e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f14e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f14e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f14e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f14e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f14e60]:
+        - generic [ref=f14e61]: Inventory
+        - navigation [ref=f14e62]:
+          - link "Inventory" [ref=f14e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f14e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f14e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f14e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f14e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f14e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f14e105]:
+        - generic [ref=f14e106]: Purchasing
+        - navigation [ref=f14e107]:
+          - link "Purchase orders" [ref=f14e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f14e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f14e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f14e124]:
+        - generic [ref=f14e125]: Sales
+        - navigation [ref=f14e126]:
+          - link "Sales orders" [ref=f14e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f14e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f14e138]:
+        - generic [ref=f14e139]: Account
+        - navigation [ref=f14e140]:
+          - link "Profile" [ref=f14e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f14e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f14e151]:
+    - banner [ref=f14e152]:
+      - button "Collapse navigation" [ref=f14e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f14e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f14e161] [cursor=pointer]:
+        - generic [ref=f14e162]: QT
+        - generic [ref=f14e163]:
+          - generic [ref=f14e164]: QA Tester
+          - generic [ref=f14e165]: qa@example.test
+    - main [ref=f14e168]:
+      - generic [ref=f14e170]:
+        - generic [ref=f14e171]: Inventory
+        - heading "Inventory batches" [level=1] [ref=f14e172]
+        - paragraph [ref=f14e173]: FIFO lots behind every balance, oldest first — the basis for ageing analysis.
+      - generic [ref=f14e174]:
+        - generic [ref=f14e175]:
+          - searchbox "Search by SKU…" [ref=f14e177]
+          - combobox "Filter by warehouse" [ref=f14e178]:
+            - option "All warehouses" [selected]
+            - option "Main DC"
+            - option "North Store"
+            - option "Test WH"
+          - combobox "Filter by SKU" [ref=f14e179]:
+            - option "All SKUs" [selected]
+            - option "TR-001"
+          - generic [ref=f14e180]:
+            - checkbox "Open batches only" [ref=f14e181] [cursor=pointer]
+            - generic [ref=f14e182] [cursor=pointer]: Open batches only
+          - generic [ref=f14e183]:
+            - button "Clear" [disabled]
+        - table [ref=f14e185]:
+          - rowgroup [ref=f14e186]:
+            - row [ref=f14e187]:
+              - columnheader "SKU" [ref=f14e188]
+              - columnheader "Warehouse" [ref=f14e189]
+              - columnheader "Received" [ref=f14e190]
+              - columnheader "Age" [ref=f14e191]
+              - columnheader "Received" [ref=f14e192]
+              - columnheader "Remaining" [ref=f14e193]
+              - columnheader "Unit cost" [ref=f14e194]
+          - rowgroup [ref=f14e195]:
+            - row [ref=f14e196]:
+              - cell [ref=f14e197]:
+                - generic [ref=f14e198]:
+                  - paragraph [ref=f14e199]: TR-001
+                  - paragraph [ref=f14e200]: Trail Runner
+              - cell "Main DC" [ref=f14e201]
+              - cell "2026-08-15" [ref=f14e202]
+              - cell "0.869582184837963 days" [ref=f14e203]
+              - cell "60" [ref=f14e204]
+              - cell "23" [ref=f14e205]
+              - cell "20.00" [ref=f14e206]
+            - row [ref=f14e207]:
+              - cell [ref=f14e208]:
+                - generic [ref=f14e209]:
+                  - paragraph [ref=f14e210]: TR-001
+                  - paragraph [ref=f14e211]: Trail Runner
+              - cell "North Store" [ref=f14e212]
+              - cell "2026-08-15" [ref=f14e213]
+              - cell "0.8695821895833333 days" [ref=f14e214]
+              - cell "25" [ref=f14e215]
+              - cell "25" [ref=f14e216]
+              - cell "20.00" [ref=f14e217]
+            - row [ref=f14e218]:
+              - cell [ref=f14e219]:
+                - generic [ref=f14e220]:
+                  - paragraph [ref=f14e221]: TR-001
+                  - paragraph [ref=f14e222]: Trail Runner
+              - cell "Main DC" [ref=f14e223]
+              - cell "2026-08-15" [ref=f14e224]
+              - cell "0.8695821923148148 days" [ref=f14e225]
+              - cell "2" [ref=f14e226]
+              - cell "2" [ref=f14e227]
+              - cell "20.00" [ref=f14e228]
+        - generic [ref=f14e230]:
+          - generic [ref=f14e231]: Showing 1–3 of 3
+          - generic [ref=f14e232]:
+            - text: Rows
+            - combobox "Rows" [ref=f14e233]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

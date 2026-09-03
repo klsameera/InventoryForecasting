@@ -1,0 +1,127 @@
+- generic [ref=f16e3]:
+  - complementary "Main navigation" [ref=f16e4]:
+    - link "Laravel" [ref=f16e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f16e13]:
+      - generic [ref=f16e14]:
+        - generic [ref=f16e15]: Overview
+        - navigation [ref=f16e16]:
+          - link "Dashboard" [ref=f16e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f16e24]:
+        - generic [ref=f16e25]: Catalog
+        - navigation [ref=f16e26]:
+          - link "Products" [ref=f16e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f16e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f16e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f16e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f16e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f16e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f16e60]:
+        - generic [ref=f16e61]: Inventory
+        - navigation [ref=f16e62]:
+          - link "Inventory" [ref=f16e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Batches" [ref=f16e75] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Stock movements" [ref=f16e81] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f16e86] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f16e92] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f16e100] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f16e105]:
+        - generic [ref=f16e106]: Purchasing
+        - navigation [ref=f16e107]:
+          - link "Purchase orders" [ref=f16e108] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f16e113] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f16e120] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f16e124]:
+        - generic [ref=f16e125]: Sales
+        - navigation [ref=f16e126]:
+          - link "Sales orders" [ref=f16e127] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f16e133] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f16e138]:
+        - generic [ref=f16e139]: Account
+        - navigation [ref=f16e140]:
+          - link "Profile" [ref=f16e141] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f16e146] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f16e151]:
+    - banner [ref=f16e152]:
+      - button "Collapse navigation" [ref=f16e153] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f16e157] [cursor=pointer]
+      - button "QA Tester qa@example.test" [ref=f16e161] [cursor=pointer]:
+        - generic [ref=f16e162]: QT
+        - generic [ref=f16e163]:
+          - generic [ref=f16e164]: QA Tester
+          - generic [ref=f16e165]: qa@example.test
+    - main [ref=f16e168]:
+      - generic [ref=f16e169]:
+        - generic [ref=f16e170]:
+          - generic [ref=f16e171]: Purchasing
+          - heading "Purchase orders" [level=1] [ref=f16e172]
+          - paragraph [ref=f16e173]: Orders placed with suppliers, from draft through receiving.
+        - link "New purchase order" [ref=f16e175] [cursor=pointer]:
+          - /url: /purchase-order/create
+      - generic [ref=f16e177]:
+        - generic [ref=f16e178]:
+          - searchbox "Search by PO number…" [ref=f16e180]
+          - combobox "Filter by supplier" [ref=f16e181]:
+            - option "All suppliers" [selected]
+            - option "Northwind Footwear Co"
+          - combobox "Filter by status" [ref=f16e182]:
+            - option "All statuses" [selected]
+            - option "Draft"
+            - option "Approved"
+            - option "Ordered"
+            - option "Partially received"
+            - option "Received"
+            - option "Cancelled"
+          - generic [ref=f16e183]:
+            - button "Clear" [disabled]
+        - table [ref=f16e185]:
+          - rowgroup [ref=f16e186]:
+            - row [ref=f16e187]:
+              - columnheader [ref=f16e188]:
+                - button "PO number" [ref=f16e189] [cursor=pointer]
+              - columnheader "Supplier" [ref=f16e193]
+              - columnheader "Warehouse" [ref=f16e194]
+              - columnheader [ref=f16e195]:
+                - button "Order date" [ref=f16e196] [cursor=pointer]
+              - columnheader [ref=f16e200]:
+                - button "Total" [ref=f16e201] [cursor=pointer]
+              - columnheader [ref=f16e205]:
+                - button "Status" [ref=f16e206] [cursor=pointer]
+          - rowgroup [ref=f16e210]:
+            - row [ref=f16e211]:
+              - cell [ref=f16e212]:
+                - link "PO-000001" [ref=f16e213] [cursor=pointer]:
+                  - /url: /purchase-order/1/edit
+              - cell "Northwind Footwear Co" [ref=f16e214]
+              - cell "Main DC" [ref=f16e215]
+              - cell "2026-08-15" [ref=f16e216]
+              - cell "2000.00" [ref=f16e217]
+              - cell "Partially received" [ref=f16e218]
+        - generic [ref=f16e222]:
+          - generic [ref=f16e223]: Showing 1–1 of 1
+          - generic [ref=f16e224]:
+            - text: Rows
+            - combobox "Rows" [ref=f16e225]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"

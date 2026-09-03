@@ -1,0 +1,146 @@
+- generic [ref=f2e3]:
+  - complementary "Main navigation" [ref=f2e4]:
+    - link "Laravel" [ref=f2e6] [cursor=pointer]:
+      - /url: /dashboard
+    - generic [ref=f2e13]:
+      - generic [ref=f2e14]:
+        - generic [ref=f2e15]: Overview
+        - navigation [ref=f2e16]:
+          - link "Dashboard" [ref=f2e17] [cursor=pointer]:
+            - /url: /dashboard
+      - generic [ref=f2e24]:
+        - generic [ref=f2e25]: Catalog
+        - navigation [ref=f2e26]:
+          - link "Products" [ref=f2e27] [cursor=pointer]:
+            - /url: /product
+          - link "Variants" [ref=f2e35] [cursor=pointer]:
+            - /url: /product-variant
+          - link "SKUs" [ref=f2e41] [cursor=pointer]:
+            - /url: /sku
+          - link "Categories" [ref=f2e47] [cursor=pointer]:
+            - /url: /category
+          - link "Brands" [ref=f2e52] [cursor=pointer]:
+            - /url: /brand
+          - link "Attributes" [ref=f2e57] [cursor=pointer]:
+            - /url: /attribute
+      - generic [ref=f2e60]:
+        - generic [ref=f2e61]: Inventory
+        - navigation [ref=f2e62]:
+          - link "Inventory" [ref=f2e63] [cursor=pointer]:
+            - /url: /inventory
+          - link "Analytics" [ref=f2e75] [cursor=pointer]:
+            - /url: /inventory-analytics
+          - link "Batches" [ref=f2e79] [cursor=pointer]:
+            - /url: /inventory-batch
+          - link "Daily snapshots" [ref=f2e85] [cursor=pointer]:
+            - /url: /inventory-daily-snapshot
+          - link "Stock movements" [ref=f2e91] [cursor=pointer]:
+            - /url: /stock-movement
+          - link "Adjustments" [ref=f2e96] [cursor=pointer]:
+            - /url: /stock-movement/create
+          - link "Stock transfers" [ref=f2e102] [cursor=pointer]:
+            - /url: /stock-transfer
+          - link "Warehouses" [ref=f2e110] [cursor=pointer]:
+            - /url: /warehouse
+      - generic [ref=f2e115]:
+        - generic [ref=f2e116]: Purchasing
+        - navigation [ref=f2e117]:
+          - link "Purchase orders" [ref=f2e118] [cursor=pointer]:
+            - /url: /purchase-order
+          - link "Goods receipts" [ref=f2e123] [cursor=pointer]:
+            - /url: /goods-receipt
+          - link "Suppliers" [ref=f2e130] [cursor=pointer]:
+            - /url: /supplier
+      - generic [ref=f2e134]:
+        - generic [ref=f2e135]: Sales
+        - navigation [ref=f2e136]:
+          - link "Sales orders" [ref=f2e137] [cursor=pointer]:
+            - /url: /sales-order
+          - link "Sales returns" [ref=f2e143] [cursor=pointer]:
+            - /url: /sales-return
+      - generic [ref=f2e148]:
+        - generic [ref=f2e149]: Forecasting
+        - navigation [ref=f2e150]:
+          - link "Forecasts" [ref=f2e151] [cursor=pointer]:
+            - /url: /forecast
+          - link "Forecast runs" [ref=f2e156] [cursor=pointer]:
+            - /url: /forecast-run
+          - link "Recommendations" [ref=f2e160] [cursor=pointer]:
+            - /url: /inventory-recommendation
+          - link "Central allocation" [ref=f2e165] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+      - generic [ref=f2e172]:
+        - generic [ref=f2e173]: Account
+        - navigation [ref=f2e174]:
+          - link "Profile" [ref=f2e175] [cursor=pointer]:
+            - /url: /settings/profile
+          - link "Security" [ref=f2e180] [cursor=pointer]:
+            - /url: /settings/security
+  - generic [ref=f2e185]:
+    - banner [ref=f2e186]:
+      - button "Collapse navigation" [ref=f2e187] [cursor=pointer]
+      - button "Switch to dark theme" [ref=f2e191] [cursor=pointer]
+      - button "Miss Antonina Wisoky qa@example.com" [ref=f2e195] [cursor=pointer]:
+        - generic [ref=f2e196]: MW
+        - generic [ref=f2e197]:
+          - generic [ref=f2e198]: Miss Antonina Wisoky
+          - generic [ref=f2e199]: qa@example.com
+    - main [ref=f2e202]:
+      - generic [ref=f2e203]:
+        - generic [ref=f2e204]:
+          - generic [ref=f2e205]: Forecasting
+          - heading "Purchase recommendations" [level=1] [ref=f2e206]
+          - paragraph [ref=f2e207]: What to buy, how much to reduce, what to clear, or what to transfer between warehouses instead — from forecast, stock, supplier terms and ageing/overstock risk. Requires a completed forecast for a SKU before it can be recommended.
+        - generic [ref=f2e209]:
+          - link "Central allocation" [ref=f2e210] [cursor=pointer]:
+            - /url: /inventory-recommendation/central-allocation
+          - button "Generate recommendations" [ref=f2e215] [cursor=pointer]
+      - generic [ref=f2e221]:
+        - generic [ref=f2e222]:
+          - searchbox "Search by SKU…" [ref=f2e224]
+          - combobox "Filter by warehouse" [ref=f2e225]:
+            - option "All warehouses" [selected]
+            - option "QA Colombo"
+            - option "QA Kandy"
+          - combobox "Filter by SKU" [ref=f2e226]:
+            - option "All SKUs" [selected]
+            - option "QA-P9-CENTRAL-002"
+            - option "QA-P9-TRANSFER-001"
+          - combobox "Filter by status" [ref=f2e227]:
+            - option "All statuses" [selected]
+            - option "New"
+            - option "Reviewed"
+            - option "Accepted"
+            - option "Modified"
+            - option "Rejected"
+            - option "Completed"
+          - combobox "Filter by recommendation type" [ref=f2e228]:
+            - option "All types" [selected]
+            - option "Purchase"
+            - option "Reduce purchase"
+            - option "Do not reorder"
+            - option "Transfer stock"
+            - option "Clearance"
+          - combobox "Filter by stockout risk" [ref=f2e229]:
+            - option "Any stockout risk" [selected]
+            - option "Critical"
+            - option "Moderate"
+            - option "None"
+          - combobox "Filter by overstock risk" [ref=f2e230]:
+            - option "Any overstock risk" [selected]
+            - option "Critical"
+            - option "Moderate"
+            - option "None"
+          - generic [ref=f2e231]:
+            - button "Clear" [disabled]
+        - generic [ref=f2e232]:
+          - paragraph [ref=f2e237]: No open recommendations
+          - paragraph [ref=f2e238]: Generate recommendations to see what needs reordering.
+        - generic [ref=f2e240]:
+          - generic [ref=f2e241]: No results
+          - generic [ref=f2e242]:
+            - text: Rows
+            - combobox "Rows" [ref=f2e243]:
+              - option "20" [selected]
+              - option "50"
+              - option "100"
