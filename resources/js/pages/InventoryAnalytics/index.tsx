@@ -329,7 +329,7 @@ export default function InventoryAnalyticsIndex({
                             }}
                             aria-label="Filter by movement speed"
                         >
-                            <option value="">All movement speeds</option>
+                            <option value="">All movement</option>
                             {movementSpeeds.map((option) => (
                                 <option key={option.value} value={option.value}>
                                     {option.label}
@@ -381,44 +381,43 @@ export default function InventoryAnalyticsIndex({
                             </label>
                         </div>
 
-                        <div className="d-flex align-items-center gap-2">
+                        <div>
                             <label
-                                className="form-label small mb-0"
+                                className="form-label small mb-1"
                                 htmlFor="lookback_days"
                             >
-                                Lookback
+                                Lookback (days)
                             </label>
                             <input
                                 id="lookback_days"
                                 type="number"
                                 min={1}
                                 className="form-control"
-                                style={{ maxWidth: '5rem' }}
                                 value={lookbackDays}
                                 onChange={(event) =>
                                     setLookbackDays(event.target.value)
                                 }
                                 onBlur={() => reload({ page: 1 })}
-                                aria-label="Lookback days"
                             />
+                        </div>
+
+                        <div>
                             <label
-                                className="form-label small mb-0"
+                                className="form-label small mb-1"
                                 htmlFor="safety_days"
                             >
-                                Safety
+                                Safety stock (days)
                             </label>
                             <input
                                 id="safety_days"
                                 type="number"
                                 min={0}
                                 className="form-control"
-                                style={{ maxWidth: '5rem' }}
                                 value={safetyDays}
                                 onChange={(event) =>
                                     setSafetyDays(event.target.value)
                                 }
                                 onBlur={() => reload({ page: 1 })}
-                                aria-label="Safety days"
                             />
                         </div>
                     </TableFilters>

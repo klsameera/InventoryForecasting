@@ -278,9 +278,15 @@ textarea.form-control {
     );
 
     @include media-breakpoint-up(md) {
+        // 12rem, not 9rem. A filter cell has to hold its widest placeholder,
+        // and the longest in the app — "All movement speeds" — measures ~179px
+        // against the 148.8px a 9rem cell actually resolved to, so several
+        // selects rendered clipped ("All movemen", "All warehouse"). Cells that
+        // no longer fit simply wrap to a second row, which is what auto-fit is
+        // for; a clipped control is not a smaller control, it is a broken one.
         grid-template-columns: minmax(12rem, 1.5fr) repeat(
                 auto-fit,
-                minmax(9rem, 1fr)
+                minmax(12rem, 1fr)
             );
         align-items: end;
     }
