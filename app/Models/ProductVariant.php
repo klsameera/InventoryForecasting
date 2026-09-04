@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $external_id the BuyAbans product id this was synced from
  * @property int $product_id
  * @property string $name
  * @property bool $status
@@ -21,7 +22,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  */
-#[Fillable(['product_id', 'name', 'status'])]
+#[Fillable(['external_id', 'product_id', 'name', 'status'])]
 class ProductVariant extends Model
 {
     /** @use HasFactory<ProductVariantFactory> */

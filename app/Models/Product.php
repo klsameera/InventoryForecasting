@@ -14,6 +14,7 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int|null $external_id the BuyAbans product id this was synced from
  * @property int $category_id
  * @property int|null $brand_id
  * @property string $name
@@ -28,8 +29,8 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $deleted_at
  */
 #[Fillable([
-    'category_id', 'brand_id', 'name', 'product_type', 'model_number',
-    'model_year', 'launch_date', 'end_of_life_date', 'status',
+    'external_id', 'category_id', 'brand_id', 'name', 'product_type',
+    'model_number', 'model_year', 'launch_date', 'end_of_life_date', 'status',
 ])]
 class Product extends Model
 {

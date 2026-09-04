@@ -12,7 +12,7 @@ use Illuminate\Console\Command;
 
 #[Signature('app:export-ml-training-data
     {--path= : Destination relative to storage/app/, defaults to ml/training_data.csv}
-    {--source=ledger : Where demand comes from — ledger (the local stock ledger) or buyabans (demand synced from the back office)}')]
+    {--source= : Where demand comes from — ledger (the local stock ledger) or buyabans (demand synced from the back office). Defaults to services.ml.demand_source}')]
 #[Description('Export the full warehouse/SKU/day modelling dataset for the Python training pipeline in ml-service/training/')]
 class ExportMlTrainingData extends Command
 {
@@ -22,7 +22,15 @@ class ExportMlTrainingData extends Command
     public function handle(): int
     {
         $path = $this->option('path');
-        $source = (string) $this->option('source');
+
+        // Defaults to the configured source rather than a hard-coded one. A
+        // literal default here silently overrode `services.ml.demand_source`,
+        // so this command exported the ledger while the serving path read
+        // synced demand — the exact train/serve mismatch that config exists to
+        // prevent.
+        $source = is_string($this->option('source')) && $this->option('source') !== ''
+            ? (string) $this->option('source')
+            : MlTrainingDataService::demandSource();
 
         if (! in_array($source, MlTrainingDataService::SOURCES, true)) {
             $this->error("Unknown source '{$source}'. Expected one of: ".implode(', ', MlTrainingDataService::SOURCES).'.');

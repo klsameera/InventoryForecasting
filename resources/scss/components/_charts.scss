@@ -51,6 +51,14 @@
     opacity: 0.1;
 }
 
+// A forecast's plausible range. Sits behind the lines at the same weight as an
+// area fill, so it reads as context around the prediction rather than as a
+// mark competing with it.
+.app-chart__band {
+    stroke: none;
+    opacity: 0.14;
+}
+
 .app-chart__marker {
     stroke: var(--app-chart-surface);
     stroke-width: 2;
@@ -156,6 +164,10 @@
     flex: 0 0 auto;
     border-radius: 0.125rem;
     background-color: currentcolor;
+}
+
+.app-chart-tooltip__swatch--band {
+    opacity: 0.45;
 }
 
 .app-chart-tooltip__value {

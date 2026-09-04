@@ -31,6 +31,7 @@ use Symfony\Component\Process\Process;
     {--only= : Train just one model — deepar or tft}
     {--max-epochs=20 : Training epochs before stopping}
     {--patience=4 : Epochs without improvement before early stopping}
+    {--holdout-days= : Days held out of training — pass 365 to leave a full seasonal cycle}
     {--timeout=21600 : Seconds to allow the Python process, default 6 hours}')]
 #[Description('Re-export the modelling dataset and retrain the neural forecasting models')]
 class TrainForecastModel extends Command
@@ -84,6 +85,19 @@ class TrainForecastModel extends Command
         if (is_string($only = $this->option('only')) && $only !== '') {
             $arguments[] = '--only';
             $arguments[] = $only;
+        }
+
+        // Left unset, `train.py` uses its minimal two-horizon holdout, which is
+        // all a three-year history could afford. The back office now holds four
+        // years, so `--holdout-days=365` leaves a full seasonal cycle unseen —
+        // the only way to compare a covariate-aware model against the baselines
+        // over a period that actually contains festivals and promotions. A
+        // model can only be scored honestly after its own training cutoff, so
+        // this is a *training* decision; no evaluation split can recover it
+        // afterwards.
+        if (is_string($holdout = $this->option('holdout-days')) && $holdout !== '') {
+            $arguments[] = '--holdout-days';
+            $arguments[] = $holdout;
         }
 
         $this->info('Training — this takes hours on CPU.');

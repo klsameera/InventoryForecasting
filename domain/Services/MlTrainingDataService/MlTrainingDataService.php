@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\Services\MlTrainingDataService;
 
 use App\Enums\PromotionDiscountType;
+use Carbon\CarbonImmutable;
 use Domain\Services\MlServiceClient\MlServiceClient;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
@@ -138,12 +139,45 @@ final class MlTrainingDataService
                 ? $this->buyabansDemandQuery()
                 : $this->snapshotQuery();
 
+            // On the BuyAbans source a series has a row only for days that sold
+            // something, so the calendar has to be reconstructed. See
+            // fillGap() — training on the raw rows overstates demand by roughly
+            // the reciprocal of the selling-day rate.
+            $densify = $source === self::SOURCE_BUYABANS;
+            $lastSyncedDate = $densify ? $this->lastDemandDate() : null;
+            $previousKey = null;
+            $previousRow = null;
+            $previousDate = null;
+
             foreach ($query->cursor() as $row) {
                 // §1h: `snapshot_date` is a 'date'-cast column that stores a
                 // time component, so it is normalised with SQL DATE() in the
                 // query rather than trusted as a bare 'Y-m-d' string here.
                 $date = (string) $row->date;
                 $skuId = (int) $row->sku_id;
+                $key = $row->warehouse_id.'-'.$skuId;
+
+                if ($densify) {
+                    if ($previousKey !== null && $previousKey !== $key) {
+                        // The previous series ended. Its silent tail is still
+                        // demand data — a product that stopped selling sold
+                        // zero, it did not stop existing.
+                        $rows += $this->fillGap(
+                            $handle, $promotions, $previousRow, $previousDate, $lastSyncedDate, false
+                        );
+                        $previousDate = null;
+                    }
+
+                    if ($previousDate !== null) {
+                        $rows += $this->fillGap(
+                            $handle, $promotions, $previousRow, $previousDate, $date, true
+                        );
+                    }
+                }
+
+                $previousKey = $key;
+                $previousRow = $row;
+                $previousDate = $date;
 
                 [$onPromotion, $discount] = $this->promotionStateFor($promotions, $skuId, $date);
 
@@ -183,6 +217,16 @@ final class MlTrainingDataService
                 }
             }
 
+            if ($densify && $previousDate !== null) {
+                $rows += $this->fillGap(
+                    $handle, $promotions, $previousRow, $previousDate, $lastSyncedDate, false
+                );
+
+                if ($lastSyncedDate !== null && ($lastDate === null || $lastSyncedDate > $lastDate)) {
+                    $lastDate = $lastSyncedDate;
+                }
+            }
+
             fclose($handle);
 
             return [
@@ -204,6 +248,85 @@ final class MlTrainingDataService
 
             return ['success' => false, 'message' => 'Error exporting ML training data'];
         }
+    }
+
+    /**
+     * Writes a zero-demand row for every day between two observed days.
+     *
+     * **The BuyAbans demand feed records only days that sold something.** It is
+     * an aggregate of orders, so a day with no order produces no row — faithful
+     * as a record of the source, and wrong as a time series. A pair with 496
+     * selling days across 1,097 calendar days, exported raw, hands the model
+     * 496 numbers and lets it believe they are consecutive: mean demand comes
+     * out about 2.2x too high, weekday and seasonal structure is smeared across
+     * the missing days, and `TimeSeriesDataSet` interpolates the gaps rather
+     * than reading zeros.
+     *
+     * A day with no sale is a day with zero demand. Every static column is
+     * carried from the day either side, since category, brand and price do not
+     * change because nothing sold.
+     *
+     * @param  resource  $handle
+     * @param  array<int, list<array{start: string, end: string, discount: float}>>  $promotions
+     * @param  bool  $exclusive  whether `$until` is itself about to be written
+     */
+    private function fillGap($handle, array $promotions, ?object $template, ?string $from, ?string $until, bool $exclusive): int
+    {
+        if ($template === null || $from === null || $until === null) {
+            return 0;
+        }
+
+        $cursor = CarbonImmutable::parse($from)->addDay();
+        $end = CarbonImmutable::parse($until);
+
+        if ($exclusive) {
+            $end = $end->subDay();
+        }
+
+        $skuId = (int) $template->sku_id;
+        $written = 0;
+
+        while ($cursor->lte($end)) {
+            $date = $cursor->toDateString();
+            [$onPromotion, $discount] = $this->promotionStateFor($promotions, $skuId, $date);
+
+            fputcsv($handle, [
+                $date,
+                (int) $template->warehouse_id,
+                $skuId,
+                $template->category_id === null ? '' : (int) $template->category_id,
+                $template->brand_id === null ? '' : (int) $template->brand_id,
+                0,
+                (int) $template->opening_qty,
+                (int) $template->closing_qty,
+                (int) $template->available_qty,
+                0,
+                0,
+                0,
+                0,
+                $onPromotion,
+                $discount,
+                (float) ($template->selling_price ?? 0),
+            ]);
+
+            $written++;
+            $cursor = $cursor->addDay();
+        }
+
+        return $written;
+    }
+
+    /**
+     * The last day demand has been synced for. Series are padded to here and no
+     * further: days beyond it are unknown, not zero.
+     */
+    private function lastDemandDate(): ?string
+    {
+        $last = DB::table('buyabans_daily_demands')
+            ->where('grain', config('services.buyabans.grain', 'warehouse'))
+            ->max('demand_date');
+
+        return $last === null ? null : CarbonImmutable::parse($last)->toDateString();
     }
 
     /**

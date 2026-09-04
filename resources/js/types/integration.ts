@@ -8,6 +8,7 @@ export type SyncStage =
     | 'locations'
     | 'categories'
     | 'brands'
+    | 'attributes'
     | 'products'
     | 'stock'
     | 'demand';

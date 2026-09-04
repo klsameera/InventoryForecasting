@@ -27,4 +27,22 @@ enum ForecastSource: string
             self::ColdStart => 'Cold start',
         };
     }
+
+    /**
+     * The same thing said to someone who has never seen this system.
+     *
+     * {@see label()} is a name for people who already know the pipeline;
+     * this is the sentence that goes next to it on a page anyone might read.
+     */
+    public function explanation(): string
+    {
+        return match ($this) {
+            self::SkuHistory => "Based on this product's own sales history.",
+            self::CategorySize => 'Too new to judge alone, so similar sizes in the same category were used.',
+            self::Category => 'Too new to judge alone, so other products in the same category were used.',
+            self::BrandCategory => 'Too new to judge alone, so similar products from the same brand were used.',
+            self::Hybrid => 'Part its own short history, part how similar products sell.',
+            self::ColdStart => 'Brand new — there is no sales history yet, so this is a cautious estimate.',
+        };
+    }
 }

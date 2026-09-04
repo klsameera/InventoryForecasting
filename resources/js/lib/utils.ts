@@ -31,3 +31,23 @@ export function formatCompact(value: number): string {
 export function formatNumber(value: number): string {
     return value.toLocaleString();
 }
+
+/**
+ * Money, compacted for a stat tile: "LKR 224.1M".
+ *
+ * The currency arrives as a code from `services.buyabans.currency` rather than
+ * a symbol hard-coded here. Nothing in this application converts between
+ * currencies, so the code is a label on a figure — and a label that can be
+ * wrong should be wrong in exactly one place.
+ */
+export function formatMoneyCompact(value: number, currency: string): string {
+    return `${currency} ${formatCompact(value)}`;
+}
+
+/**
+ * Money in full: "LKR 18,394". For figures small enough to read exactly, where
+ * compacting to "18.4K" would throw away the digits that matter.
+ */
+export function formatMoney(value: number, currency: string): string {
+    return `${currency} ${Math.round(value).toLocaleString()}`;
+}

@@ -10,6 +10,7 @@ use Carbon\CarbonImmutable;
 use Domain\Services\DemandProfileService\DemandProfileService;
 use Domain\Services\ForecastRunService\ForecastRunService;
 use Domain\Services\MlTrainingDataService\MlTrainingDataService;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -210,17 +211,11 @@ final class MlServiceClient
         $since = now()->subDays(self::HISTORY_DAYS)->toDateString();
         $buyabans = MlTrainingDataService::demandSource() === MlTrainingDataService::SOURCE_BUYABANS;
 
-        return array_map(function (array $pair) use ($since, $buyabans) {
+        $densifyTo = $buyabans ? $this->lastSyncedDemandDate() : null;
+
+        return array_map(function (array $pair) use ($since, $buyabans, $densifyTo) {
             $history = $buyabans
-                ? DB::table('buyabans_daily_demands')
-                    ->where('grain', config('services.buyabans.grain', 'warehouse'))
-                    ->where('warehouse_id', $pair['warehouse_id'])
-                    ->where('sku_id', $pair['sku_id'])
-                    ->whereDate('demand_date', '>=', $since)
-                    ->orderBy('demand_date')
-                    ->pluck('sold_qty')
-                    ->map(fn ($qty) => (int) round((float) $qty))
-                    ->all()
+                ? $this->denseDemandSeries($pair, $since, $densifyTo)
                 : DB::table('inventory_daily_snapshots')
                     ->where('warehouse_id', $pair['warehouse_id'])
                     ->where('sku_id', $pair['sku_id'])
@@ -236,6 +231,117 @@ final class MlServiceClient
                 'daily_sold_qty' => $history,
             ];
         }, $pairs);
+    }
+
+    /**
+     * A day-by-day demand series for one pair, with the silent days filled in.
+     *
+     * **`buyabans_daily_demands` holds a row only for days that had a sale.**
+     * It is an aggregate of orders, so a day with no order produces no row —
+     * which is correct as a record of the source, and completely wrong as a
+     * time series. Read raw, a pair with 496 selling days across 1,097
+     * calendar days hands the model 496 consecutive numbers and lets it believe
+     * they are consecutive days: mean demand comes out roughly 2.2x too high,
+     * every weekday and seasonal pattern is smeared, and `TimeSeriesDataSet`
+     * interpolates across the gaps rather than reading zeros.
+     *
+     * A day with no sale is a day with zero demand. That is what this returns.
+     *
+     * @param  array{warehouse_id: int, sku_id: int}  $pair
+     * @return list<int>
+     */
+    private function denseDemandSeries(array $pair, string $since, ?string $until): array
+    {
+        $sold = DB::table('buyabans_daily_demands')
+            ->where('grain', config('services.buyabans.grain', 'warehouse'))
+            ->where('warehouse_id', $pair['warehouse_id'])
+            ->where('sku_id', $pair['sku_id'])
+            ->whereDate('demand_date', '>=', $since)
+            ->when($until !== null, fn ($query) => $query->whereDate('demand_date', '<=', $until))
+            ->selectRaw('DATE(demand_date) as date, SUM(sold_qty) as qty')
+            ->groupBy(DB::raw('DATE(demand_date)'))
+            ->pluck('qty', 'date');
+
+        return $this->fillCalendar($sold, $since, $until);
+    }
+
+    /**
+     * Emits one value per calendar day from `$since` to `$until`, zero where the
+     * map has nothing.
+     *
+     * @param  Collection<string, mixed>  $byDate
+     * @return list<int>
+     */
+    private function fillCalendar($byDate, string $since, ?string $until): array
+    {
+        $cursor = CarbonImmutable::parse($since);
+        $end = CarbonImmutable::parse($until ?? now()->toDateString());
+        $series = [];
+
+        while ($cursor->lte($end)) {
+            $series[] = (int) round((float) ($byDate[$cursor->toDateString()] ?? 0));
+            $cursor = $cursor->addDay();
+        }
+
+        return $series;
+    }
+
+    /**
+     * The last day demand has actually been synced for.
+     *
+     * The series is not padded past it: days after the last sync are unknown,
+     * not zero, and inventing zeros there would tell the model demand had
+     * stopped.
+     */
+    private function lastSyncedDemandDate(): ?string
+    {
+        $last = DB::table('buyabans_daily_demands')
+            ->where('grain', config('services.buyabans.grain', 'warehouse'))
+            ->max('demand_date');
+
+        return $last === null ? null : CarbonImmutable::parse($last)->toDateString();
+    }
+
+    /**
+     * The covariate rows for one pair on the BuyAbans source, on a dense
+     * calendar so they line up day-for-day with {@see denseDemandSeries()}.
+     *
+     * The stock columns are zero because that source has no stock history at
+     * all (app_architecture.md §1r) — but the *dates* must still be every day,
+     * or the encoder reads a 90-row covariate block against a 180-day series.
+     *
+     * @param  array{warehouse_id: int, sku_id: int}  $pair
+     * @return Collection<int, object>
+     */
+    private function denseCovariateRows(array $pair, string $since): Collection
+    {
+        $until = $this->lastSyncedDemandDate();
+        $present = DB::table('buyabans_daily_demands')
+            ->where('grain', config('services.buyabans.grain', 'warehouse'))
+            ->where('warehouse_id', $pair['warehouse_id'])
+            ->where('sku_id', $pair['sku_id'])
+            ->whereDate('demand_date', '>=', $since)
+            ->exists();
+
+        if (! $present) {
+            return collect();
+        }
+
+        $cursor = CarbonImmutable::parse($since);
+        $end = CarbonImmutable::parse($until ?? now()->toDateString());
+        $rows = collect();
+
+        while ($cursor->lte($end)) {
+            $rows->push((object) [
+                'date' => $cursor->toDateString(),
+                'available_qty' => 0,
+                'received_qty' => 0,
+                'stockout_minutes' => 0,
+            ]);
+            $cursor = $cursor->addDay();
+        }
+
+        return $rows;
     }
 
     /**
@@ -276,19 +382,7 @@ final class MlServiceClient
         // that source learns nothing from these columns either way; what
         // matters is that the two sides agree.
         $snapshots = MlTrainingDataService::demandSource() === MlTrainingDataService::SOURCE_BUYABANS
-            ? DB::table('buyabans_daily_demands')
-                ->where('grain', config('services.buyabans.grain', 'warehouse'))
-                ->where('warehouse_id', $pair['warehouse_id'])
-                ->where('sku_id', $pair['sku_id'])
-                ->whereDate('demand_date', '>=', $since)
-                ->orderBy('demand_date')
-                ->select([
-                    DB::raw('DATE(demand_date) as date'),
-                    DB::raw('0 as available_qty'),
-                    DB::raw('0 as received_qty'),
-                    DB::raw('0 as stockout_minutes'),
-                ])
-                ->get()
+            ? $this->denseCovariateRows($pair, $since)
             : DB::table('inventory_daily_snapshots')
                 ->where('warehouse_id', $pair['warehouse_id'])
                 ->where('sku_id', $pair['sku_id'])

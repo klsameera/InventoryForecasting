@@ -35,6 +35,9 @@ final class ForecastResource extends JsonResource
             'confidence_score' => $this->confidence_score,
             'forecast_source' => $this->forecast_source->value,
             'forecast_source_label' => $this->forecast_source->label(),
+            // The same thing in a sentence, for the reader who does not know
+            // what "Cold start" means.
+            'forecast_source_explanation' => $this->forecast_source->explanation(),
             'model_version' => $this->whenLoaded('modelVersion', fn () => $this->modelVersion?->name),
             'accuracy' => $this->whenLoaded('accuracy', fn () => $this->accuracy === null ? null : [
                 'actual_qty' => (float) $this->accuracy->actual_qty,

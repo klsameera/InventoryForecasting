@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Domain\Services\BuyabansSyncService;
 
+use App\Models\Attribute;
+use App\Models\AttributeValue;
 use App\Models\Brand;
 use App\Models\BuyabansDailyDemand;
 use App\Models\BuyabansStockLevel;
 use App\Models\BuyabansSyncRun;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Models\Sku;
 use App\Models\Warehouse;
 use Carbon\CarbonImmutable;
@@ -62,12 +65,67 @@ final class BuyabansSyncService
     private const CHUNK = 500;
 
     /**
+     * The variant axes this catalog uses, flagged `forecast_relevant` so a model
+     * treats them as signal rather than description.
+     *
+     * **The back office declares these once per configurable product, not once
+     * globally.** It holds 426 attributes named `color_197627636368/CONF`,
+     * `size_custom_12/CONF`, `capacity_APPIP16MYE73XA/CONF` and so on — every
+     * one of them named simply Color, Size or Capacity, and every one private to
+     * a single product. Imported verbatim they made the attribute list 475 rows
+     * long and made a size on one product incomparable with a size on another.
+     * They are normalised onto these three codes on the way in, which is what
+     * takes the list to 52.
+     *
+     * An attribute is matched on **both** its code prefix and its name: 363 of
+     * the 365 attributes whose code starts with `size_` are axes, and a bare
+     * prefix match would happily swallow a `size_chart` if one ever appeared.
+     *
+     * @var list<string>
+     */
+    private const VARIANT_AXIS_CODES = ['color', 'size', 'capacity'];
+
+    /**
+     * Display names for the normalised axes, so the collapsed attribute does
+     * not inherit whichever per-product row happened to be synced last.
+     *
+     * @var array<string, string>
+     */
+    private const VARIANT_AXIS_NAMES = [
+        'color' => 'Color',
+        'size' => 'Size',
+        'capacity' => 'Capacity',
+    ];
+
+    /**
      * Local placeholder used when a synced product's category cannot be
      * resolved. `products.category_id` is NOT NULL, so a product with no usable
      * category would otherwise be dropped — and a product that sells is worth
      * forecasting whether or not its categorisation came across cleanly.
      */
     private const UNCATEGORISED_CODE = self::CODE_PREFIX.'uncategorised';
+
+    /**
+     * SKU codes claimed during the current product sync, keyed by code.
+     *
+     * The back office contains 150 SKU codes shared by two different products.
+     * `skus.sku` is unique here — it has to be, it is the join key demand
+     * resolves through — so only one of them can own it. Without this the
+     * second product silently stole the code, the first was left owning
+     * nothing, the orphan cleanup deleted it, and the next sync recreated it:
+     * 147 products created and destroyed on every run, reported as if it were
+     * progress.
+     *
+     * @var array<string, int> sku code => back-office product id that owns it
+     */
+    private array $claimedSkus = [];
+
+    /**
+     * Configurable parents seen in pass 1, held until a child needs one.
+     *
+     * @var array<int, array<string, mixed>>
+     */
+    private array $parentPayloads = [];
 
     public function __construct(private BuyabansClient $client) {}
 
@@ -86,7 +144,10 @@ final class BuyabansSyncService
     {
         $results = [];
 
-        foreach (['locations', 'categories', 'brands', 'products', 'stock', 'demand'] as $stage) {
+        // Order matters: locations and the catalog reference data first,
+        // because products resolve against them, and demand resolves against
+        // products.
+        foreach (['locations', 'categories', 'brands', 'attributes', 'products', 'stock', 'demand'] as $stage) {
             $method = 'sync'.Str::studly($stage);
             $results[$stage] = $this->{$method}($options);
 
@@ -272,12 +333,12 @@ final class BuyabansSyncService
                             continue;
                         }
 
-                        $name = trim((string) ($item['name'] ?? ''));
+                        $name = $this->cleanName((string) ($item['name'] ?? ''));
 
                         Category::updateOrCreate(
                             ['code' => $this->categoryCode($externalId)],
                             [
-                                'name' => $name !== '' ? $name : "Category {$externalId}",
+                                'name' => $name !== '' ? $this->cleanName($name) : "Category {$externalId}",
                                 'status' => (bool) ($item['status'] ?? true),
                             ]
                         );
@@ -343,67 +404,79 @@ final class BuyabansSyncService
      * @param  array<string, mixed>  $options
      * @return array{success: bool, message: string, data?: array<string, mixed>}
      */
-    public function syncProducts(array $options = []): array
+    /**
+     * Attributes and their selectable values.
+     *
+     * A stage of its own because attributes are reference data in their own
+     * right — the axes a configurable product varies along, and what a variant
+     * is described by. Without it the local `attributes` and `attribute_values`
+     * tables stay empty, which is exactly what happened until now: the endpoint
+     * existed and nothing ever called it.
+     *
+     * @param  array<string, mixed>  $options
+     * @return array{success: bool, message: string, data?: array<string, mixed>}
+     */
+    public function syncAttributes(array $options = []): array
     {
-        return $this->run('products', $options, function (BuyabansSyncRun $run) use ($options): array {
-            $categories = $this->categoryMap();
-            $brands = $this->brandMap();
-            $fallbackCategoryId = $this->uncategorisedCategoryId();
-            $uncategorised = 0;
+        return $this->run('attributes', $options, function (BuyabansSyncRun $run) use ($options): array {
+            $values = 0;
+            $collapsed = 0;
 
             $result = $this->client->walk(
-                '/api/forecasting/products',
-                ['limit' => $this->pageSize($options), 'sellable_only' => 1],
-                function (array $items) use ($categories, $brands, $fallbackCategoryId, &$uncategorised): int {
+                '/api/forecasting/attributes',
+                ['limit' => $this->pageSize($options)],
+                function (array $items) use (&$values, &$collapsed): int {
                     $written = 0;
 
                     foreach ($items as $item) {
-                        $skuCode = trim((string) ($item['sku'] ?? ''));
+                        $sourceCode = trim((string) ($item['code'] ?? ''));
 
-                        if ($skuCode === '') {
+                        if ($sourceCode === '') {
                             continue;
                         }
 
-                        $categoryId = $this->resolveCategoryId($item, $categories);
+                        // `size_197627613086/CONF` and `size` are the same axis.
+                        // Collapsing them here is what keeps the attribute list
+                        // at three rows instead of sixty-nine, and what lets a
+                        // size be compared across products at all.
+                        $axis = $this->axisFor(
+                            $sourceCode,
+                            (string) ($item['admin_name'] ?? $item['name'] ?? '')
+                        );
+                        $code = $axis ?? $sourceCode;
 
-                        if ($categoryId === null) {
-                            $categoryId = $fallbackCategoryId;
-                            $uncategorised++;
+                        if ($axis !== null) {
+                            $collapsed++;
                         }
 
-                        $brandId = $this->resolveBrandId($item, $brands);
-                        $price = (float) ($item['price'] ?? 0);
-                        $name = trim((string) ($item['name'] ?? $skuCode));
+                        $attribute = Attribute::updateOrCreate(
+                            ['code' => $code],
+                            [
+                                'name' => $axis !== null
+                                    ? self::VARIANT_AXIS_NAMES[$axis]
+                                    : trim((string) ($item['name'] ?? $item['admin_name'] ?? $code)),
+                                'data_type' => (string) ($item['type'] ?? 'text'),
+                                // Only the axes a product actually varies along
+                                // are worth a forecasting model's attention; the
+                                // rest are descriptive.
+                                'forecast_relevant' => $axis !== null,
+                            ]
+                        );
 
-                        DB::transaction(function () use ($skuCode, $name, $categoryId, $brandId, $price, $item) {
-                            $sku = Sku::withTrashed()->where('sku', $skuCode)->first();
+                        foreach ($item['options'] ?? [] as $option) {
+                            $label = trim((string) ($option['label'] ?? $option['admin_name'] ?? ''));
 
-                            $product = $sku?->product ?? new Product;
+                            if ($label === '') {
+                                continue;
+                            }
 
-                            $product->fill([
-                                'category_id' => $categoryId,
-                                'brand_id' => $brandId,
-                                'name' => $name,
-                                'product_type' => 'simple',
-                                'status' => (bool) ($item['status'] ?? true),
-                            ]);
-                            $product->save();
+                            AttributeValue::updateOrCreate(
+                                ['attribute_id' => $attribute->id, 'value' => $label],
+                                ['sort_order' => (int) ($option['sort_order'] ?? 0)]
+                            );
 
-                            $sku ??= new Sku;
-                            $sku->fill([
-                                'product_id' => $product->id,
-                                'sku' => $skuCode,
-                                'selling_price' => $price,
-                                'status' => (bool) ($item['status'] ?? true),
-                            ]);
-
-                            // cost_price is genuinely unknown here: the back
-                            // office exposes selling prices, not landed cost.
-                            // Leaving it at its default is honest; guessing a
-                            // margin would put invented money into every margin
-                            // report downstream.
-                            $sku->save();
-                        });
+                            $values++;
+                        }
 
                         $written++;
                     }
@@ -412,10 +485,495 @@ final class BuyabansSyncService
                 }
             );
 
-            $run->summary = ['uncategorised' => $uncategorised];
+            $removed = $this->removeDenormalisedAttributes();
+
+            $run->summary = [
+                'attribute_values' => $values,
+                'per_product_axes_collapsed' => $collapsed,
+                'denormalised_removed' => $removed,
+                'attributes_kept' => Attribute::count(),
+            ];
 
             return $result;
         });
+    }
+
+    /**
+     * Products, variants and SKUs — the catalog as a tree.
+     *
+     * **This is a tree, not a list, and getting it wrong fails silently.** In
+     * Bagisto a variant child is itself `type = 'simple'`, so a sync that asks
+     * only for sellable products receives parents and children flattened
+     * together with nothing to tell them apart. That is what the first version
+     * of this method did: it turned 1,865 variants of 373 configurable products
+     * into 1,865 unrelated top-level products, left the variants page
+     * permanently empty, and gave the forecasting engine no way to know that
+     * thirteen iPhone colours are one product.
+     *
+     * Two passes over the feed, because a child cannot be attached to a parent
+     * that does not exist yet:
+     *
+     * 1. Configurable parents and standalone simple products become
+     *    {@see Product} rows, keyed on the back-office product id.
+     * 2. Children become {@see ProductVariant} rows under their parent, each
+     *    carrying the {@see Sku} that actually sells.
+     *
+     * A third pass clears out the products an earlier flat import left behind.
+     *
+     * @param  array<string, mixed>  $options
+     * @return array{success: bool, message: string, data?: array<string, mixed>}
+     */
+    public function syncProducts(array $options = []): array
+    {
+        return $this->run('products', $options, function (BuyabansSyncRun $run) use ($options): array {
+            $categories = $this->categoryMap();
+            $brands = $this->brandMap();
+            $fallbackCategoryId = $this->uncategorisedCategoryId();
+            $this->claimedSkus = [];
+            $this->parentPayloads = [];
+
+            $counts = [
+                'parents' => 0,
+                'standalone' => 0,
+                'variants' => 0,
+                'orphaned_children' => 0,
+                'uncategorised' => 0,
+                'dangling_category_refs' => 0,
+                'variant_axis_values' => 0,
+                'duplicate_skus' => 0,
+                'childless_parents' => 0,
+            ];
+
+            $query = ['limit' => $this->pageSize($options), 'tree' => 1];
+
+            // Pass 1 — standalone products, and the parent payloads held back
+            // for pass 2. A configurable is deliberately *not* written here: 9
+            // of them have no children at all, and creating a parent that owns
+            // nothing only to delete it again is churn, not a sync.
+            $parents = $this->client->walk(
+                '/api/forecasting/products',
+                $query,
+                function (array $items) use ($categories, $brands, $fallbackCategoryId, &$counts): int {
+                    $written = 0;
+
+                    foreach ($items as $item) {
+                        if (($item['parent_id'] ?? null) !== null) {
+                            continue;
+                        }
+
+                        if (($item['product_type'] ?? 'simple') === 'configurable') {
+                            $this->parentPayloads[(int) $item['product_id']] = $item;
+                            $written++;
+
+                            continue;
+                        }
+
+                        $this->upsertProduct($item, $categories, $brands, $fallbackCategoryId, $counts);
+                        $written++;
+                    }
+
+                    return $written;
+                }
+            );
+
+            // Pass 2 — the variants, each creating its parent on first use.
+            $children = $this->client->walk(
+                '/api/forecasting/products',
+                $query,
+                function (array $items) use ($categories, $brands, $fallbackCategoryId, &$counts): int {
+                    $written = 0;
+
+                    foreach ($items as $item) {
+                        if (($item['parent_id'] ?? null) === null) {
+                            continue;
+                        }
+
+                        if ($this->upsertVariant($item, $categories, $brands, $fallbackCategoryId, $counts)) {
+                            $written++;
+                        }
+                    }
+
+                    return $written;
+                }
+            );
+
+            $counts['childless_parents'] = count($this->parentPayloads);
+
+            $counts['removed_flattened'] = $this->removeOrphanedProducts();
+
+            $run->summary = $counts;
+
+            return [
+                'pages' => $parents['pages'] + $children['pages'],
+                'fetched' => $parents['fetched'] + $children['fetched'],
+                'written' => $parents['written'] + $children['written'],
+            ];
+        });
+    }
+
+    /**
+     * A configurable parent or a standalone simple product.
+     *
+     * A parent carries no {@see Sku} of its own — it is not sellable, its
+     * variants are. A standalone product carries exactly one.
+     *
+     * @param  array<string, mixed>  $item
+     * @param  array<int, int>  $categories
+     * @param  array<string, int>  $brands
+     * @param  array<string, int>  $counts
+     */
+    private function upsertProduct(array $item, array $categories, array $brands, int $fallbackCategoryId, array &$counts): ?Product
+    {
+        $externalId = (int) ($item['product_id'] ?? 0);
+
+        if ($externalId === 0) {
+            return null;
+        }
+
+        $isConfigurable = ($item['product_type'] ?? 'simple') === 'configurable';
+        $skuCode = trim((string) ($item['sku'] ?? ''));
+
+        // A standalone product is nothing without its SKU, and two products
+        // cannot share one. Refused before anything is written, so the loser of
+        // a duplicate is reported rather than created and swept up again.
+        if (! $isConfigurable && ! $this->claimSku($skuCode, $externalId, $counts)) {
+            return null;
+        }
+
+        $categoryId = $this->resolveCategoryId($item, $categories);
+
+        if ($categoryId === null) {
+            $categoryId = $fallbackCategoryId;
+            $counts['uncategorised']++;
+
+            // Two very different situations land here, and lumping them
+            // together hides one of them. A product with no category entries
+            // was simply never categorised; a product whose entries all point
+            // at categories that no longer exist has a broken reference in the
+            // back office — 290 products across 54 missing category ids. Only
+            // the second is a defect somebody there can fix.
+            if (($item['categories'] ?? []) !== []) {
+                $counts['dangling_category_refs']++;
+            }
+        }
+
+        $name = $this->cleanName((string) ($item['name'] ?? $skuCode));
+        $status = (bool) ($item['status'] ?? true);
+        $brandId = $this->resolveBrandId($item, $brands);
+
+        $product = DB::transaction(function () use ($externalId, $item, $categoryId, $brandId, $name, $status, $isConfigurable, $skuCode) {
+            // withTrashed, not updateOrCreate: Product soft-deletes, so a row
+            // this sync previously retired still holds the unique external_id
+            // and a plain create would collide with a row the query cannot see.
+            $product = Product::withTrashed()->firstWhere('external_id', $externalId) ?? new Product;
+
+            if ($product->trashed()) {
+                $product->restore();
+            }
+
+            $product->fill([
+                'external_id' => $externalId,
+                'category_id' => $categoryId,
+                'brand_id' => $brandId,
+                'name' => $name !== '' ? $name : 'Product '.$externalId,
+                'product_type' => $isConfigurable ? 'configurable' : 'simple',
+                'status' => $status,
+            ]);
+            $product->save();
+
+            if (! $isConfigurable) {
+                $this->upsertSku($skuCode, $product->id, null, $item);
+            }
+
+            return $product;
+        });
+
+        if ($isConfigurable) {
+            $counts['parents']++;
+        } else {
+            $counts['standalone']++;
+        }
+
+        return $product;
+    }
+
+    /**
+     * A display name off the feed, HTML-decoded.
+     *
+     * A handful of names arrive HTML-encoded — `Under Armour Women&#039;s` —
+     * because the back office stores them as they were typed into a web form.
+     * Rendering that verbatim shows the entity to the user, and it is the kind
+     * of defect that survives forever once it is in a name column.
+     */
+    private function cleanName(string $name): string
+    {
+        return trim(html_entity_decode($name, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+    }
+
+    /**
+     * Records this run's claim on a SKU code, or refuses it to a second product.
+     *
+     * @param  array<string, int>  $counts
+     */
+    private function claimSku(string $skuCode, int $externalId, array &$counts): bool
+    {
+        if ($skuCode === '') {
+            $counts['duplicate_skus']++;
+
+            return false;
+        }
+
+        $owner = $this->claimedSkus[$skuCode] ?? null;
+
+        if ($owner !== null && $owner !== $externalId) {
+            $counts['duplicate_skus']++;
+
+            return false;
+        }
+
+        $this->claimedSkus[$skuCode] = $externalId;
+
+        return true;
+    }
+
+    /**
+     * One variant child: a {@see ProductVariant} under its parent, the
+     * {@see Sku} that actually sells, and whatever axis values it carries.
+     *
+     * **Axis values are written against the normalised axis attribute**, so a
+     * size is comparable across products rather than being trapped on that
+     * product's own private `size_1976.../CONF`. 1,858 of 1,861 variants carry
+     * at least one.
+     *
+     * Where a variant carries none, nothing is written and it is identified by
+     * its own name and SKU. Parsing "Black Titanium" out of a product name and
+     * calling it a colour would be a guess wearing the costume of data.
+     *
+     * @param  array<string, mixed>  $item
+     * @param  array<string, int>  $counts
+     */
+    private function upsertVariant(array $item, array $categories, array $brands, int $fallbackCategoryId, array &$counts): bool
+    {
+        $externalId = (int) ($item['product_id'] ?? 0);
+        $parentExternalId = (int) ($item['parent_id'] ?? 0);
+        $skuCode = trim((string) ($item['sku'] ?? ''));
+
+        if ($externalId === 0 || $parentExternalId === 0 || $skuCode === '') {
+            return false;
+        }
+
+        if (! $this->claimSku($skuCode, $externalId, $counts)) {
+            return false;
+        }
+
+        $parent = $this->resolveParent($parentExternalId, $categories, $brands, $fallbackCategoryId, $counts);
+
+        if ($parent === null) {
+            // The back office does contain children pointing at a parent it did
+            // not return. Counted and skipped rather than silently attached to
+            // the wrong product or promoted to a top-level product of its own.
+            $counts['orphaned_children']++;
+
+            return false;
+        }
+
+        DB::transaction(function () use ($externalId, $parent, $item, $skuCode, &$counts) {
+            $name = $this->cleanName((string) ($item['name'] ?? ''));
+
+            $variant = ProductVariant::withTrashed()->firstWhere('external_id', $externalId) ?? new ProductVariant;
+
+            if ($variant->trashed()) {
+                $variant->restore();
+            }
+
+            $variant->fill([
+                'external_id' => $externalId,
+                'product_id' => $parent->id,
+                'name' => $name !== '' ? $name : $skuCode,
+                'status' => (bool) ($item['status'] ?? true),
+            ]);
+            $variant->save();
+
+            $this->upsertSku($skuCode, $parent->id, $variant->id, $item);
+            $this->syncVariantAxisValues($variant, $item, $counts);
+        });
+
+        $counts['variants']++;
+
+        return true;
+    }
+
+    /**
+     * The parent product for a variant, created from pass 1's held payload the
+     * first time one of its children needs it.
+     *
+     * Creating parents lazily is what keeps this sync idempotent: a configurable
+     * with no children never gets written, so the orphan cleanup has nothing to
+     * delete and the next run has nothing to recreate.
+     *
+     * @param  array<int, int>  $categories
+     * @param  array<string, int>  $brands
+     * @param  array<string, int>  $counts
+     */
+    private function resolveParent(int $parentExternalId, array $categories, array $brands, int $fallbackCategoryId, array &$counts): ?Product
+    {
+        $payload = $this->parentPayloads[$parentExternalId] ?? null;
+
+        if ($payload !== null) {
+            unset($this->parentPayloads[$parentExternalId]);
+
+            return $this->upsertProduct($payload, $categories, $brands, $fallbackCategoryId, $counts);
+        }
+
+        // Already created by an earlier sibling in this run, or by a previous
+        // run whose payload this one has not reached yet.
+        return Product::where('external_id', $parentExternalId)->first();
+    }
+
+    /**
+     * Writes a variant's axis values against the normalised axis attributes.
+     *
+     * The value itself is matched by label rather than by the back office's
+     * option id, deliberately: the same size "9" is a different option row on
+     * every per-product size attribute, so matching on id would create one
+     * local value per product and defeat the normalisation entirely.
+     *
+     * @param  array<string, mixed>  $item
+     * @param  array<string, int>  $counts
+     */
+    private function syncVariantAxisValues(ProductVariant $variant, array $item, array &$counts): void
+    {
+        $pivot = [];
+
+        foreach ($item['variant_values'] ?? [] as $entry) {
+            $axis = $entry['axis'] ?? null;
+            $value = trim((string) ($entry['value'] ?? ''));
+
+            if ($axis === null || ! in_array($axis, self::VARIANT_AXIS_CODES, true) || $value === '') {
+                continue;
+            }
+
+            $attribute = Attribute::where('code', $axis)->first();
+
+            if ($attribute === null) {
+                continue;
+            }
+
+            $attributeValue = AttributeValue::firstOrCreate(
+                ['attribute_id' => $attribute->id, 'value' => $value],
+                ['sort_order' => 0]
+            );
+
+            // One value per axis per variant — the table's own unique key.
+            $pivot[$attributeValue->id] = ['attribute_id' => $attribute->id];
+        }
+
+        if ($pivot === []) {
+            return;
+        }
+
+        $variant->attributeValues()->sync($pivot);
+
+        $counts['variant_axis_values'] += count($pivot);
+    }
+
+    /**
+     * Removes per-product axis attributes left by an earlier sync that imported
+     * the back office's codes verbatim.
+     *
+     * Force-deleted: Attribute soft-deletes, and a retired row keeps holding its
+     * unique `code`. These codes are never re-created — they normalise onto the
+     * canonical axis now — but leaving 66 invisible rows behind to hold codes
+     * nothing will ask for again is exactly the debris this is here to remove.
+     * `attribute_values` and the variant pivot cascade with them.
+     */
+    private function removeDenormalisedAttributes(): int
+    {
+        $query = Attribute::withTrashed();
+
+        foreach (self::VARIANT_AXIS_CODES as $axis) {
+            $query->orWhere(function ($inner) use ($axis) {
+                // Same pairing as axisFor(): the prefix *and* the axis name.
+                // A prefix-only match here deleted 423 unrelated attributes.
+                $inner->where('code', 'like', $axis.'\_%')
+                    ->where('name', self::VARIANT_AXIS_NAMES[$axis]);
+            });
+        }
+
+        return $query->forceDelete();
+    }
+
+    /**
+     * The canonical axis an attribute code belongs to — `size_1976.../CONF` and
+     * plain `size` both normalise to `size`. Null for everything else.
+     */
+    private function axisFor(string $code, ?string $name = null): ?string
+    {
+        foreach (self::VARIANT_AXIS_CODES as $axis) {
+            if ($code === $axis) {
+                return $axis;
+            }
+
+            // A prefix alone is not enough, and getting this wrong is
+            // expensive: `size_chart`, `size_guide` and 360-odd others start
+            // with `size_` without being the size axis, and an earlier version
+            // of this check collapsed 423 perfectly good attributes into three.
+            // The per-product axis attributes are the ones that also carry the
+            // bare axis name.
+            if (str_starts_with($code, $axis.'_') && $name !== null && mb_strtolower(trim($name)) === $axis) {
+                return $axis;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     */
+    private function upsertSku(string $skuCode, int $productId, ?int $variantId, array $item): void
+    {
+        $sku = Sku::withTrashed()->where('sku', $skuCode)->first() ?? new Sku;
+
+        $sku->fill([
+            'product_id' => $productId,
+            'product_variant_id' => $variantId,
+            'sku' => $skuCode,
+            'selling_price' => (float) ($item['price'] ?? 0),
+            'status' => (bool) ($item['status'] ?? true),
+        ]);
+
+        // cost_price is genuinely unknown here: the back office exposes selling
+        // prices, not landed cost. Leaving it at its default is honest; guessing
+        // a margin would put invented money into every margin report downstream.
+        $sku->save();
+    }
+
+    /**
+     * Removes the products an earlier flat import left behind, where every
+     * variant child became a top-level product of its own.
+     *
+     * Only products owning nothing are touched: once pass 2 has moved a child's
+     * SKU onto its real parent, the product that used to hold it has no SKUs
+     * and no variants left, and describes nothing.
+     *
+     * Deliberately not restricted to rows carrying an `external_id`. The rows
+     * this exists to clean up are precisely the ones written *before* that
+     * column did, so that guard would skip every one of them — 10,846 of them
+     * on the first corrected run. And it protects nothing any more: this
+     * application has no way to create a product by hand, so a product owning
+     * neither a SKU nor a variant came from a sync or a seeder either way.
+     */
+    private function removeOrphanedProducts(): int
+    {
+        // Force-deleted, not soft-deleted. A soft delete leaves the row holding
+        // its unique `external_id`, so the next sync of that same back-office
+        // product collides with a row it cannot see — and these rows describe
+        // nothing, so there is no history worth keeping.
+        return Product::withTrashed()
+            ->whereDoesntHave('skus')
+            ->whereDoesntHave('variants')
+            ->forceDelete();
     }
 
     /**

@@ -18,8 +18,6 @@ import {
     PackageSearch,
     Percent,
     Replace,
-    Settings,
-    ShieldCheck,
     SlidersHorizontal,
     Sparkles,
     Split,
@@ -59,9 +57,7 @@ import {
     successors as productRelationshipSuccessors,
 } from '@/routes/product-relationship';
 import { index as productVariantIndex } from '@/routes/product-variant';
-import { edit as editProfile } from '@/routes/profile';
 import { index as promotionIndex } from '@/routes/promotion';
-import { edit as editSecurity } from '@/routes/security';
 import { index as skuIndex } from '@/routes/sku';
 import { index as supplierIndex } from '@/routes/supplier';
 import { index as supplierPerformanceIndex } from '@/routes/supplier-performance';
@@ -83,6 +79,9 @@ type NavGroup = {
  * tested — they are simply not navigation, because this application forecasts
  * demand and the BuyAbans back office is where stock is actually operated.
  * Reachable by URL; re-add an entry here to surface one again.
+ *
+ * Profile and security are absent for the same reason: they live in the user
+ * menu in the topbar, which is where an account link is looked for.
  */
 const navGroups: NavGroup[] = [
     {
@@ -242,21 +241,6 @@ const navGroups: NavGroup[] = [
                 title: 'Promotions',
                 href: promotionIndex(),
                 icon: Percent,
-            },
-        ],
-    },
-    {
-        label: 'Account',
-        items: [
-            {
-                title: 'Profile',
-                href: editProfile(),
-                icon: Settings,
-            },
-            {
-                title: 'Security',
-                href: editSecurity(),
-                icon: ShieldCheck,
             },
         ],
     },

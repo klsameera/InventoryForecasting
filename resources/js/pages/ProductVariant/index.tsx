@@ -118,7 +118,7 @@ export default function ProductVariantIndex({
             <PageHeader
                 eyebrow="Catalog"
                 title="Variants"
-                description="Attribute combinations that make up configurable products."
+                description="The child items of each configurable product. Size, colour and capacity are normalised on the way in — the back office defines a separate axis attribute per product, so the same size on two products would otherwise never match."
             />
 
             <DataTable

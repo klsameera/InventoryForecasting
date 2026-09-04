@@ -44,7 +44,8 @@ const STAGES: { value: SyncStage; label: string }[] = [
     { value: 'locations', label: 'Locations' },
     { value: 'categories', label: 'Categories' },
     { value: 'brands', label: 'Brands' },
-    { value: 'products', label: 'Products & SKUs' },
+    { value: 'attributes', label: 'Attributes' },
+    { value: 'products', label: 'Products, variants & SKUs' },
     { value: 'stock', label: 'Stock levels' },
     { value: 'demand', label: 'Demand history' },
 ];

@@ -102,3 +102,25 @@
     height: 3px;
     background: var(--app-gradient-brand);
 }
+
+// The headline sentence above the forecast charts. Larger than body copy so it
+// reads as the page's answer, not as another paragraph.
+.app-forecast-headline {
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    color: var(--app-text);
+
+    strong {
+        font-weight: 650;
+        color: var(--app-brand-strong);
+    }
+}
+
+// One "what this was based on" tile.
+.app-basis-card {
+    height: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--app-border-subtle);
+    border-radius: var(--app-radius-md);
+    background: var(--app-surface-muted);
+}

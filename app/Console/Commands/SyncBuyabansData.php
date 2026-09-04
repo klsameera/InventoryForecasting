@@ -11,7 +11,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
 #[Signature('app:sync-buyabans
-    {stage=all : Which stage to run — all, locations, categories, brands, products, stock or demand}
+    {stage=all : Which stage to run — all, locations, categories, brands, attributes, products, stock or demand}
     {--days= : Days of demand history to pull (default: services.buyabans.history_days)}
     {--from= : Start date for the demand window (Y-m-d), overrides --days}
     {--to= : End date for the demand window (Y-m-d), defaults to today}
@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
 class SyncBuyabansData extends Command
 {
     /** @var list<string> */
-    private const STAGES = ['all', 'locations', 'categories', 'brands', 'products', 'stock', 'demand'];
+    private const STAGES = ['all', 'locations', 'categories', 'brands', 'attributes', 'products', 'stock', 'demand'];
 
     public function handle(): int
     {

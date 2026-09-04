@@ -110,8 +110,27 @@ return [
          */
         'grain' => env('BUYABANS_GRAIN', 'warehouse'),
 
-        /* How many days of sales history a full sync reaches back for. */
-        'history_days' => env('BUYABANS_HISTORY_DAYS', 1100),
+        /*
+         * How many days of sales history a full sync reaches back for.
+         *
+         * 1500 covers the four years the back office now holds with room to
+         * spare. A full sync that reaches back less than the source holds does
+         * not fail — it silently trains on a shorter history than exists.
+         */
+        'history_days' => env('BUYABANS_HISTORY_DAYS', 1500),
+
+        /*
+         * The currency `buyabans_daily_demands.revenue` is denominated in.
+         *
+         * Not a conversion setting — nothing here converts anything. It is the
+         * label the dashboard puts in front of a money figure, and it belongs
+         * under this namespace because the money arrived through this API. The
+         * back office records 271,666 of its 271,721 orders as 'LKR' (the
+         * remaining 55 predate the integration and say 'Rs.', the same thing
+         * written informally), so the default is a measured fact about the
+         * source, not an assumption about the reader.
+         */
+        'currency' => env('BUYABANS_CURRENCY', 'LKR'),
 
     ],
 

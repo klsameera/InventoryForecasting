@@ -103,7 +103,9 @@ passwords do not reflect production rules.
 | Security | `/settings/security` | Password change, two-factor setup, passkey management. Behind `RequirePassword` — the user must re-confirm their password to open it. |
 | Appearance | `/settings/appearance` | Light / dark / system theme. |
 
-`/settings` redirects to `/settings/profile`.
+`/settings` redirects to `/settings/profile`. All three are reached from the
+user menu in the topbar — they are deliberately not in the sidebar, which
+carries data modules only.
 
 Account deletion requires the current password (`ProfileDeleteRequest`), logs
 the user out, deletes the record, invalidates the session, and redirects to `/`.
@@ -111,15 +113,73 @@ Passkeys cascade-delete with the user.
 
 ### Dashboard
 
-`/dashboard` (requires `auth` + `verified`). Renders the shell of the intended
-forecasting overview: four KPI tiles (SKUs tracked, forecast accuracy, reorder
-alerts, days of cover), a demand trend chart, a top-movers bar chart, and quick
-links to profile and security.
+`/dashboard` (requires `auth` + `verified`). Eight KPI tiles in two rows, five
+charts, a forecast-health card and six shortcuts — all computed on request by
+`DashboardService` from the latest synced data. Nothing here is stored or
+cached.
 
-**All metric props are optional and nothing currently supplies them.** With no
-data the tiles show `—` and the charts render their empty states. This is
-deliberate — the page is ready for a forecasting module to pass `metrics`,
-`demandTrend` and `topMovers` props, and it is honest until one does.
+**Every window ends at the last day demand was synced for, not today**, and the
+page says which days those are. A sync that falls behind would otherwise show a
+fortnight of zeros with nothing on screen explaining it.
+
+#### Trading — the headline window (30 days)
+
+| Tile | What it is |
+| --- | --- |
+| Revenue | `SUM(revenue)` over the window, in the currency named by `BUYABANS_CURRENCY` (default `LKR`). Nothing converts currencies; the code is a label. |
+| Units sold | `SUM(sold_qty)` over the same rows. |
+| Orders | `SUM(order_count)`. |
+| Average order value | Revenue ÷ orders. Its own tile because the two can move in opposite directions, and which one is moving is the first question anyone asks. |
+
+Each carries a 12-week sparkline and a change comparing the last four weeks
+with the four before them.
+
+#### Stock position
+
+| Tile | What it is |
+| --- | --- |
+| Stock on hand (retail) | Stock summed per SKU × `skus.selling_price`. **At retail, not at cost** — `cost_price` is populated for 149 of 10,892 SKUs, so a cost valuation would silently describe 1.4% of the catalogue. |
+| Days of cover | Stock on hand divided by the recent daily rate of sale, over SKUs that have **both**. Mixes the back office's real stock with generated demand history, so it demonstrates the calculation rather than describing real coverage. |
+| Lines out of stock | Products that sold in the window and now have nothing left. **A demonstration, not a work queue, while demand is seeded** — of 475 SKUs that sold, 321 have a back office stock row genuinely reading zero, but the sales that proved the demand were generated and never decremented that stock. |
+| Reorder alerts | Purchase recommendations awaiting a human decision. |
+
+#### The charts
+
+| Chart | What it shows |
+| --- | --- |
+| Units sold per week | 12 weeks of `sold_qty`. |
+| Revenue per week | The same 12 weeks in money. **Two charts, not one with two y-axes** — with two axes the drawing can imply any relationship you like by choosing the scales. |
+| Where the money comes from | Top 8 categories by revenue. Ranked by money and not units on purpose: in this data the two orders disagree sharply, and a buying decision is made against revenue. |
+| Where it sells | Top 8 warehouses by revenue. Empty at the `channel` and `national` grains, where rows carry no warehouse. |
+| Top movers | Top 8 products by units — the units ranking the category chart deliberately is not. |
+| How long stock will last | Products bucketed by days of cover: out of stock, under 2 weeks, 2 weeks–2 months, 2–6 months, over 6 months. Each band has a fixed colour so a band emptying out never repaints its neighbours, and empty bands stay on the chart. |
+
+**The cover chart describes only the products that sold in the window**, and
+says so under its title. A stocked SKU with no recent sales has no measurable
+rate of sale; counting it as "over six months of cover" would report this
+dataset's shape rather than the business's, because demand was generated for
+163 SKUs out of a 10,892-SKU catalogue and every untouched SKU would pile into
+one band.
+
+#### Forecast health
+
+Last run and its status, how many predictions it produced and over what
+horizon, how many products are being forecast, and the accuracy so far.
+
+**Accuracy shows "—", and that is correct.** It is only known once a forecast's
+horizon has elapsed and `app:score-forecast-accuracy` has graded it;
+`forecast_accuracy` has never held a row. The card says so in words rather than
+leaving a bare dash.
+
+#### Decisions waiting for you
+
+Six shortcuts, to purchase recommendations, central allocation, forecasts, lost
+sales, inventory analytics and the BuyAbans sync — the places this data is
+meant to be acted on.
+
+Every window is anchored to the last day demand was **synced**, not to today —
+otherwise the charts would show a tail of zeros whenever the sync fell behind.
+A metric with no data renders "—" rather than `0`.
 
 ### BuyAbans data sync
 
@@ -142,9 +202,9 @@ went wrong, why.
 | **Test connection** | Asks the back office what it holds without pulling anything — row counts and the date range of its orders. The quickest way to tell a credentials problem from an empty dataset. |
 | **Sync now** | Runs one stage, or all of them, for a chosen number of days and location grain. Capped at 400 days from this page; a full-history pull belongs on the console command, which has no request timeout to hit. |
 
-The stages run in dependency order — locations, categories, brands, products,
-stock levels, then demand — because demand rows resolve against the catalog
-and locations that come before them. A stage that fails stops the run and is
+The stages run in dependency order — locations, categories, brands, attributes,
+products, stock levels, then demand — because demand rows resolve against the
+catalog and locations that come before them. A stage that fails stops the run and is
 recorded as a failed row; the stages that already succeeded are kept.
 
 Syncing is **idempotent**: re-running over a window already covered corrects
@@ -184,6 +244,13 @@ BuyAbans API and no entry point here, so they are whatever is already in the
 database. The reorder engine reads lead times directly, and promotions are a
 forecast covariate — if either needs to change, it needs a source.
 
+Demand rows exist only for days that **sold** something — the feed is an
+aggregate of orders, so a quiet day produces no row. Everything that reads this
+data fills the calendar back in, treating a day with no sale as a day of zero
+demand. That is not cosmetic: before it was fixed, forecasts across the catalog
+were 91% too high, because a product with four sales in three years was being
+read as selling on four consecutive days.
+
 **What the forecasts are actually built from** is controlled by
 `FORECAST_DEMAND_SOURCE` (see `server_architecture.md` §4). Set to `buyabans`,
 every forecast — the series sent to the ML service, which pairs get forecast,
@@ -201,9 +268,9 @@ yet (see §7). Listed under the sidebar's **Catalog** and **Inventory** groups.
 | --- | --- | --- |
 | Categories | `/category` | Tree of catalog categories (`parent_id`). Deleting a category with sub-categories or products is blocked; a category can't be moved under its own descendant. |
 | Brands | `/brand` | Flat list of product brands. |
-| Attributes | `/attribute` | Properties like Size or Color, each with a repeatable list of values (add/remove rows on the same form). A value still assigned to a variant can't be removed. |
-| Products | `/product` | Category + optional brand, `simple` or `configurable` type, model number/year, launch/end-of-life dates. |
-| Variants | `/product-variant` | A specific attribute combination for a configurable product (e.g. Size 42), tagged via an attribute → value picker where the value list depends on the chosen attribute. Only used by configurable products — a simple product's SKU skips straight to the product. |
+| Attributes | `/attribute` | Properties like Size or Color, each with its list of values. **Normalised on the way in:** the back office defines a separate Size/Color/Capacity attribute per configurable product — 426 of its 475 attributes are these — and the sync collapses them onto one attribute per axis, so a size on one product is comparable with a size on another. 52 attributes are held locally, 3 of them flagged forecast-relevant. |
+| Products | `/product` | Category + optional brand, `simple` or `configurable` type, model number/year, launch/end-of-life dates. A configurable product is a parent: it is not sellable itself, its variants are. |
+| Variants | `/product-variant` | The child items of a configurable product — the thing that actually sells. The Attributes column shows the variant's size, colour or capacity where the back office records one (1,858 of 1,861 do). A standalone simple product has no variant; its SKU points straight at the product. |
 | SKUs | `/sku` | The sellable, stock-tracked unit: product, optional variant, SKU code, barcode, cost/selling price, status, first/last stock dates. |
 | Warehouses | `/warehouse` | Locations that hold inventory. |
 | Inventory | `/inventory` | **Read-only** current stock balance per warehouse/SKU (on hand, reserved, available, incoming, average cost). There is no way to edit a balance directly — see Adjustments below. |
@@ -403,6 +470,38 @@ situation keeps changing — a human decision is treated as final for that
 SKU/warehouse pair. There's no "Create purchase order" button yet linking a
 decision back to Purchasing, and no "Create stock transfer" button linking
 an accepted transfer recommendation back to Stock transfers — see §7.
+
+### Forecasts — the page anyone can read
+
+`/forecast`, under the sidebar's **Forecasting** group. Rebuilt to answer the
+three questions a reader actually has before the table starts:
+
+1. **A sentence.** "Over the next 30 days we expect to sell about 27,952 units
+   across 161 products", with the realistic range beneath it and what the last
+   30 days actually sold, so the number has something to be compared against.
+2. **Four tiles** — expected units (with the change on the previous period),
+   products covered, confidence, and the forecast period.
+3. **"Sales so far, and what comes next"** — twelve weeks of what actually sold,
+   then the forecast, with a shaded band for the range the model considers
+   likely. The two lines share the last real week so they join up; the band
+   opens from that point and never covers weeks that already happened. The
+   forecast is drawn as a **weekly average**, because the model produces one
+   total for the whole window rather than a shape within it, and the legend says
+   so.
+4. **"Expected to sell most"** — the eight products with the highest predicted
+   demand, as horizontal bars so the product names are readable.
+5. **"How these numbers were worked out"** — each basis in a sentence:
+   "Based on this product's own sales history", "Brand new — there is no sales
+   history yet, so this is a cautious estimate", and so on.
+
+The table underneath uses the same language: **Expected to sell** (with the
+likely range), **Over** (the next N days), **How sure** (High/Medium/Low beside
+the percentage), **Based on** (the sentence, not the enum name) and **How it
+turned out** ("Still in the future" until the horizon elapses).
+
+It lists the **latest run only**. Every run re-forecasts the same pairs, so
+listing all of them showed each product once per run it had ever been through —
+7,833 rows describing 966 predictions, most of them superseded.
 
 ### Advanced intelligence (Phase 10)
 
@@ -759,10 +858,11 @@ Recorded so nobody assumes otherwise:
   through a real, authenticated API rather than a cross-database query, and
   `sold_qty` and the daily price are genuinely measured — but the staging back
   office held only 55 orders across 14 SKUs, so a multi-year order history was
-  *generated into it* (`ForecastingDemandHistorySeeder`, tagged `FCSTH-`). The
-  data has real structure and exercises the whole pipeline honestly; it is
-  still not real-world demand. SCM, where the real sales live, is not
-  reachable. Nothing derived from this data is evidence about production
+  *generated into it* (`ForecastingDemandHistorySeeder`, tagged `FCSTH-`) — now
+  536,416 orders and 1,003,133 items over four years, across 533 products and
+  10 locations. The data has real structure and exercises the whole pipeline
+  honestly; it is still not real-world demand. SCM, where the real sales live,
+  is not reachable. Nothing derived from this data is evidence about production
   accuracy.
 - **`forecast_accuracy` has never been populated.** Nothing has ever been
   scored, which means `ModelSelectionService::chooseAlgorithm()` has always

@@ -21,7 +21,7 @@ final class RunBuyabansSyncRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'stage' => ['nullable', Rule::in(['all', 'locations', 'categories', 'brands', 'products', 'stock', 'demand'])],
+            'stage' => ['nullable', Rule::in(['all', 'locations', 'categories', 'brands', 'attributes', 'products', 'stock', 'demand'])],
 
             // Capped well below the configured full history: this runs inside
             // a web request, and a three-year pull belongs on the console

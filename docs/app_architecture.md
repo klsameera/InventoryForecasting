@@ -1915,6 +1915,15 @@ a deliberate choice over deletion: the repository is not under version control,
 so a deletion would have been unrecoverable, and the recommendation engine's
 accept-path still refers to the PO and transfer workflows.
 
+**Profile and security are not in the sidebar either**, for a different reason:
+they are already in the user menu in the topbar (`user-menu.tsx`), which is
+where people look for an account link. The sidebar's `Account` group and the
+dashboard's `Quick actions` section both pointed at those same two pages, so
+both were removed — and `ShortcutCard`, whose only callers they were, went with
+them. It came back one task later when the dashboard grew shortcuts that go
+somewhere worth going: purchase recommendations, allocation, forecasts, lost
+sales, analytics and the sync.
+
 ### 1s. The read-only boundary — the write paths are gone, not guarded
 
 This application authors nothing. Not "authors nothing by default", not "refuses
@@ -1979,6 +1988,271 @@ The rewrite uses PHP's own `token_get_all()`, which knows code from comment. And
 the JSX equivalent bit too: a column keyed `'actions'` on the promotions page
 held a read-only *View impact* link, not write actions, and was removed by a
 name match before being restored.
+
+---
+
+### 1t. The catalog is a tree — configurable products and their variants
+
+The first product sync flattened it, and nothing said so. The variants page sat
+empty and Products showed 10,846 rows, which looked plausible.
+
+**Why it went wrong.** In Bagisto a variant child is itself `type = 'simple'`.
+`sellableProductQuery()` asks "what can generate demand", and a child is exactly
+that — so children came back in the feed, correctly, but with no indication that
+they were children. The sync treated each as a top-level product. 1,861 variants
+of 363 configurable products became 1,861 unrelated products.
+
+**Two traps in the source schema** made it easy to get wrong twice:
+
+- `products.parent_id` is **`0`, not `NULL`, for a top-level product**. Testing
+  `parent_id IS NOT NULL` counts every parent as a child — it reports 10,431
+  variants where there are 1,865. The API normalises this with
+  `NULLIF(p.parent_id, 0)` so a consumer testing for null gets the right answer.
+- The variant axis is **not** where `product_super_attributes` points. That
+  table names only the three base attributes, and no child carries a value on
+  any of them — which is what an early look at it wrongly concluded meant
+  variants had no axis values at all. They do; they live somewhere else. See
+  §1u.
+
+**What the API does now.** `products` takes `tree=1`, which returns configurable
+parents, their children with a real `parent_id`, and standalone simples, plus
+`product_type` and the declared `variant_axes`. `sellableProductQuery()` is
+untouched: it still answers the demand question, which is a different question.
+
+**What the sync does now.** Three passes, because a child cannot attach to a
+parent that does not exist yet: parents and standalone products first, then
+variants, then a cleanup of products left owning nothing. Plus an `attributes`
+stage that had simply never been written — the endpoint existed and nothing ever
+called it, so `attributes` and `attribute_values` were empty tables.
+
+**`variant_attribute_values` is populated — see §1u**, which corrects an earlier
+conclusion in this section that it could not be.
+
+**Two keys had to be added.** `products` and `product_variants` had no external
+identifier — a category has a `code`, a SKU has its own code, but a product had
+nothing, and a variant is identified only by a non-unique name. Without a key a
+re-sync cannot tell an existing row from a new one. `external_id` (nullable,
+unique) now holds the back-office product id.
+
+**Soft deletes bite here.** Both models soft-delete, so a retired row keeps
+holding its unique `external_id` and the next sync of that same back-office
+product collides with a row the query cannot see. Upserts look `withTrashed()`
+and restore; the orphan cleanup force-deletes, because a product owning neither
+a SKU nor a variant describes nothing worth keeping.
+
+**The restructure preserved every demand link.** SKU codes are the join key and
+never changed, so all 480,403 synced demand rows still resolve — `sku_id IS NULL`
+count is zero after the rebuild.
+
+---
+
+### 1u. Normalising the variant axes — 475 attributes down to 52
+
+The attributes page showed rows like `size_197627613086/CONF`,
+`color_197627636368/CONF` and `capacity_197627451510/CONF`: the same three
+concepts, declared once per configurable product.
+
+**The scale of it.** 426 of the back office's 475 attributes are per-product
+axes — 365 Size, 34 Color, 27 Capacity — in at least three code shapes
+(`size_197627599397/CONF`, `size_custom_12/CONF`,
+`capacity_APPIP16MYE73XA/CONF`). Imported verbatim they made the attribute list
+unusable, and worse: a size on one product was a *different attribute* from the
+same size on another, so nothing could be filtered, grouped or compared.
+
+**The rule is code prefix AND name, not either alone.** An attribute is an axis
+when its code is `color` / `size` / `capacity`, or starts with one of those plus
+an underscore **and** its name is exactly Color, Size or Capacity. Prefix alone
+is tempting — every `size_`-prefixed attribute in this catalog does happen to be
+an axis — but it would silently swallow a `size_chart` the day one is added, and
+an early prefix-only version of the cleanup deleted 423 attributes before the
+name condition was paired with it. Name alone would trust a label with nothing
+behind it.
+
+**Normalisation happens on the way in, not in the back office.** The API reports
+the catalog faithfully — every attribute with its real code — and adds an `axis`
+field naming the canonical axis so a consumer does not have to parse codes. The
+sync collapses them onto three local attributes and merges every per-product
+option set into one value list per axis.
+
+**This overturned §1t's conclusion that variants have no axis values.** That was
+based on checking `product_super_attributes`, which names only the three base
+attributes — and no child carries a value on those. The values were on the
+per-product attributes all along. Two things had hidden them:
+
+- Those option rows have **no translation row at all**; the real value sits in
+  `attribute_options.admin_name`. Resolving only the translated label returned
+  null for every one of them.
+- The base attributes genuinely are empty, so a check that looked only there
+  found nothing and concluded correctly about the wrong table.
+
+**1,937 axis values across 1,858 of 1,861 variants** — sizes like "US 9",
+colours like "BLACK GREY". Matched by *label*, not by the back office's option
+id, deliberately: the same size "9" is a different option row on every
+per-product size attribute, so matching on id would create one local value per
+product and defeat the normalisation entirely.
+
+**What is still a guess and stays one.** Where a variant carries no axis value,
+nothing is written. Parsing "Black Titanium" out of a product name and storing
+it as a colour would be a guess wearing the costume of data.
+
+---
+
+### 1v. Making the product sync idempotent
+
+Every run of the corrected product sync reported `removed_flattened: 147` — and
+reported it as progress. It was churn: 147 products created and destroyed on
+each pass, with the orphan cleanup dutifully sweeping up what the same run had
+just made. Two independent causes.
+
+**150 SKU codes are shared by two different back-office products.** `skus.sku`
+is unique here — it has to be, it is the key demand resolves through — so only
+one product can own a code. The second product processed silently stole it, the
+first was left owning nothing, the cleanup deleted it, and the next run
+recreated it. Now a per-run claim register refuses the code to the second
+claimant *before* anything is written, and reports the conflict as
+`duplicate_skus: 151` on the run. Nothing is created to be swept away, and a
+genuine source-data conflict is visible instead of hidden inside a deletion
+count.
+
+**Nine configurables have no children at all.** Pass 1 wrote a parent for each,
+pass 2 gave it no variants, and the cleanup removed it — every run. Parents are
+now created **lazily**: pass 1 holds their payloads, and a parent is written the
+first time one of its children actually needs it. A childless configurable is
+never written, and the count surfaces as `childless_parents`.
+
+`removed_flattened` is now `0` on a second run, which is what a stable sync
+should say. Three tests pin it, because the failure mode is a summary that looks
+like work.
+
+**Names are HTML-decoded on the way in.** A handful arrive as
+`Under Armour Women&#039;s ...` because the back office stores them as typed
+into a web form. Rendering that verbatim shows the entity to the user, and it is
+the kind of defect that survives forever once it is in a name column.
+
+---
+
+### 1w. The demand feed is sparse — every consumer has to fill the calendar
+
+`buyabans_daily_demands` holds a row **only for days that sold something**. It
+is an aggregate of orders: no order, no row. That is faithful as a record of the
+source and completely wrong as a time series, and it silently corrupted both
+training and serving until it was caught.
+
+**The numbers.** 966 warehouse/SKU pairs, 480,403 rows, **zero of them
+zero-quantity**. Each pair averages 496 selling days across a 1,097-day window —
+so roughly 55% of the calendar is simply absent. Read raw, a pair with four
+sales in three years hands the model four consecutive numbers and lets it
+believe they are four consecutive days.
+
+**What it did to the forecasts.** Mean predicted 30-day demand across the 966
+pairs was **53.75 units**. Actual demand in the trailing 30 days was **27,132
+units** across those pairs, against a forecast total of **51,919** — 91% too
+high. After filling the calendar, the same run predicts **27,952** against
+27,132 actual, inside 3%. For slow movers the error was far worse than the
+average: a pair with four sales in six months was being read as 1.0 units/day
+rather than 0.022, a factor of 45.
+
+**And to training.** The exported dataset was 100% non-zero. Beyond the level
+error, `TimeSeriesDataSet` interpolates across gaps in the time index rather
+than reading them as zeros — so the model would have been fitted to invented
+history, and every weekday and seasonal pattern smeared across the missing days.
+After filling: 941,116 rows, 51% non-zero, median series length 1,096 days, and
+no calendar gaps.
+
+**Where the filling happens.** A day with no sale is a day with zero demand, and
+every consumer of this table has to say so for itself:
+
+| Consumer | Treatment |
+| --- | --- |
+| `MlServiceClient::buildSeries()` | `denseDemandSeries()` — one entry per calendar day of the 180-day window |
+| `MlServiceClient::buildNeuralFeatures()` | `denseCovariateRows()` — the covariate block on the same calendar, or the encoder reads a 90-row block against a 180-day series |
+| `MlTrainingDataService::export()` | `fillGap()` between consecutive observed days, and from the last observed day to the last synced day |
+| `DemandProfileService` | Already correct — it iterates days and reads `?? 0` |
+| `ForecastMaturityService` | Unaffected — it sums, and absent rows sum to nothing either way |
+
+**Series are padded to the last *synced* day, not to today.** Days after the
+last sync are unknown, not zero; padding them would tell the model demand had
+stopped.
+
+**Why the table stays sparse.** Storing a row per pair per day would be about
+1.06 million rows of mostly zeros, and it would make the table a derived
+artefact rather than a record of what the API returned. The cost of filling on
+read is trivial; the cost of forgetting to is what this section exists to
+prevent.
+
+---
+
+### 1x. The dashboard — computed on request, and honest about absences
+
+`DashboardService` (facade + `DashboardController`) replaces the bare
+`Route::inertia('dashboard', 'dashboard')` that rendered a page with no props.
+Nothing is persisted or cached; the same "computed report, not a CRUD module"
+shape as §1g.
+
+**The rule the tiles follow: a real number or nothing.** `forecastAccuracy`
+returns null and the tile renders "—", because `forecast_accuracy` has never
+held a row — a forecast is only scored once its horizon elapses. Plausible
+substitutes existed (last run's mean confidence; 100 minus an error proxy) and
+every one of them would have put a figure on the front page that could not be
+traced to a scored prediction. Nobody re-checks a number that looks reasonable.
+
+**Two bugs it exposed, both of the silent kind:**
+
+- **A join fan-out.** `buyabans_stock_levels` holds a row per SKU *per inventory
+  source*, so joining demand to it multiplied every sale by the number of
+  sources that SKU is stocked in — 83,977 units instead of 27,135, and days of
+  cover of 1 instead of 5. Two queries now, and a test that stocks one SKU in
+  four sources and asserts 40 days.
+- **`whereBetween` on a `date`-cast column drops its own end day.** Laravel
+  persists a `date` cast as `'Y-m-d H:i:s'`, so `'2026-09-03 00:00:00'` is not
+  `<= '2026-09-03'`. Every weekly bucket was six days long. All filters use
+  `whereDate`. **MySQL hides this** — the column is a real `DATE` in production,
+  and only the SQLite test suite exposed it. Same family as the `snapshot_date`
+  trap in §1h.
+
+**Design notes.** The trend is one series: a forecast here is a single total per
+pair over a 30-day horizon, and `TrendSeries.values` is `number[]` with no
+nulls, so drawing a forecast line would have meant inventing weekly shares.
+Every window anchors to the last *synced* day rather than today, so the charts
+never show a tail of zeros because the sync fell behind. Days of cover mixes
+real stock with generated demand and says so.
+
+---
+
+### 1y. Presenting a forecast to someone who does not know what one is
+
+The forecast page showed `SKU_HISTORY`, `confidence 25%` and `predicted 12
+(8–17)`. Every figure was correct and none of it said "so what?".
+
+`ForecastService::overview()` answers three questions before the table starts:
+how much do we expect to sell, is that more or less than we just sold, and how
+sure are we. `ForecastSource::explanation()` gives each basis a sentence
+alongside `label()`'s name — "Cold start" becomes "Brand new — there is no sales
+history yet, so this is a cautious estimate."
+
+**Two chart-kit extensions, both driven by what the data actually is:**
+
+- `TrendChart` values became `(number | null)[]`, and it takes an optional
+  `band`. A null is a gap, not a zero — which is what lets one chart hold the
+  past and the forecast on a single axis without either series claiming values
+  for the other's stretch of time.
+- `BarChart` gained a `horizontal` variant. Eight product names under vertical
+  columns in a third-width card collide into an unreadable smear; rotating them
+  trades one problem for another. Horizontal is the right form for ranked
+  categories with wordy labels, and every bar carries its value because with the
+  names down the side there is no axis to read a length against.
+
+**What the chart deliberately does not draw.** The model emits one total per
+pair for a 30-day window, not a curve within it. The forecast is therefore a
+flat *weekly average*, named as such in the legend; inventing four different
+weekly numbers to make a prettier line would draw a shape the model never
+produced. The two series share the last real week — a genuine observation — so
+they join rather than float apart, and the band pinches to that point and opens
+forward, never covering weeks that already happened.
+
+**The listing shows the latest run only.** Every run re-forecasts the same
+pairs, so the unfiltered listing was 7,833 rows describing 966 predictions with
+nothing marking which were superseded. `all_runs` opts back in.
 
 ---
 

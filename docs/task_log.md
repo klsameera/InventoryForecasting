@@ -3348,3 +3348,998 @@ outside the repository, since this project is not under version control.
 stock-operation modules entirely (models, migrations, tables, listings) rather
 than keep them as read-only history, and where supplier lead times and promotion
 windows should come from now that neither can be entered.
+
+## 2026-09-04 — The catalog is a tree: fixing a product sync that flattened every variant
+
+**Requested:** "buyabans has many variants.. why this empty.. child items of the
+configurable item are variants" — the Variants page was empty.
+
+It was empty because the product sync had flattened the catalog, and nothing
+reported it. Products showed 10,846 rows, which looked plausible.
+
+### Two bugs
+
+**1. The product sync ignored parentage.** In Bagisto a variant child is itself
+`type = 'simple'`, so `sellable_only` returned parents and children together
+with nothing to tell them apart, and every child became a top-level product.
+**1,861 variants of 363 configurable products became 1,861 unrelated products.**
+
+**2. There was no attributes stage at all.** The `/api/forecasting/attributes`
+endpoint was written in the first integration entry and never called. Local
+`attributes` and `attribute_values` were empty tables — 0 rows each.
+
+### Two traps in the source schema
+
+- **`products.parent_id` is `0`, not `NULL`, for a top-level product.** My first
+  count used `parent_id IS NOT NULL` and reported 10,431 variants; the real
+  figure is 1,865. I stated the wrong number before checking it against
+  `parent_id > 0`. The API now normalises with `NULLIF(p.parent_id, 0)`.
+- **Variant axes are declared but never populated.** Only 26 of 373
+  configurables list a `product_super_attribute` (colour, size, capacity), and
+  a query across every child returned **zero** rows with any axis value set.
+
+### Changed — BuyAbans back office
+
+- `products` takes `tree=1`: configurable parents, children with a real
+  `parent_id`, standalone simples, plus `product_type` and declared
+  `variant_axes`. `sellableProductQuery()` is untouched — "what can generate
+  demand" and "what shape is the catalog" are different questions.
+- `meta` reports `configurable_products`, `variant_children` and
+  `standalone_simple`.
+
+### Changed — InventoryForecasting
+
+- **New `attributes` sync stage**, ordered before products.
+- **`syncProducts` rewritten as three passes**: parents and standalone products,
+  then variants, then a cleanup of products left owning nothing.
+- **`external_id` added to `products` and `product_variants`** (migration
+  `2026_09_04_120000`). Neither had a stable external key — a product has no
+  code at all and a variant only a non-unique name — so a re-sync could not tell
+  an existing row from a new one.
+
+### Key decisions
+
+- **`variant_attribute_values` is left empty on purpose.** The schema supports
+  describing a variant by attribute combination and the UI has a column for it,
+  but the data does not exist. Parsing "Black Titanium" out of a product name
+  and storing it as a colour would be a guess wearing the costume of data. The
+  column reads "—" and the page copy now says why.
+- **Orphaned products are force-deleted, not soft-deleted.** A soft delete keeps
+  the row holding its unique `external_id`, so the next sync of that same
+  back-office product collides with a row the query cannot see.
+- **The orphan cleanup is not restricted to rows carrying an `external_id`.**
+  The rows it exists to clean up are precisely the ones written *before* that
+  column existed, so the guard skipped all 10,846 of them. It protects nothing
+  now anyway: the application has no way to create a product by hand.
+
+### Bugs hit while fixing it
+
+- **Duplicate-key failure on the second run.** `updateOrCreate` cannot see
+  soft-deleted rows but the unique index can. Upserts now look `withTrashed()`
+  and restore.
+- **The orphan guard left 20,392 products** — new tree rows alongside all 10,846
+  legacy flat rows, because the legacy rows predated `external_id`. Verified
+  every one owned neither a SKU nor a variant before widening the condition.
+- **Test fixtures predated the new shape**, so five sync tests failed once the
+  `attributes` stage joined `syncAll` (no fixture) and products gained
+  `product_type` / `parent_id`.
+- `Attribute` had to be aliased in the test — it collides with PHP 8's attribute
+  syntax — and `product_type` is cast to a `ProductType` enum, not a string.
+
+### Verification
+
+- Sync: **363 configurable parents, 1,861 variants, 9,036 standalone products,
+  10,892 SKUs** (1,857 on variants), **475 attributes / 2,023 attribute values**,
+  0 orphaned children, 10,993 flattened rows cleaned up.
+- **Every demand link survived the restructure**: SKU codes are the join key and
+  never changed, so all 480,403 demand rows still resolve —
+  `sku_id IS NULL` count is zero.
+- Verified in the browser: Variants lists "iPhone 16 Pro Max 256GB — Black
+  Titanium" under parent "iPhone 16 Pro Max", 1 SKU each.
+- Pest **233/233** (was 230; +3 pinning the tree, the attributes stage and the
+  orphan cleanup). Pint, `types:check`, `lint:check` clean; `format:check` still
+  only the 8 pre-existing SCSS files.
+
+### Still open
+
+- **Variant axis values have no source.** Until the back office populates
+  colour/size/capacity on children, a variant cannot be described by attributes
+  anywhere downstream, and the forecasting model gets no variant-level covariate
+  beyond the parent relationship.
+- 1,801 synced products still have no resolvable category.
+- Four children in the feed carry a `parent_id` pointing at a product the back
+  office did not return; they are counted and skipped rather than promoted to
+  top-level products.
+- Everything else from the previous entries is unchanged.
+
+## 2026-09-04 — Normalising the variant axes: 475 attributes down to 52
+
+**Requested:** "for attributes in buyabans has seperate color, capasity and size
+attribute for each config items.. but we have to make method for get common
+this.. because these 3 attributes are should common. when get to data our system
+we have to normalize it and get and only 3 attribute not each item."
+
+The attributes page was showing `size_197627613086/CONF`,
+`color_197627636368/CONF`, `capacity_197627451510/CONF` — the same three
+concepts repeated once per configurable product.
+
+### The scale
+
+**426 of the back office's 475 attributes are per-product axes** — 365 Size, 34
+Color, 27 Capacity — in at least three code shapes:
+`size_197627599397/CONF`, `size_custom_12/CONF`,
+`capacity_APPIP16MYE73XA/CONF`. Imported verbatim they made the attribute list
+unusable, and made a size on one product a *different attribute* from the same
+size on another, so nothing could be filtered, grouped or compared.
+
+### Changed
+
+- **API**: `products` now returns `variant_values` per product — the axis values
+  it carries, each tagged with the canonical `axis` so a consumer need not parse
+  codes. Option labels now resolve `COALESCE(aot.label, ao.admin_name)`.
+- **Sync**: `syncAttributes` collapses per-product axes onto three canonical
+  attributes and merges their option sets; `upsertVariant` writes
+  `variant_attribute_values` against those normalised attributes;
+  `removeDenormalisedAttributes` clears rows left by the earlier verbatim
+  import.
+
+### The matching rule, and why it is two conditions
+
+An attribute is an axis when its code **is** `color`/`size`/`capacity`, or
+starts with one of those plus an underscore **and** its name is exactly Color,
+Size or Capacity.
+
+Prefix alone is tempting — every `size_`-prefixed attribute in this catalog
+happens to be an axis — but it would silently swallow a `size_chart` the day one
+appears. Name alone would trust a label with nothing behind it.
+
+### A wrong call I made and then corrected
+
+The previous entry concluded that **no variant carries an axis value** and that
+`variant_attribute_values` should stay empty on principle. That was wrong, and
+wrong for an instructive reason: I checked `product_super_attributes`, which
+names only the three *base* attributes, and no child carries a value on those.
+The values were on the per-product attributes the whole time.
+
+Two things had hidden them:
+
+- Those option rows have **no translation row at all** — the real value sits in
+  `attribute_options.admin_name`. My query read only the translated label and
+  got null for every one.
+- The base attributes genuinely are empty, so a check that looked only there
+  found nothing and concluded correctly about the wrong table.
+
+**Result: 1,937 axis values across 1,858 of 1,861 variants** — sizes like
+"US 9", colours like "BLACK GREY". The docs, the service docblocks and the
+Variants page copy that repeated the wrong conclusion were all corrected.
+
+I also mis-diagnosed the first over-collapse: seeing 423 attributes deleted I
+assumed the prefix match was too loose, when in fact every `size_`-prefixed
+attribute in this catalog *is* an axis and 475→52 was correct. The tightened
+two-condition rule was kept anyway, because it is right in principle rather than
+right by accident.
+
+### Key decisions
+
+- **Normalise on the way in, not in the back office.** The API reports the
+  catalog faithfully, with real codes, and merely *names* the axis. Collapsing
+  is our system's model choice.
+- **Axis values are matched by label, not by the back office's option id.** The
+  same size "9" is a different option row on every per-product size attribute;
+  matching on id would create one local value per product and defeat the
+  normalisation entirely.
+- **Still not guessed:** where a variant carries no axis value, nothing is
+  written. Parsing "Black Titanium" out of a product name and storing it as a
+  colour would be a guess wearing the costume of data.
+
+### Bugs hit
+
+- The `DB::transaction` closure in `upsertVariant` did not capture `$counts` by
+  reference — a fatal on the first run with axis values.
+- A Pint reformat (aligned `=>`) silently defeated one scripted replacement, so
+  `axisFor()` was called without the name argument and every axis resolved
+  null — visible only as `variant_axis_values: 0` in the run summary.
+
+### Verification
+
+- Attributes: **475 → 52**, exactly **3 flagged forecast-relevant** (Color,
+  Size, Capacity), 228 merged values.
+- Variants: **1,937 axis values across 1,858 of 1,861** variants.
+- Browser: Attributes page shows no per-product duplicates; Variants shows
+  "Size: 7", "Size: 10" against real Skechers products.
+- Pest **233/233**. Pint, `types:check`, `lint:check` clean; `format:check`
+  still only the 8 pre-existing SCSS files.
+
+### Still open
+
+- Colour and capacity are far thinner than size (80 and 36 values against
+  1,821), because most configurables vary only by size in this catalog.
+- 3 variants carry no axis value at all and are identified by name and SKU.
+- Everything else from the previous entries is unchanged.
+
+## 2026-09-04 — Making the product sync idempotent, and forecasting on the variant catalog
+
+**Requested:** continue with the open work.
+
+Re-running the corrected product sync reported `removed_flattened: 147` every
+single time — and reported it as progress. A stable sync should remove nothing
+on a second pass, so this was churn: 147 products created and destroyed on each
+run, the orphan cleanup sweeping up what the same run had just made.
+
+### Two independent causes
+
+**150 SKU codes are shared by two different back-office products.** `skus.sku`
+is unique locally — it has to be, it is the key demand resolves through — so
+only one product can own a code. The second product processed silently stole it,
+the first was left owning nothing, the cleanup deleted it, the next run
+recreated it.
+
+**Nine configurables have no children at all.** Pass 1 wrote a parent for each,
+pass 2 gave it no variants, the cleanup removed it. Every run.
+
+### Changed
+
+- **A per-run SKU claim register.** A second product claiming a code is refused
+  *before* anything is written, and counted as `duplicate_skus` (151, matching
+  the upstream count exactly). A genuine source-data conflict is now visible
+  rather than hidden inside a deletion count.
+- **Parents are created lazily.** Pass 1 holds configurable payloads; a parent
+  is written the first time one of its children needs it. A childless
+  configurable is never written, and the count surfaces as `childless_parents`.
+- **Names are HTML-decoded on the way in.** A handful arrived as
+  `Under Armour Women&#039;s ...` — the back office stores them as typed into a
+  web form. 4 products and 6 variants were affected; rendering the entity to the
+  user is the kind of defect that survives forever once it is in a name column.
+
+### Verification
+
+- `removed_flattened` is **0** on a second run — the sync is idempotent.
+- Final catalog: **363 parents, 1,857 variants, 9,035 standalone products,
+  1,929 axis values**, 151 duplicate SKUs reported, 1 childless parent skipped,
+  0 HTML-encoded names.
+- **Forecast run 8 on the corrected catalog: 966 forecasts, all `SKU_HISTORY`**,
+  mean 53.75 units/30d at 66.9 confidence — and they now resolve to product +
+  variant, e.g. "Under Armour Men's Sleeveless Sport Style Tank Top (Grey) —
+  Size Large", 120.5 units.
+- Pest **236/236** (+3 pinning idempotence: no churn on a second run, duplicate
+  SKU handling, childless parents never written). Pint, `types:check`,
+  `lint:check` clean; `format:check` still only the 8 pre-existing SCSS files.
+
+### Key decision
+
+The three new tests exist because **the failure mode was a run summary that
+looked like work.** Nothing errored, nothing was lost, and the numbers were
+stable run to run — it just did 147 pointless writes and deletes each time and
+called them progress. That is precisely the kind of defect no assertion catches
+unless someone writes one for it.
+
+### Still open
+
+- **No neural checkpoint has been trained on the BuyAbans source.** `ewma` is
+  serving. `app:train-forecast-model` must run before `tft`/`deepar` are
+  switched back on, and it takes hours on CPU.
+- 1,797 synced products still have no resolvable category.
+- 151 products are dropped each sync because another product claims their SKU —
+  a back-office data conflict this application can report but not resolve.
+- Only the `warehouse` grain holds demand rows; `channel` and `national` are
+  implemented and tested but unsynced.
+- Supplier lead times and promotion windows remain frozen — read-only here, and
+  absent from the API.
+- Everything else from the previous entries is unchanged.
+
+## 2026-09-04 — The demand feed is sparse: forecasts were 91% too high
+
+**Requested:** continue — specifically, train a neural model on the BuyAbans
+source, which had been the standing open item.
+
+Training never started. A sanity check on the exported dataset, run before
+committing hours of CPU, showed **100% non-zero rows** — and that turned out to
+be a bug that had already been corrupting every forecast the system produced.
+
+### The bug
+
+`buyabans_daily_demands` holds a row **only for days that sold something**. It
+is an aggregate of orders: no order, no row. Faithful as a record of the source,
+and completely wrong as a time series.
+
+- 966 pairs, 480,403 rows, **zero of them zero-quantity**.
+- Each pair averages **496 selling days across a 1,097-day window** — 55% of the
+  calendar simply absent.
+- Read raw, a pair with four sales in three years hands the model four
+  consecutive numbers and lets it believe they are four consecutive days.
+
+**What it did to the forecasts.** Measured against actual demand, not opinion:
+
+| | Forecast for next 30 days | Actual last 30 days |
+| --- | --- | --- |
+| Before (run 8) | 51,919 units | 27,132 |
+| After (run 9) | 27,952 units | 27,132 |
+
+**91% too high, now within 3%.** Mean per-pair forecast fell from 53.75 to
+28.94. For slow movers the error was far worse than the average: a pair with
+four sales in six months was read as 1.0 units/day rather than 0.022 — a factor
+of 45.
+
+**What it would have done to training.** The exported dataset was 100%
+non-zero. Beyond the level error, `TimeSeriesDataSet` interpolates across gaps
+in the time index rather than reading them as zeros, so the model would have
+been fitted to invented history with every weekday and seasonal pattern smeared
+across the missing days. Hours of CPU spent learning a fiction.
+
+### Changed
+
+Every consumer of the demand table now fills the calendar; a day with no sale is
+a day with zero demand:
+
+- `MlServiceClient::buildSeries()` — `denseDemandSeries()`, one entry per
+  calendar day of the window.
+- `MlServiceClient::buildNeuralFeatures()` — `denseCovariateRows()`, so the
+  covariate block lines up day-for-day with the series rather than handing a
+  90-row block to a 180-day encoder.
+- `MlTrainingDataService::export()` — `fillGap()` between observed days and from
+  the last observed day to the last synced day.
+- `DemandProfileService` and `ForecastMaturityService` needed no change; one
+  already iterates days with `?? 0`, the other only sums.
+
+Exported dataset after the fix: **941,116 rows (from 480,400), 51% non-zero,
+median series length 1,096 days, zero calendar gaps.**
+
+### Also fixed
+
+- **`app:export-ml-training-data --source` defaulted to `ledger`**, overriding
+  `services.ml.demand_source`. So the command exported the ledger while the
+  serving path read synced demand — the exact train/serve mismatch that config
+  exists to prevent, sitting in a CLI default. It now defaults to the configured
+  source.
+
+### Key decisions
+
+- **The table stays sparse.** Storing a row per pair per day is ~1.06M rows of
+  mostly zeros and would make the table a derived artefact rather than a record
+  of what the API returned. Filling on read costs nothing; forgetting to fill is
+  what `app_architecture.md` §1w now exists to prevent.
+- **Series are padded to the last *synced* day, not to today.** Days after the
+  last sync are unknown, not zero, and padding them would tell the model demand
+  had stopped.
+- **The sanity check was worth more than the training run.** The dataset
+  statistics took a minute; the run it prevented would have taken hours and
+  produced a confident, wrong model.
+
+### Verification
+
+- Forecast run 9: 966 forecasts, all `SKU_HISTORY`, totalling 27,952 units
+  against 27,132 actual — inside 3%. Confidence fell from 66.9 to 33.2, which is
+  honest: the series now contains its zeros, so variance relative to the mean is
+  genuinely higher.
+- Pest **236/236**. The one test that broke asserted the old sparse behaviour
+  (`[3]` for a single sale) and was rewritten to assert the dense contract
+  instead — it now checks the series is >100 entries, sums to 3, has exactly one
+  non-zero, and ends on the last synced day.
+- Pint, `types:check`, `lint:check` clean.
+
+### Still open
+
+- **TFT training is running** on the corrected dataset (`--only=tft`,
+  20 epochs). `ML_DEFAULT_ALGORITHM` stays `ewma` until there is a checkpoint
+  and a reason to prefer it.
+- `on_promotion`, `promotion_discount`, `stockout_*` and `received_qty` are
+  constant zero on this source, so those covariates contribute nothing to a
+  model trained on it.
+- Everything else from the previous entries is unchanged.
+
+## 2026-09-04 — Wiring the dashboard, and a date-range bug it exposed
+
+**Requested:** continue.
+
+TFT training was running on the corrected dataset, so the time went on the
+oldest open item in this log: the dashboard has rendered "—" in every tile and
+an empty chart since the first entry, and there is now real data behind it.
+
+**Changed:**
+
+- **`DashboardService` + facade + `DashboardController`** — the route was a bare
+  `Route::inertia('dashboard', 'dashboard')` with no controller and no props.
+  Figures are computed on request and never persisted, the same shape as
+  `InventoryAnalyticsService`.
+- **`resources/js/pages/dashboard.tsx`** — copy corrected to describe what is
+  actually shown, and `deltaLabel` now only renders when there is a delta.
+- **8 tests** covering the metrics and, more importantly, the absences.
+
+**What each tile is:**
+
+| Tile | Source |
+| --- | --- |
+| SKUs tracked | SKUs with synced demand — the forecast population (163), not the catalog (~10,800) |
+| Forecast accuracy | **Null. Renders "—"** |
+| Reorder alerts | Purchase recommendations awaiting a decision (87) |
+| Days of cover | Stock ÷ recent daily rate, over SKUs with both (5) |
+
+**Key decisions:**
+
+- **Forecast accuracy stays absent.** `forecast_accuracy` has never held a row —
+  a forecast can only be scored once its horizon elapses. There were plausible
+  substitutes to hand (last run's mean confidence, 100 minus some error proxy)
+  and all of them would have put a number on the front page that nobody could
+  trace back to a scored prediction. A tile that admits it has nothing is worth
+  more than one that looks fine. A test pins it.
+- **One trend series, not two.** The card originally promised "units forecast
+  against units sold". A forecast here is a single total per pair over a 30-day
+  horizon, and `TrendSeries.values` is `number[]` with no nulls — so drawing a
+  forecast line would have meant splitting a number into weekly shares the model
+  never produced. The subtitle now says what the chart is.
+- **Windows are anchored to the last *synced* day, not today**, so the charts
+  never show a tail of zeros because the sync is behind.
+- **Days of cover is measured only over SKUs with both stock and demand**, and
+  is documented as mixing real stock with generated demand — it shows the
+  calculation works, not how long real stock would last.
+
+**Bugs found and fixed:**
+
+- **A join fan-out in days of cover.** `buyabans_stock_levels` holds a row per
+  SKU *per inventory source* — up to four — so joining demand to it counted
+  every sale up to four times: 83,977 units instead of 27,135, and a cover
+  figure of **1 day instead of 5**. Replaced with two queries. A test creates
+  one SKU stocked in four sources and asserts 40 days, which fails at 10 if the
+  join ever comes back.
+- **`whereBetween` on a `date`-cast column silently drops its own end day.**
+  Laravel persists a `date` cast as `'Y-m-d H:i:s'`, so
+  `'2026-09-03 00:00:00' <= '2026-09-03'` is false. Every weekly bucket was six
+  days instead of seven — the trend under-reported by a seventh and cover was a
+  day out. All five filters now use `whereDate`. This is the same trap already
+  recorded for `snapshot_date` in §1h; it is now recorded next to the constant
+  it affects. **MySQL would have hidden it** — the column is a real `DATE`
+  there, so only the SQLite test suite exposed it.
+- **Top movers were labelled with raw barcodes** ("6941856930605"). Labelled by
+  product name now, truncated to fit an axis.
+
+**Verification:** dashboard renders live in the browser — 163 SKUs tracked
+(−0.5% vs last month, with sparkline), forecast accuracy "—", 87 reorder
+alerts, 5 days of cover, a 12-week trend ending at 7.2K units/week, and eight
+named top movers. Pest **241/241** (+5). Pint, `types:check`, `lint:check`
+clean.
+
+**Still open:**
+
+- **TFT training is still running** (~30 min in, `best.ckpt` written once).
+  `dataset_params.pt` has not yet been rewritten — serving reconstructs the
+  dataset from it, so a new checkpoint against stale params would misbehave.
+  Worth confirming when the run finishes.
+- Everything else from the previous entries is unchanged.
+
+## 2026-09-04 — Grain isolation guards, the channel grain, and a category-reference count
+
+**Requested:** continue, while TFT training runs.
+
+**Changed:**
+
+- **Grain isolation is now pinned by two tests.** Until now only the
+  `warehouse` grain held rows, so nothing would have noticed a query that
+  forgot `where('grain', …)`. Rows of different grains describe the *same*
+  underlying orders from different angles, so an unfiltered query does not
+  return extra data — it silently doubles the answer. One test records the same
+  30 days at two grains and asserts every dashboard figure is unchanged; the
+  other asserts the series served to the ML client reads one grain only.
+- **The `channel` grain is being synced** — the third of the three grains asked
+  for at the start of the integration, implemented and tested since but never
+  populated.
+- **Dangling category references are counted separately** from genuinely
+  uncategorised products. Two different situations were landing in one number:
+  a product that was never categorised, and a product whose category entries all
+  point at categories that no longer exist in the back office — 290 products
+  across 54 missing ids. Only the second is a defect anyone there can act on.
+
+**Verified rather than assumed:**
+
+- **`train.py` does rewrite `dataset_params.pt`.** The previous entry flagged
+  the file as stale and worried a new checkpoint would be served against old
+  fitted encoders. Reading the script settles it: `save_serving_artifacts()`
+  runs after `trainer.fit()` and validation scoring, for both models. The file
+  is stale only because the run has not finished.
+- **The running ML service is still serving the *old* checkpoints.** `/models`
+  reports `tft` and `deepar` as `trained_through: 2026-08-20` — the ledger
+  dataset's last day. The service loads checkpoints at startup, so it must be
+  restarted before a newly trained model is served. `ML_DEFAULT_ALGORITHM` is
+  `ewma` regardless, so nothing is currently serving a neural model.
+
+**Verification:** Pest **243/243** (+2). Pint, `types:check`, `lint:check`
+clean.
+
+**Still open:**
+
+- TFT training still running (~40 min, ~6,600 CPU-seconds). Validation scores
+  are printed at the end and are the evidence for whether it beats the
+  baselines; nothing switches off `ewma` before that.
+- The `channel` grain sync is partway through 3 years and slow while sharing
+  CPU with training. `national` has not been started.
+- Everything else from the previous entries is unchanged.
+
+## 2026-09-04 — Making the forecast page readable without technical knowledge
+
+**Requested:** "I need to show predictions and forecasts more clearly and
+informaticly. use charts and other things to make it better and understand to
+anyone event without technical knowledge."
+
+The page was a dense table: `SKU_HISTORY`, `confidence 25%`, `predicted 12
+(8–17)`. Every number was correct and none of it answered "so what?".
+
+**Changed:**
+
+- **`ForecastService::overview()`** — a plain-language summary of the latest
+  run: the headline sentence, the range, what the previous period actually sold,
+  the confidence as a word, the basis breakdown, the chart series and the top
+  products.
+- **`ForecastSource::explanation()`** — the same thing `label()` names, said to
+  someone who has never seen the system. "Cold start" becomes "Brand new — there
+  is no sales history yet, so this is a cautious estimate."
+- **`TrendChart` now takes gaps and a confidence band.** `values` became
+  `(number | null)[]`, and an optional `band` draws the forecast's range behind
+  the line. This is what lets one chart hold what happened and what is expected
+  on a single axis.
+- **`BarChart` gained a `horizontal` variant** — see below.
+- **The page** was rebuilt around a sentence, four tiles, the forecast chart, a
+  ranked product chart, the basis cards, and a table whose columns are questions
+  ("Expected to sell", "How sure", "Based on", "How it turned out").
+
+**Key decisions:**
+
+- **The forecast is drawn as a weekly average, and labelled as one.** The model
+  produces a single total for a 30-day window, not a shape within it. Splitting
+  it into four different weekly numbers would draw a curve the model never
+  produced. The series is named "Expected (weekly average)" so the chart does
+  not overclaim.
+- **The two lines share the last real week.** That point is a genuine
+  observation, so joining them there is honest and reads far better than a
+  floating forecast segment. The band pinches to that point and opens forward —
+  it never covers weeks that already happened.
+- **Confidence is a word first.** "33%" means nothing without knowing the scale;
+  "Low · 33%" does, and the sentence beneath says what to do about it — use the
+  range, not the single number.
+- **The table now shows the latest run only.** Every run re-forecasts the same
+  pairs, so the listing was 7,833 rows describing 966 predictions with nothing
+  to say which were superseded. `all_runs` opts back into the full history.
+
+**Two defects caught by rendering it and looking, not by any test:**
+
+- **The ranked-products bar labels collided into an unreadable smear.** Eight
+  product names under vertical columns in a third-width card cannot work, and
+  rotating them trades one problem for another. Added a `horizontal` variant to
+  `BarChart` — the right form for ranked categories with wordy labels — with the
+  name beside each bar and the value at its end, since with categories down the
+  side there is no axis to read a length against.
+- **The table contradicted the headline**, listing every run's forecasts while
+  the summary above described only the latest.
+
+**Verification:** Pest **246/246** (+3 covering the summary numbers, the band's
+start point, and the latest-run default). Pint, `types:check`, `lint:check`
+clean; `format:check` back to the same 8 pre-existing SCSS files. Rendered and
+inspected in the browser at both viewport and full-page.
+
+**Still open:**
+
+- The confidence band is currently flat across the forecast weeks because the
+  run stores one total per pair. A per-week forecast would need the model to
+  emit one, which the fixed 30-day decoder does not.
+- TFT training continues; nothing on this page depends on it.
+- Everything else from the previous entries is unchanged.
+
+## 2026-09-04 — Account links out of the sidebar and the dashboard
+
+**Requested:** remove the sidebar's **Account** group (Profile, Security) and the
+dashboard's **Quick actions** section, "because we have link in navbar".
+
+Confirmed first that the claim holds: `user-menu.tsx` in the topbar already
+links both `/settings/profile` and `/settings/security`, so nothing becomes
+unreachable.
+
+**Changed:**
+
+- **`app-sidebar.tsx`** — the `Account` group removed, along with its now-unused
+  `editProfile` / `editSecurity` imports and the `Settings` / `ShieldCheck`
+  icons. The file's existing comment about deliberate absences gained a
+  paragraph saying why these two are gone, so the next person does not "fix" it
+  by adding them back.
+- **`dashboard.tsx`** — the whole `Quick actions` `<section>` removed, plus the
+  `ShortcutCard`, route and icon imports it alone used. The page is now four
+  StatCards, the demand trend and top movers.
+- **`shortcut-card.tsx` deleted**, and the `.app-shortcut*` block (81 lines) cut
+  from `components/_stat-card.scss`. Those two tiles were its only callers
+  anywhere in the app.
+
+**Key decisions:**
+
+- **Deleted `ShortcutCard` rather than leaving it in the kit.** A kit component
+  with zero call sites is exactly the dead code this project has been clearing,
+  and it was listed in three places (`app_architecture.md`, `.ai/rules/frontend.md`,
+  the `premium-ui-design` skill) as a thing to reach for — all three rows are
+  now gone, so nobody reaches for a component that no longer exists. Recoverable
+  from the pre-cleanup backup if a genuine quick-action surface appears later.
+- **Kept `app-grid-cards--wide`** — `welcome.tsx` still uses it.
+- **The sidebar is data modules only.** That is the line the two removals draw,
+  and it is now written down in both the component comment and `app_guide.md`.
+
+**Verification:** Pest **246/246**. `types:check`, `lint:check` clean;
+`format:check` back to the same 8 pre-existing SCSS files. `npm run build`
+succeeds — the built bundle contains no `app-shortcut`, no "Quick actions", and
+a nav array that ends at the `Advanced intelligence` group.
+
+**Note on the build:** `npm run build` fails outright with the default `php` on
+PATH, because the Wayfinder Vite plugin shells out to `php artisan
+wayfinder:generate` and PATH resolves to 8.2 while the app needs 8.3. The error
+surfaces as a rolldown plugin failure with no mention of the PHP version, which
+reads like a frontend problem and is not one. Put Laragon's 8.3 build on PATH
+first (see CLAUDE.md).
+
+**Not done:** the change was not viewed logged-in in a browser. The only local
+user (`admin@gmail.com`) is unverified and its password is not recorded
+anywhere, and `/dashboard` is behind `verified` — verifying it or resetting the
+password to take a screenshot is a data change this task does not need. The
+build-output check above covers what the screenshot would have.
+
+**Still open:** unchanged from the previous entry, plus DeepAR retraining is
+still running; no evaluation entry has been written yet.
+
+## 2026-09-04 — Management analytics on the dashboard, and shortcuts worth having
+
+**Requested:** "add more analytics to dashboard.. make some manegemnet needed
+analitics and shortcuts."
+
+The page was four tiles, one trend and one bar chart. It said how much was
+selling and nothing about money, where it came from, or what was about to run
+out.
+
+**Changed — `DashboardService`:**
+
+- **Trading tiles (30 days):** revenue, units sold, orders, average order value,
+  each with a 12-week sparkline and a four-week-on-four-week change.
+- **Stock position tiles:** stock on hand at retail, days of cover (kept), lines
+  out of stock, reorder alerts (kept).
+- **Three new charts:** revenue per week, revenue by category, revenue by
+  warehouse. Plus a cover-band distribution, and top movers moved to the
+  horizontal form.
+- **A forecast-health card:** last run, its status, how many predictions over
+  what horizon, products forecast, accuracy so far.
+- **`window`** — the from/to dates every headline figure describes, so the page
+  can print them.
+
+**Changed — frontend:** `formatMoney` / `formatMoneyCompact` in `lib/utils`;
+`BarDatum.colorSlot` so cover bands keep fixed colours; `ShortcutCard`
+reinstated; the page rebuilt around two tile rows, three chart rows, the
+forecast card and six shortcuts.
+
+**Key decisions:**
+
+- **Revenue and units get two charts, never one with two y-axes.** With two
+  scales the drawing can imply any relationship you choose. Side by side, the
+  reader compares the shapes themselves.
+- **Category revenue is ranked by money; top movers by units.** In this data the
+  two orders disagree hard — MINISO leads on volume at LKR 10.8M while Gents
+  Watches takes LKR 16M on 811 units. Showing only one ranking hides that, and a
+  buying decision is made against revenue. There is now a test asserting the two
+  charts disagree.
+- **Stock is valued at selling price, and the tile says "(retail)".**
+  `skus.cost_price` is populated for **149 of 10,892** SKUs; a cost valuation
+  would have silently described 1.4% of the catalogue while looking like a
+  balance-sheet number.
+- **The cover chart covers only the 150 SKUs that sold in the window**, and says
+  so under its title. Including the rest would have produced "10,700 lines with
+  over six months of cover" — an artefact of demand having been generated for
+  163 SKUs, not a fact about the business. That number would have been read as
+  dead stock and acted on.
+- **Cover bands carry fixed colour slots, assigned per band and never by rank or
+  size** — red out of stock, amber under two weeks, green healthy. Empty bands
+  stay on the chart, because "nothing is running low" is an answer and a chart
+  that changes shape for an invisible reason is harder to read.
+- **`BUYABANS_CURRENCY`, defaulting to `LKR`.** Nothing converts currencies, so
+  the code is a label — but a label that can be wrong should be wrong in one
+  place. The default is measured, not guessed: the back office records 271,666
+  of its 271,721 orders as `LKR` (the other 55 predate the integration and say
+  "Rs.").
+- **`skusTracked` and `forecastAccuracy` stayed in `metrics`** even though they
+  now render inside the forecast-health card. Moving them would have broken two
+  passing tests for no gain; the card reads them from where they already were.
+- **No `DATEDIFF`.** A single `GROUP BY FLOOR(DATEDIFF(?, demand_date) / 7)`
+  collapses the twelve weekly queries into one and was written and measured
+  working against MySQL — then dropped, because the suite runs on SQLite, which
+  has no `DATEDIFF`. A dashboard query first exercised in production is one
+  nobody notices breaking. The loop now fetches units, revenue and orders
+  together, so three trends cost what one used to.
+
+**A flaky test found on the way:** `the dashboard reports demand it actually
+holds` asserts a bar label equals the product name, and `ProductFactory` names
+products with three faker words — sometimes 26 characters, sometimes 31, against
+a 28-character trim. It passed or failed on the seed. The helper now creates the
+product with a fixed name. This was pre-existing; the label trimming is
+unchanged.
+
+**One docblock corrected rather than shipped:** the first draft claimed the
+per-SKU stock subquery in `stockValue()` prevented a fan-out error. It does not
+— `SUM(qty * price)` over four source rows equals `price * SUM(qty)`. The
+comment now says what is actually true: the equivalence holds only while price
+is a per-SKU constant, and a per-source or dated price would break it silently.
+
+**Verification:** Pest **252/252** (+6: the trading tiles, the window dates, the
+cover bands and their slots, category-vs-units ranking, stock valued once per
+product, and the new absent-not-zero cases). Pint, `types:check`, `lint:check`
+clean; `format:check` back to the same 8 pre-existing SCSS files;
+`npm run build` succeeds.
+
+**Rendered and inspected, in both themes** — at 1440×1000 and full-page. No
+console errors, no label collisions, no horizontal scroll. This needed a
+logged-in session, and the only local account is unverified with no recorded
+password, so a throwaway `dashboard-qa@example.test` was registered through the
+UI and marked verified. **It is still in the local database** (user id 10) —
+delete it when convenient; nothing references it.
+
+**Correction to the previous entry:** it said `ShortcutCard` was recoverable
+from the pre-cleanup backup. It was not — that backup holds `resources/js/pages`
+only, no components and no SCSS. The file was restored from the conversation
+instead. The backup's actual scope is worth knowing before relying on it again.
+
+**Still open:**
+
+- The `national` grain has never been synced.
+- Nothing on this page is cached; every visit recomputes ~20 queries. Fine at
+  163 tracked SKUs, worth revisiting if that grows by an order of magnitude.
+
+## 2026-09-04 — Four years of realistic demand, and the two indexes that made it usable
+
+**Requested:** "add realistic data for few years for buyabans database and then
+sync and run again."
+
+The old seed was not too small in volume — 271,666 orders is plenty. It was the
+wrong *shape*: 180 products, so this application described **163 SKUs out of a
+10,892-SKU catalogue**, and every assortment-level view was measuring a rounding
+error. Base rate was also a pure function of price, which made velocity a pure
+function of price: every cheap line fast, every expensive one slow.
+
+### The seeder (back office)
+
+| | Before | After |
+| --- | --- | --- |
+| Products | 180 | 533 |
+| Warehouses | 6 | 10 |
+| History | 3 years | 4 years |
+| Orders / items | 271,666 / 510,620 | **536,416 / 1,003,133** |
+| SKUs selling in the last 30 days | 150 | **484** |
+
+Three model changes:
+
+- **Velocity classes** — a Pareto head/mid/tail at 12% / 33% / 55%, with price
+  now *scaling* a class rate rather than setting it. The tail genuinely sells a
+  handful a month. Intermittent, mostly-zero series are the hard forecasting
+  case and they are most of a real assortment.
+- **Location coverage** — nothing is stocked everywhere. Weights are
+  renormalised per product over the locations that carry it, so coverage stays
+  a statement about where things are sold rather than quietly becoming a volume
+  cut. Measured after seeding: 35 SKUs sell in one location, 119 in two, tapering
+  to 23 in all ten, and the central warehouse carries 439 SKUs against 148–171
+  at each regional site.
+- **Stockouts** — 399 supply windows where a line sells nothing. The lost-sales
+  detector exists to handle censored demand and had never had anything to find.
+
+**Volume per day was deliberately held near the old level** (30,480 units in the
+last 30 days vs 27,135). The change is breadth, not inflation.
+
+### Two indexes, without which none of this works
+
+**`orders (created_at, status)` on the back office.** `sales-daily` filters by a
+`created_at` range; `orders` had no index on it, so `EXPLAIN` showed `type: ALL`
+over 490,370 rows. The aggregate can only page by offset, so that scan re-ran
+**once per page** — ~18 pages a month across 49 months, roughly **880 full scans
+of the order book** to move one dataset. A four-year sync was tracking at about
+four hours; after the index the resumed 776,677 rows took **7m57s**.
+
+**`buyabans_daily_demands (grain, sku_id)` here.** `skusTracked()` asks
+`COUNT(DISTINCT sku_id)` across all history with no window — a statement about
+the whole table, so it cannot be narrowed. Every existing index led with `grain`
+then `location_code` or `demand_date`, so `sku_id` was unreachable without
+reading rows. That one query was **11.6 of the dashboard's 13.5 seconds**.
+
+### `whereDate()` was costing 18× on every dashboard query
+
+It wraps the column in `DATE()`, and MySQL cannot use an index on a column
+inside a function: a 34,114-row range scan became a 632,315-row filtered scan.
+
+**But the old code was not wrong to be there**, and this is the part worth
+remembering. `demand_date` is a genuine MySQL DATE column, so `<= '2026-09-04'`
+is exact in production — while the suite runs on **SQLite**, which stores the
+'date' cast as `'2026-09-04 00:00:00'` and compares it as text, where
+`'2026-09-04 00:00:00' <= '2026-09-04'` is **false** and the window silently
+loses its own last day.
+
+The asymmetry is the trap: **only the engine the tests do not use catches one
+mistake, and only the engine production does not use catches the other.**
+Closing the range at `23:59:59` is correct on both and leaves the column bare.
+`a date window includes its own last day` pins it, and was verified to fail
+without the fix — 10.0 instead of 20.0, the last day vanishing exactly as
+predicted.
+
+### MySQL would not use the new index, and `FORCE INDEX` was the wrong answer
+
+With `(grain, sku_id)` in place the optimiser still preferred the unique index.
+Forcing it worked (8.92s → 0.79s) but `FORCE INDEX` is MySQL-only syntax and the
+suite runs on SQLite. Rewriting the count as a subquery gets the same plan with
+no hint — the optimiser picks the covering index for the inner `DISTINCT` and
+never touches the table: **8.92s → 0.44s, portable**.
+
+**`overview()`: 70.4s → 19.0s → 2.5s.**
+
+### Changed
+
+- `database/seeders/ForecastingDemandHistorySeeder.php` (back office) — velocity
+  classes, location coverage, stockouts, 600-product target, 10 warehouses, 4 years
+- `database/migrations/2026_09_04_000001_add_forecasting_index_to_orders_table.php` (back office)
+- `database/migrations/2026_09_04_123859_add_grain_sku_index_to_buyabans_daily_demands_table.php`
+- `domain/Services/DashboardService/DashboardService.php` — `endOfDay()`,
+  `countDistinctSkus()`, nine date windows rewritten
+- `app/Console/Commands/TrainForecastModel.php` — `--holdout-days`
+- `config/services.php` — `history_days` 1100 → 1500
+- `.env` — `BUYABANS_PAGE_SIZE=5000` (local tuning; the config default stays
+  1000). With the index the per-month offset paging drops from 18 requests to 4.
+
+### Verification
+
+Pest **253/253** (+1). Pint, `types:check`, `lint:check` clean; `format:check`
+back to the same 8 pre-existing SCSS files.
+
+Sync reconciles exactly against the source: warehouse grain 942,873 rows and
+channel grain 571,362 rows, both 535 SKUs and both **1,826,136 units** over
+2022-09-04 → 2026-09-04, `unmatched_skus: 0`. All ten locations mapped to
+warehouse ids; an eleventh "location" holds 3 rows — genuine pre-integration
+orders with no showroom code, correctly carrying a null warehouse rather than
+being attributed somewhere.
+
+### Two process mistakes worth recording
+
+- **`TaskStop` does not kill a script's children.** The `php artisan` process
+  outlived the wrapper twice, so what looked like "stopped, restart it" was
+  actually three concurrent syncs — which deadlocked on the upsert. The data
+  survived intact because the upsert is keyed on
+  `(grain, location_code, sku_code, demand_date)`, so overlapping writers
+  duplicated work rather than corrupting rows. Kill the PHP process by PID.
+- **A rate measured under contention is not a rate.** 14,893 rows/min was
+  sampled while two syncs raced; the real single-writer figure was ~97,000.
+
+### The forecast run had outgrown the queue's job timeout
+
+Run 10 sat at `processing` with zero forecasts and no error. The cause was in
+the Laravel log, not the app: `queue:listen` runs each job in a child capped at
+**60 seconds**, and the run needs **2m22s** for 2,259 pairs. Run 9 (966 pairs,
+31s) fit; run 10 did not.
+
+**The failure is silent**, which is the part that matters. A killed worker does
+not fail the job or write to `failed_jobs` — the reservation expires and the run
+stays `processing` with an empty `error_message` forever. Fixed in both places,
+because they are independent limits: `RunDemandForecast::$timeout = 1800` states
+the job's own requirement, and the `dev` script now passes
+`queue:listen --timeout=1800`, which no job property can extend.
+
+Run 10 then completed: **2,300 forecasts in 2m22s**.
+
+### Recommendations are computed over a stale legacy ledger
+
+`app:generate-inventory-recommendations` reported "2 new, 195 updated" against
+2,300 fresh forecasts, which did not add up. `pairsInScope()` iterates
+**`inventories`** — not forecasts — and that table holds **441 rows across 149
+SKUs and 6 warehouses**, left from the pre-BuyAbans ledger seeder. Only **4 of
+the 2,300** forecast pairs overlap it, and `getRecommendation()` returns null
+without an `inventories` row.
+
+So the 197 recommendations, and the dashboard's "Reorder alerts" tile, describe
+stale stock the BuyAbans sync never touches. **Not fixed here, deliberately.**
+BuyAbans reports stock per *inventory source* (`buyabans_stock_levels`, up to
+four rows per SKU, no warehouse dimension), so there is no mechanical mapping
+onto a per-warehouse ledger — deciding how sources map to warehouses is a design
+call, not a repair. It predates this task; the wider dataset only made it
+visible.
+
+### Still open
+
+- `whereDate()` appears **53 times across 11 services**. Only `DashboardService`
+  was rewritten — the page that was actually broken. The rest are the same
+  latent 18× cost and should be worked through deliberately, with the same
+  end-day test applied to each, not swept in a single regex pass.
+- The dashboard still recomputes ~40 queries per visit with no caching.
+- `national` grain has still never been synced.
+- `inventories` is stale and unfed; recommendations are only as good as it is.
+- The forecast run's duration scales with pair count (966 -> 2,259 -> more as the
+  catalogue grows). A production worker needs `--timeout` set against that, and
+  there is no alarm when it is not.
+
+## 2026-09-04 — Addendum: the forecast page had the same index problem
+
+**Found while training ran.** After fixing the dashboard, a sweep of the other
+pages against the widened data showed `/forecast` at **19.5 s** — 20 queries,
+17.2 s of them, each scanning ~632,000 rows because `ForecastService` used
+`whereDate()` on `demand_date` and `snapshot_date` exactly as `DashboardService`
+had.
+
+Rewritten the same way. **19.5 s → 0.9 s**, and the page's numbers are sound:
+31,365 units expected against 30,445 sold in the previous window (+3%), range
+19,314–44,287, confidence *Low*, 533 products. The wide range and the low
+confidence are the correct answers for a catalogue that is 66.5% zero-demand
+days — a narrow, confident number there would be the wrong output.
+
+**One subtlety the dashboard rewrite did not have to handle.** `>` is not the
+same shape as `>=`. `DATE(col) > '2026-08-05'` means "from the 6th onward", so
+the plain form must exclude the *whole* of the 5th — `> endOfDay($date)`, not
+`> $date`. A bare `>` would have let `'2026-08-05 00:00:00'` through on SQLite
+and quietly widened the window by a day.
+
+**`endOfDay()` is now duplicated in two services.** Deliberate, for now: the
+natural home is a shared trait, and that means a new folder under `domain/`,
+which the project rules require approval for. The second copy carries a short
+docblock pointing at `DashboardService::endOfDay()` as the canonical
+explanation. Worth revisiting when the remaining services are converted.
+
+**Every other page was already fast** — Lost sales 0.8 s, Demand anomalies
+0.5 s, Inventory analytics 0.5 s, Recommendations 0.1 s. Not because they are
+better written, but because they read `inventory_daily_snapshots` and
+`inventories`, the small legacy tables. Inventory analytics returns **441 rows**,
+the same stale ledger behind the recommendations — a second sighting of the gap
+recorded above.
+
+**Verification:** Pest **253/253**.
+
+**Still open:** `whereDate()` remains in 9 further services. The two that were
+actually broken are fixed; the rest carry the same latent 18x cost and should be
+converted deliberately, each with an end-day test, not in one regex pass.
+
+## 2026-09-04 — Correction: "convert the other nine services" was bad advice
+
+The two entries above ended by saying the remaining `whereDate()` calls "carry
+the same latent 18x cost". **That is wrong**, and following it would mean a
+large, risky refactor for no measurable gain. Measured instead of assumed:
+
+**26 calls remain across 9 services, and only two touch
+`buyabans_daily_demands` at all.** Both were checked:
+
+| Service | Why it is fine |
+| --- | --- |
+| `MlServiceClient::denseDemandSeries()` | Filters `sku_id` + `warehouse_id` first. `EXPLAIN` uses `(sku_id, warehouse_id, demand_date)` and examines **1,178 rows** — the `DATE()` wrapper only blocks the date leg of an index that has already done its work |
+| `ForecastMaturityService::classify()` | Filters `grain` + `sku_id` first, which the new `(grain, sku_id)` index serves directly. Measured **0.02 s** |
+
+Everything else reads `inventory_daily_snapshots`, `inventories`,
+`stock_movements`, `purchase_orders` or `forecasts` — small tables, and fast
+today: Lost sales 0.8 s, Demand anomalies 0.5 s, Inventory analytics 0.5 s,
+Recommendations 0.1 s.
+
+**The rule is not "whereDate is slow".** It is: *`whereDate()` is slow when the
+date is the only selective filter on a large table.* That was true in exactly
+two places — `DashboardService` and `ForecastService` — and both are fixed. A
+third case will appear the day one of the small tables grows, and the test to
+apply then is `EXPLAIN`, not a search for the function name.
+
+This also means `endOfDay()` being duplicated across two services is likely to
+stay two, not become eleven — which weakens the earlier argument for extracting
+it into a shared trait and a new `domain/` folder.
+
+## 2026-09-04 — All three location grains are now synced
+
+Closes a standing requirement — "we need all 3" — that had been carried as open
+in every entry since the BuyAbans integration landed. `national` had never been
+synced.
+
+| Grain | Rows | Locations | SKUs | Units |
+| --- | --- | --- | --- | --- |
+| warehouse | 942,873 | 11 | 535 | 1,826,136 |
+| channel | 571,362 | 4 | 535 | 1,826,136 |
+| national | 348,937 | 1 | 535 | 1,826,136 |
+
+All four years, `unmatched_skus: 0` on each. The national sync took 4m37s.
+
+**The identical unit total is the check that matters.** The three grains are
+three aggregations of the *same* sales, so the totals must agree exactly — a
+grain filter forgotten anywhere, or rows dropped at a month boundary, would show
+up here as a mismatch rather than staying invisible. They agree to the unit.
+
+**`location_code` is an empty string on the national rows, not NULL** — verified
+explicitly, because it only misbehaves on the *second* sync. MySQL treats NULLs
+as distinct in a unique index, so a NULL there would insert a fresh duplicate
+row every night instead of upserting, and the table would grow without anyone
+noticing until the totals drifted.
+
+**Nothing reads the national grain yet.** `services.buyabans.grain` selects one
+grain for the dashboard, forecasting and training, and it stays `warehouse`;
+rows of different grains describe the same sales, so anything that summed across
+them would double-count. The other two are synced and available, not wired in.

@@ -1,10 +1,15 @@
 <?php
 
+use App\Enums\ProductType;
+// Aliased: `Attribute` is a reserved class name in PHP 8's attribute syntax.
+use App\Models\Attribute as AttributeModel;
 use App\Models\Brand;
 use App\Models\BuyabansDailyDemand;
 use App\Models\BuyabansStockLevel;
 use App\Models\BuyabansSyncRun;
 use App\Models\Category;
+use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Models\Sku;
 use App\Models\User;
 use App\Models\Warehouse;
@@ -68,21 +73,85 @@ function fakeBuyabans(array $overrides = []): array
             'message' => 'ok',
             'data' => ['items' => [['id' => 5, 'name' => 'Abans', 'admin_name' => 'Abans']]],
         ]),
-        'http://backoffice.test/api/forecasting/products*' => Http::response([
+        'http://backoffice.test/api/forecasting/attributes*' => Http::response([
             'status' => true,
             'message' => 'ok',
             'data' => [
                 'items' => [[
-                    'product_id' => 100,
-                    'sku' => 'ABTVL32T1',
-                    'name' => 'Abans 32 Inch TV',
-                    'type' => 'simple',
-                    'status' => 1,
-                    'price' => '45999.0000',
-                    'brand_name' => 'Abans',
-                    'categories' => [['id' => 11, 'name' => 'Refrigerators']],
+                    'id' => 23,
+                    'code' => 'color',
+                    'admin_name' => 'Color',
+                    'name' => 'Color',
+                    'type' => 'select',
+                    'options' => [
+                        ['id' => 1, 'label' => 'Black', 'sort_order' => 1],
+                        ['id' => 2, 'label' => 'White', 'sort_order' => 2],
+                    ],
                 ]],
                 'meta' => ['count' => 1, 'next_cursor' => null, 'has_more' => false],
+            ],
+        ]),
+        // A configurable parent, two variant children under it, and one
+        // standalone simple product — the shape the real catalog actually has.
+        'http://backoffice.test/api/forecasting/products*' => Http::response([
+            'status' => true,
+            'message' => 'ok',
+            'data' => [
+                'items' => [
+                    [
+                        'product_id' => 100,
+                        'sku' => 'ABTVL32T1',
+                        'name' => 'Abans 32 Inch TV',
+                        'type' => 'simple',
+                        'product_type' => 'simple',
+                        'parent_id' => null,
+                        'status' => 1,
+                        'price' => '45999.0000',
+                        'brand_name' => 'Abans',
+                        'categories' => [['id' => 11, 'name' => 'Refrigerators']],
+                        'variant_axes' => [],
+                    ],
+                    [
+                        'product_id' => 200,
+                        'sku' => 'PHONE-CONF',
+                        'name' => 'Phone X',
+                        'type' => 'configurable',
+                        'product_type' => 'configurable',
+                        'parent_id' => null,
+                        'status' => 1,
+                        'price' => '0.0000',
+                        'brand_name' => 'Abans',
+                        'categories' => [['id' => 11, 'name' => 'Refrigerators']],
+                        'variant_axes' => [['attribute_id' => 23, 'code' => 'color', 'name' => 'Color']],
+                    ],
+                    [
+                        'product_id' => 201,
+                        'sku' => 'PHONE-X-BLACK',
+                        'name' => 'Phone X 128GB - Black',
+                        'type' => 'simple',
+                        'product_type' => 'simple',
+                        'parent_id' => 200,
+                        'status' => 1,
+                        'price' => '99999.0000',
+                        'brand_name' => 'Abans',
+                        'categories' => [['id' => 11, 'name' => 'Refrigerators']],
+                        'variant_axes' => [],
+                    ],
+                    [
+                        'product_id' => 202,
+                        'sku' => 'PHONE-X-WHITE',
+                        'name' => 'Phone X 128GB - White',
+                        'type' => 'simple',
+                        'product_type' => 'simple',
+                        'parent_id' => 200,
+                        'status' => 1,
+                        'price' => '99999.0000',
+                        'brand_name' => 'Abans',
+                        'categories' => [['id' => 11, 'name' => 'Refrigerators']],
+                        'variant_axes' => [],
+                    ],
+                ],
+                'meta' => ['count' => 4, 'next_cursor' => null, 'has_more' => false],
             ],
         ]),
         'http://backoffice.test/api/forecasting/inventory*' => Http::response([
@@ -205,6 +274,10 @@ test('re-running a sync upserts rather than duplicating', function () {
     expect(Sku::where('sku', 'ABTVL32T1')->count())->toBe(1);
     expect(Category::where('code', 'bab-c10')->count())->toBe(1);
     expect(BuyabansStockLevel::count())->toBe(1);
+
+    // The tree must not multiply either: one parent, two variants, still.
+    expect(Product::where('external_id', 200)->count())->toBe(1);
+    expect(ProductVariant::count())->toBe(2);
 });
 
 test('a product whose category cannot be resolved still imports, under a placeholder', function () {
@@ -214,10 +287,12 @@ test('a product whose category cannot be resolved still imports, under a placeho
             'message' => 'ok',
             'data' => [
                 'items' => [[
-                    'product_id' => 200,
+                    'product_id' => 900,
                     'sku' => 'ORPHAN-1',
                     'name' => 'Orphaned product',
                     'type' => 'simple',
+                    'product_type' => 'simple',
+                    'parent_id' => null,
                     'status' => 1,
                     'price' => '1000.0000',
                     'brand_name' => null,
@@ -415,7 +490,18 @@ test('a synced series is served to the ML service from synced demand', function 
         ['warehouse_id' => $warehouse->id, 'sku_id' => $sku->id],
     ]);
 
-    expect($series[0]['daily_sold_qty'])->toBe([3]);
+    $daily = $series[0]['daily_sold_qty'];
+
+    // Dense, not one entry per sale. The feed records only days that sold
+    // something; read raw, a pair with one sale in six months looks like a pair
+    // that sells 3 units every day. Zero-filling is what makes it a time series.
+    expect(count($daily))->toBeGreaterThan(100);
+    expect(array_sum($daily))->toBe(3);
+    expect(count(array_filter($daily, fn ($q) => $q > 0)))->toBe(1);
+
+    // The window ends on the last day demand was actually synced, so the one
+    // real observation is the final entry — days beyond it are unknown, not zero.
+    expect(end($daily))->toBe(3);
 });
 
 test('a run abandoned by a killed process is closed out when the stage runs again', function () {
@@ -437,4 +523,190 @@ test('a run abandoned by a killed process is closed out when the stage runs agai
     expect($abandoned->finished_at)->not->toBeNull();
 
     expect(BuyabansSyncRun::where('stage', 'demand')->where('status', BuyabansSyncRun::STATUS_SUCCESS)->count())->toBe(1);
+});
+
+test('a configurable product becomes a parent with variants, not a pile of products', function () {
+    fakeBuyabans();
+
+    BuyabansSyncFacade::syncAll();
+
+    // The bug this pins: in Bagisto a variant child is itself type "simple", so
+    // a sync that just asks for sellable products flattens the whole catalog
+    // into unrelated top-level products and leaves the variants page empty.
+    $parent = Product::where('external_id', 200)->first();
+
+    expect($parent)->not->toBeNull();
+    expect($parent->product_type)->toBe(ProductType::Configurable);
+    expect($parent->variants()->count())->toBe(2);
+
+    // A configurable parent is not sellable — its variants are.
+    expect(Sku::where('sku', 'PHONE-CONF')->exists())->toBeFalse();
+
+    $black = Sku::where('sku', 'PHONE-X-BLACK')->first();
+    expect($black->product_id)->toBe($parent->id);
+    expect($black->product_variant_id)->not->toBeNull();
+    expect($black->variant->name)->toBe('Phone X 128GB - Black');
+
+    // The standalone product stays standalone, with no variant.
+    expect(Sku::where('sku', 'ABTVL32T1')->first()->product_variant_id)->toBeNull();
+});
+
+test('attributes and their values are synced', function () {
+    fakeBuyabans();
+
+    BuyabansSyncFacade::syncAttributes();
+
+    $attribute = AttributeModel::where('code', 'color')->first();
+
+    expect($attribute)->not->toBeNull();
+    expect($attribute->forecast_relevant)->toBeTrue();
+    expect($attribute->values()->pluck('value')->all())->toBe(['Black', 'White']);
+});
+
+test('a product left owning nothing by a re-shaped catalog is removed', function () {
+    fakeBuyabans();
+
+    // Stand in for the earlier flat import: a synced product with no SKUs and
+    // no variants, which describes nothing at all.
+    $stale = Product::factory()->create(['external_id' => 999999]);
+
+    BuyabansSyncFacade::syncAll();
+
+    expect(Product::withTrashed()->find($stale->id))->toBeNull();
+});
+
+test('a second sync creates and destroys nothing', function () {
+    fakeBuyabans();
+
+    BuyabansSyncFacade::syncAll();
+    $first = BuyabansSyncRun::where('stage', 'products')->latest('id')->first();
+
+    BuyabansSyncFacade::syncProducts();
+    $second = BuyabansSyncRun::where('stage', 'products')->latest('id')->first();
+
+    // Idempotence is not a nicety here. Before this was pinned, 147 products
+    // were created and deleted on every run, and the run summary reported the
+    // deletions as if they were progress.
+    expect($first->summary['removed_flattened'])->toBe(0);
+    expect($second->summary['removed_flattened'])->toBe(0);
+    expect($second->summary['childless_parents'])->toBe(0);
+});
+
+test('two products claiming the same SKU do not fight over it every run', function () {
+    fakeBuyabans([
+        'http://backoffice.test/api/forecasting/products*' => Http::response([
+            'status' => true,
+            'message' => 'ok',
+            'data' => [
+                'items' => [
+                    [
+                        'product_id' => 300,
+                        'sku' => 'SHARED-SKU',
+                        'name' => 'First claimant',
+                        'type' => 'simple',
+                        'product_type' => 'simple',
+                        'parent_id' => null,
+                        'status' => 1,
+                        'price' => '100.0000',
+                        'brand_name' => null,
+                        'categories' => [],
+                        'variant_axes' => [],
+                    ],
+                    [
+                        'product_id' => 301,
+                        'sku' => 'SHARED-SKU',
+                        'name' => 'Second claimant',
+                        'type' => 'simple',
+                        'product_type' => 'simple',
+                        'parent_id' => null,
+                        'status' => 1,
+                        'price' => '200.0000',
+                        'brand_name' => null,
+                        'categories' => [],
+                        'variant_axes' => [],
+                    ],
+                ],
+                'meta' => ['count' => 2, 'next_cursor' => null, 'has_more' => false],
+            ],
+        ]),
+    ]);
+
+    BuyabansSyncFacade::syncProducts();
+    $run = BuyabansSyncRun::where('stage', 'products')->latest('id')->first();
+
+    // `skus.sku` is unique — it is the key demand resolves through — so only one
+    // product can own a code. The loser is reported, not silently created and
+    // swept away again on the next pass.
+    expect($run->summary['duplicate_skus'])->toBe(1);
+    expect(Sku::where('sku', 'SHARED-SKU')->count())->toBe(1);
+    expect(Product::where('external_id', 300)->exists())->toBeTrue();
+    expect(Product::where('external_id', 301)->exists())->toBeFalse();
+    expect($run->summary['removed_flattened'])->toBe(0);
+});
+
+test('a configurable product with no children is never created', function () {
+    fakeBuyabans([
+        'http://backoffice.test/api/forecasting/products*' => Http::response([
+            'status' => true,
+            'message' => 'ok',
+            'data' => [
+                'items' => [[
+                    'product_id' => 400,
+                    'sku' => 'EMPTY-CONF',
+                    'name' => 'Configurable with no variants',
+                    'type' => 'configurable',
+                    'product_type' => 'configurable',
+                    'parent_id' => null,
+                    'status' => 1,
+                    'price' => '0.0000',
+                    'brand_name' => null,
+                    'categories' => [],
+                    'variant_axes' => [],
+                ]],
+                'meta' => ['count' => 1, 'next_cursor' => null, 'has_more' => false],
+            ],
+        ]),
+    ]);
+
+    BuyabansSyncFacade::syncProducts();
+    $run = BuyabansSyncRun::where('stage', 'products')->latest('id')->first();
+
+    // Parents are created lazily, when a child first needs one. Writing a
+    // childless parent only for the orphan cleanup to delete it again is churn,
+    // not a sync.
+    expect(Product::where('external_id', 400)->exists())->toBeFalse();
+    expect($run->summary['childless_parents'])->toBe(1);
+    expect($run->summary['removed_flattened'])->toBe(0);
+});
+
+test('the served series reads only the configured grain', function () {
+    fakeBuyabans();
+    BuyabansSyncFacade::syncAll();
+
+    $sku = Sku::where('sku', 'ABTVL32T1')->first();
+    $warehouse = Warehouse::where('code', 'DPS45')->first();
+
+    // The same sale, also recorded at the channel grain — as it is once more
+    // than one grain has been synced. Serving must not add them together.
+    BuyabansDailyDemand::create([
+        'demand_date' => '2026-08-01',
+        'grain' => 'channel',
+        'location_code' => 'default',
+        'sku_code' => $sku->sku,
+        'sku_id' => $sku->id,
+        'warehouse_id' => $warehouse->id,
+        'sold_qty' => 3,
+        'revenue' => 137997,
+        'avg_price' => 45999,
+        'discount_amount' => 0,
+        'order_count' => 2,
+    ]);
+
+    config()->set('services.ml.demand_source', 'buyabans');
+
+    $daily = app(MlServiceClient::class)->buildSeries([
+        ['warehouse_id' => $warehouse->id, 'sku_id' => $sku->id],
+    ])[0]['daily_sold_qty'];
+
+    expect(array_sum($daily))->toBe(3);
 });

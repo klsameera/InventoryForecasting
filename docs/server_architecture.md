@@ -121,7 +121,8 @@ beyond the framework defaults.
 | `BUYABANS_CLIENT_ID` | set locally (`7`) | Passport **client-credentials** client id, created on the back office with `php artisan passport:client --client --name="Inventory Forecasting"`; `services.buyabans.client_id` |
 | `BUYABANS_CLIENT_SECRET` | set locally | That client's secret. Leave both empty to run without the integration — the sync page reports "not configured" rather than failing; `services.buyabans.client_secret` |
 | `BUYABANS_GRAIN` | `warehouse` | Location grain demand is synced and modelled at — `warehouse`, `channel` or `national`. Rows are keyed by grain, so several can coexist, but one export/training run covers exactly one; `services.buyabans.grain` |
-| `BUYABANS_HISTORY_DAYS` | `1100` | How far back a full demand sync reaches. The nightly schedule overrides this with a 14-day window; `services.buyabans.history_days` |
+| `BUYABANS_HISTORY_DAYS` | `1500` | How far back a full demand sync reaches. The nightly schedule overrides this with a 14-day window; `services.buyabans.history_days` |
+| `BUYABANS_CURRENCY` | `LKR` | Currency code the dashboard puts in front of every money figure. **A label, not a conversion** — nothing in this application converts currencies. The default is measured, not assumed: the back office records every one of its 536,471 orders as `LKR` (55 genuine ones predate the integration and say `Rs.`, the same thing written informally); `services.buyabans.currency` |
 | `BUYABANS_API_TIMEOUT` | `120` | Seconds to wait on one page. Generous because the daily-sales aggregate groups over the whole order book; `services.buyabans.timeout` |
 | `BUYABANS_PAGE_SIZE` | `1000` | Rows per page; the back office caps this at 5000; `services.buyabans.page_size` |
 | `FORECAST_DEMAND_SOURCE` | `buyabans` locally, `ledger` in `.env.example` | Where demand history comes from for **both training and serving** — `ledger` (`inventory_daily_snapshots`, this application's own stock ledger) or `buyabans` (`buyabans_daily_demands`, synced from the back office). One switch governs both deliberately: training on one source and serving from the other conditions a model on one distribution and then feeds it another, and nothing in the stack reports an error. **Changing this invalidates existing checkpoints** — retrain before serving a neural algorithm again. `services.ml.demand_source` |
@@ -356,6 +357,17 @@ suite still runs on a fresh clone with no `models/` directory
 CI has no Python runtime configured yet. Run it manually when touching
 `ml-service/`.
 
+**A checkpoint trained on a different dataset does not merely go stale — it
+crashes.** The categorical encoders are fitted at training time, so a checkpoint
+whose embedding tables were sized for one id space raises
+`IndexError: index out of range in self` the moment it meets a larger one. This
+is not theoretical: after the catalog was restructured and demand moved to the
+BuyAbans source, the DeepAR checkpoint from the previous dataset took down
+`training/evaluate.py` outright, and would have done the same to a serving
+request had `ML_DEFAULT_ALGORITHM` selected it. **Retrain every model together,
+or remove the ones you do not retrain** — `/models` reports a stale checkpoint
+as `available: true`, and `ModelSelectionService` can pick it.
+
 **Not yet decided for production** (see §9): hosting/process supervision for
 a second runtime alongside PHP, private networking so the service isn't
 publicly reachable (`app_plan.md` §74), and whether it stays a single Python
@@ -432,6 +444,7 @@ here.
 | `app/Http/Controllers/API/Forecasting/ForecastingDataController.php` | Thin controller, validation, `{status, message, data}` envelope |
 | `routes/api.php` | The `forecasting` route group, behind `client` middleware |
 | `database/seeders/ForecastingDemandHistorySeeder.php` | Generates demand history where real history does not exist |
+| `database/migrations/2026_09_04_000001_add_forecasting_index_to_orders_table.php` | `orders (created_at, status)` — without it `sales-daily` full-scans the order book once per page |
 
 **Authentication.** Passport **client credentials** (`client` middleware, the
 same guard the existing SCM and omni-channel endpoints use), so the forecasting
@@ -487,6 +500,27 @@ order side and the comparison is unchanged.
 quantities out of `sold_qty`. A cancelled order is not demand that was met, and
 counting it would teach a model to expect sales that never happened.
 
+### The forecast run needs a worker timeout set against it
+
+`RunDemandForecast` declares `public int $timeout = 1800`. A run assembles 180
+days of history plus covariates for every (warehouse, SKU) pair in scope and
+then makes one batched call to the ML service, so its duration scales with the
+pair count — **966 pairs took 31s, 2,259 took 2m22s**, and it grows with the
+catalogue.
+
+**A worker that kills it does so silently.** No failed job, nothing in
+`failed_jobs`, no `error_message` — the reservation simply expires and the run
+sits at `processing` forever. There is no alarm for this.
+
+Two independent limits have to allow for it:
+
+| Limit | Where | Note |
+| --- | --- | --- |
+| Job timeout | `RunDemandForecast::$timeout` | The worker's own alarm; the job states its requirement |
+| Listener process timeout | `queue:listen --timeout=` | Kills the child regardless of any job property. `composer run dev` passes 1800 |
+
+For `queue:work`, the job property governs. For `queue:listen`, both do.
+
 ### Seeded demand history
 
 The staging back office holds a full catalog (11,635 products, 371 categories,
@@ -504,9 +538,59 @@ FORECAST_SEED_FRESH=1 php artisan db:seed --class=ForecastingDemandHistorySeeder
 Every generated order carries the `FCSTH-` prefix in `increment_id`, so seeded
 rows are always distinguishable from genuine ones and `FORECAST_SEED_FRESH=1`
 removes exactly and only what the seeder wrote. It never modifies a row it did
-not create. See `app_architecture.md` §1r for the demand model itself.
+not create.
+
+**What it currently holds** (regenerated 2026-09-04):
+
+| | |
+| --- | --- |
+| Orders / items | 536,416 / 1,003,133 |
+| Range | 2022-09-04 → 2026-09-04 (4 years) |
+| Products | 533, spread across price bands and categories |
+| Locations | 10 `warehouses.location_code` values |
+| SKUs selling in the last 30 days | 484 |
+| Cancellations | 6.03% (target 6%) |
+| Promotion windows / stockout windows | 20 / 399 |
+
+**Four years, not three, is deliberate.** A model can only be scored honestly
+after its training cutoff, so comparing a covariate-aware model against the
+statistical baselines over a period that actually contains festivals needs a
+full year held out of training — which three years did not leave. Retrain with
+`--holdout-days 365` to use it.
+
+**The demand model.** Every factor multiplies a per-SKU base rate; only the
+closing jitter and the Poisson-ish draw are random, so the structure is
+deterministic and reproducible from `mt_srand`:
+
+| Factor | Effect |
+| --- | --- |
+| Velocity class | a Pareto head/mid/tail split — 12% / 33% / 55% of the range |
+| Price | scales the class rate; a LKR 500,000 appliance does not move like a LKR 900 kettle |
+| Location coverage | each line is carried by some locations, not all; weights renormalised over those |
+| Annual seasonality | sinusoid peaking mid-year, seasonal categories only |
+| Lifecycle | new-product ramp, decline curve, end-of-life cutoff |
+| Day of week | Sat 1.42 down to Tue 0.76, summing to exactly 7.0 |
+| Calendar events | Avurudu 1.9×, Christmas 1.55×, Vesak 1.35×, Deepavali 1.25×, January lull 0.82×, month-end payday 1.28× |
+| Price elasticity | constant elasticity `(P/P_ref)^-1.2` against a real historical price curve |
+| Promotions | `1 + discount × 4.0` during the window, then a 0.78× payback for 10 days |
+| Stockouts | supply windows where a line sells nothing at some of its locations |
+
+**Velocity classes are the reason the tail exists.** Base rate used to be a pure
+function of price, which made velocity a pure function of price too: every cheap
+line fast, every expensive one slow. Real assortments have slow cheap lines and
+fast expensive ones, and a model that has only met the tidy version has not been
+tested. The head and mid are 45% of the range and carry the large majority of
+units, so seasonality, weekday rhythm and promotion lift stay plainly visible
+while the tail gets the shape it has in life.
+
+**Promotions and stockouts are the same argument in opposite directions.**
+Promotions are planned *before* demand is generated, so the lift is genuinely in
+the data a covariate-aware model learns from; a flag uncorrelated with demand
+teaches the opposite of the truth. Stockouts censor demand to zero, and what
+they leave behind is indistinguishable from an absence of demand — which is
+precisely the difficulty the lost-sales detector exists to address, and it had
+never been exercised against a real one.
 
 **This is generated data, and it stays labelled as such.** It exercises the
-pipeline end to end and carries real structure — seasonality, weekday rhythm,
-festivals, price elasticity, promotions — but it is not evidence about
+pipeline end to end and carries real structure — but it is not evidence about
 real-world demand, and no accuracy figure derived from it should be read as one.

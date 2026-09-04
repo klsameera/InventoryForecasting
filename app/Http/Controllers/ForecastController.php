@@ -32,6 +32,7 @@ final class ForecastController extends Controller
             'filters' => (object) $filters,
             'warehouseOptions' => WarehouseFacade::options(),
             'skuOptions' => SkuFacade::options(),
+            'overview' => ForecastFacade::overview(),
         ]);
     }
 
