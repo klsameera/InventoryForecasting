@@ -1,12 +1,11 @@
-import { Link, router } from '@inertiajs/react';
-import { Plus } from 'lucide-react';
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import type { Column } from '@/components/data-table';
 import DataTable from '@/components/data-table';
 import PageHeader from '@/components/page-header';
 import TableFilters from '@/components/table-filters';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { create, index } from '@/routes/goods-receipt';
+import { index } from '@/routes/goods-receipt';
 import type { GoodsReceipt } from '@/types/sales-purchasing';
 import type { Paginated } from '@/types/ui';
 
@@ -79,13 +78,7 @@ export default function GoodsReceiptIndex({ goodsReceipts, filters }: Props) {
             <PageHeader
                 eyebrow="Purchasing"
                 title="Goods receipts"
-                description="Every delivery received against a purchase order. Immutable once posted."
-                actions={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        Record receipt
-                    </Link>
-                }
+                description="Goods receipt history. Read-only — receiving happens in the BuyAbans back office."
             />
 
             <DataTable
@@ -99,13 +92,7 @@ export default function GoodsReceiptIndex({ goodsReceipts, filters }: Props) {
                     reload({ per_page: perPage, page: 1 })
                 }
                 emptyTitle="No goods receipts yet"
-                emptyDescription="Record a receipt against an ordered purchase order to bring stock in."
-                emptyAction={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        Record receipt
-                    </Link>
-                }
+                emptyDescription="No goods receipts recorded."
                 toolbar={
                     <TableFilters
                         search={search}

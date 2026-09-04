@@ -8,8 +8,6 @@ use App\Models\Promotion;
 use Domain\Services\ForecastService\ForecastService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Throwable;
 
 /**
  * Phase 10 (app_plan.md §86, "promotion impact") — the only new full CRUD
@@ -56,104 +54,6 @@ final class PromotionService
     public function get(int $id): ?Promotion
     {
         return $this->model->with('skus.product')->find($id);
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
-     */
-    public function store(array $data): array
-    {
-        DB::beginTransaction();
-
-        try {
-            $skuIds = $data['sku_ids'] ?? [];
-            unset($data['sku_ids']);
-
-            $promotion = $this->model->create($data);
-            $promotion->skus()->sync($skuIds);
-
-            DB::commit();
-
-            return [
-                'success' => true,
-                'message' => 'Promotion created successfully',
-                'data' => $promotion->fresh('skus'),
-            ];
-        } catch (Throwable $exception) {
-            DB::rollBack();
-
-            Log::error('Failed creating promotion', [
-                'exception' => $exception->getMessage(),
-                'data' => $data,
-            ]);
-
-            return ['success' => false, 'message' => 'Error creating promotion'];
-        }
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
-     */
-    public function update(array $data, int $id): array
-    {
-        DB::beginTransaction();
-
-        try {
-            $promotion = $this->model->findOrFail($id);
-
-            $skuIds = $data['sku_ids'] ?? null;
-            unset($data['sku_ids']);
-
-            $promotion->update($data);
-
-            if ($skuIds !== null) {
-                $promotion->skus()->sync($skuIds);
-            }
-
-            DB::commit();
-
-            return [
-                'success' => true,
-                'message' => 'Promotion updated successfully',
-                'data' => $promotion->fresh('skus'),
-            ];
-        } catch (Throwable $exception) {
-            DB::rollBack();
-
-            Log::error('Failed updating promotion', [
-                'exception' => $exception->getMessage(),
-                'id' => $id,
-            ]);
-
-            return ['success' => false, 'message' => 'Error updating promotion'];
-        }
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function delete(int $id): array
-    {
-        DB::beginTransaction();
-
-        try {
-            $this->model->findOrFail($id)->delete();
-
-            DB::commit();
-
-            return ['success' => true, 'message' => 'Promotion deleted successfully'];
-        } catch (Throwable $exception) {
-            DB::rollBack();
-
-            Log::error('Failed deleting promotion', [
-                'exception' => $exception->getMessage(),
-                'id' => $id,
-            ]);
-
-            return ['success' => false, 'message' => 'Error deleting promotion'];
-        }
     }
 
     /**

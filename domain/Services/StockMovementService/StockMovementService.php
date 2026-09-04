@@ -9,9 +9,6 @@ use App\Models\StockMovement;
 use Domain\Facades\InventoryBatchFacade\InventoryBatchFacade;
 use Domain\Facades\InventoryFacade\InventoryFacade;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Throwable;
 
 /**
  * Append-only ledger. There is no update() or delete() — see app_plan.md §14
@@ -46,51 +43,6 @@ final class StockMovementService
             ->orderByDesc('id')
             ->paginate((int) ($filters['per_page'] ?? 20))
             ->withQueryString();
-    }
-
-    /**
-     * The manual-adjustment UI's write path: only the five movement types in
-     * {@see MovementType::manualEntryCases()} may be recorded this way. Opens
-     * its own transaction, then delegates the actual ledger write to
-     * {@see post()}.
-     *
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
-     */
-    public function store(array $data): array
-    {
-        $movementType = $data['movement_type'] instanceof MovementType
-            ? $data['movement_type']
-            : MovementType::from($data['movement_type']);
-
-        if (! in_array($movementType, MovementType::manualEntryCases(), true)) {
-            return ['success' => false, 'message' => 'This movement type cannot be recorded manually'];
-        }
-
-        DB::beginTransaction();
-
-        try {
-            $result = $this->post($data);
-
-            if (! $result['success']) {
-                DB::rollBack();
-
-                return $result;
-            }
-
-            DB::commit();
-
-            return $result;
-        } catch (Throwable $exception) {
-            DB::rollBack();
-
-            Log::error('Failed recording stock movement', [
-                'exception' => $exception->getMessage(),
-                'data' => $data,
-            ]);
-
-            return ['success' => false, 'message' => 'Error recording stock movement'];
-        }
     }
 
     /**

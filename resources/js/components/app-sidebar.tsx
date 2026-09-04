@@ -1,12 +1,11 @@
 import { Link } from '@inertiajs/react';
 import {
     AlertTriangle,
-    ArrowLeftRight,
     Award,
     BarChart3,
     Boxes,
     CalendarClock,
-    ClipboardList,
+    CloudDownload,
     Copy,
     DollarSign,
     Factory,
@@ -16,15 +15,11 @@ import {
     LayoutDashboard,
     ListChecks,
     ListTree,
-    PackageCheck,
-    PackagePlus,
     PackageSearch,
     Percent,
     Replace,
     Settings,
     ShieldCheck,
-    Shuffle,
-    ShoppingCart,
     SlidersHorizontal,
     Sparkles,
     Split,
@@ -32,7 +27,6 @@ import {
     Tags,
     TrendingDown,
     TrendingUp,
-    Undo2,
     Warehouse as WarehouseIcon,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
@@ -41,6 +35,7 @@ import { cn, toUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { index as attributeIndex } from '@/routes/attribute';
 import { index as brandIndex } from '@/routes/brand';
+import { index as buyabansSyncIndex } from '@/routes/buyabans-sync';
 import { index as categoryIndex } from '@/routes/category';
 import {
     anomalies as demandInsightsAnomalies,
@@ -48,7 +43,6 @@ import {
 } from '@/routes/demand-insights';
 import { index as forecastIndex } from '@/routes/forecast';
 import { index as forecastRunIndex } from '@/routes/forecast-run';
-import { index as goodsReceiptIndex } from '@/routes/goods-receipt';
 import { index as inventoryIndex } from '@/routes/inventory';
 import { index as inventoryAnalyticsIndex } from '@/routes/inventory-analytics';
 import { index as inventoryBatchIndex } from '@/routes/inventory-batch';
@@ -67,16 +61,8 @@ import {
 import { index as productVariantIndex } from '@/routes/product-variant';
 import { edit as editProfile } from '@/routes/profile';
 import { index as promotionIndex } from '@/routes/promotion';
-import { index as purchaseOrderIndex } from '@/routes/purchase-order';
-import { index as salesOrderIndex } from '@/routes/sales-order';
-import { index as salesReturnIndex } from '@/routes/sales-return';
 import { edit as editSecurity } from '@/routes/security';
 import { index as skuIndex } from '@/routes/sku';
-import {
-    create as createStockMovement,
-    index as stockMovementIndex,
-} from '@/routes/stock-movement';
-import { index as stockTransferIndex } from '@/routes/stock-transfer';
 import { index as supplierIndex } from '@/routes/supplier';
 import { index as supplierPerformanceIndex } from '@/routes/supplier-performance';
 import { index as warehouseIndex } from '@/routes/warehouse';
@@ -90,6 +76,13 @@ type NavGroup = {
 /**
  * Add each new module's index route to the group it belongs to. Keep the list
  * short — anything rarely used belongs on a page, not in the sidebar.
+ *
+ * **The stock-operation modules are deliberately absent.** Purchase orders,
+ * goods receipts, stock transfers, sales orders, sales returns, stock movements
+ * and manual adjustments all still exist, still work, and are still routed and
+ * tested — they are simply not navigation, because this application forecasts
+ * demand and the BuyAbans back office is where stock is actually operated.
+ * Reachable by URL; re-add an entry here to surface one again.
  */
 const navGroups: NavGroup[] = [
     {
@@ -99,6 +92,11 @@ const navGroups: NavGroup[] = [
                 title: 'Dashboard',
                 href: dashboard(),
                 icon: LayoutDashboard,
+            },
+            {
+                title: 'BuyAbans sync',
+                href: buyabansSyncIndex(),
+                icon: CloudDownload,
             },
         ],
     },
@@ -161,21 +159,6 @@ const navGroups: NavGroup[] = [
                 icon: CalendarClock,
             },
             {
-                title: 'Stock movements',
-                href: stockMovementIndex(),
-                icon: ArrowLeftRight,
-            },
-            {
-                title: 'Adjustments',
-                href: createStockMovement(),
-                icon: PackagePlus,
-            },
-            {
-                title: 'Stock transfers',
-                href: stockTransferIndex(),
-                icon: Shuffle,
-            },
-            {
                 title: 'Warehouses',
                 href: warehouseIndex(),
                 icon: WarehouseIcon,
@@ -183,37 +166,12 @@ const navGroups: NavGroup[] = [
         ],
     },
     {
-        label: 'Purchasing',
+        label: 'Supply',
         items: [
-            {
-                title: 'Purchase orders',
-                href: purchaseOrderIndex(),
-                icon: ClipboardList,
-            },
-            {
-                title: 'Goods receipts',
-                href: goodsReceiptIndex(),
-                icon: PackageCheck,
-            },
             {
                 title: 'Suppliers',
                 href: supplierIndex(),
                 icon: Factory,
-            },
-        ],
-    },
-    {
-        label: 'Sales',
-        items: [
-            {
-                title: 'Sales orders',
-                href: salesOrderIndex(),
-                icon: ShoppingCart,
-            },
-            {
-                title: 'Sales returns',
-                href: salesReturnIndex(),
-                icon: Undo2,
             },
         ],
     },

@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use Domain\Facades\MlTrainingDataFacade\MlTrainingDataFacade;
+use Domain\Services\MlTrainingDataService\MlTrainingDataService;
 use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 
-#[Signature('app:export-ml-training-data {--path= : Destination relative to storage/app/, defaults to ml/training_data.csv}')]
+#[Signature('app:export-ml-training-data
+    {--path= : Destination relative to storage/app/, defaults to ml/training_data.csv}
+    {--source=ledger : Where demand comes from — ledger (the local stock ledger) or buyabans (demand synced from the back office)}')]
 #[Description('Export the full warehouse/SKU/day modelling dataset for the Python training pipeline in ml-service/training/')]
 class ExportMlTrainingData extends Command
 {
@@ -19,8 +22,25 @@ class ExportMlTrainingData extends Command
     public function handle(): int
     {
         $path = $this->option('path');
+        $source = (string) $this->option('source');
 
-        $result = MlTrainingDataFacade::export(is_string($path) && $path !== '' ? $path : null);
+        if (! in_array($source, MlTrainingDataService::SOURCES, true)) {
+            $this->error("Unknown source '{$source}'. Expected one of: ".implode(', ', MlTrainingDataService::SOURCES).'.');
+
+            return self::FAILURE;
+        }
+
+        $result = MlTrainingDataFacade::export(is_string($path) && $path !== '' ? $path : null, $source);
+
+        if ($source === MlTrainingDataService::SOURCE_BUYABANS) {
+            // Said out loud every run, because the resulting checkpoint is
+            // indistinguishable from a ledger-trained one once it is on disk.
+            $this->warn(
+                'The buyabans source carries real demand and real per-day prices, but no stock history: '
+                .'opening/closing/available quantities repeat the current stock position and receipts, '
+                .'adjustments and stockouts export as zero. A model trained here learns nothing about availability.'
+            );
+        }
 
         if (! $result['success']) {
             $this->error($result['message']);

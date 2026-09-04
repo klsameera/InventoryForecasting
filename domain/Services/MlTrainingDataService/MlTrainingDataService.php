@@ -47,6 +47,30 @@ final class MlTrainingDataService
     /** Written relative to `storage/app/`. */
     public const DEFAULT_RELATIVE_PATH = 'ml/training_data.csv';
 
+    /** This application's own stock ledger, via `inventory_daily_snapshots`. */
+    public const SOURCE_LEDGER = 'ledger';
+
+    /** Demand synced from the BuyAbans back office. */
+    public const SOURCE_BUYABANS = 'buyabans';
+
+    /** @var list<string> */
+    public const SOURCES = [self::SOURCE_LEDGER, self::SOURCE_BUYABANS];
+
+    /**
+     * The configured demand source, governing both training and serving.
+     *
+     * Static because the serving path ({@see MlServiceClient})
+     * needs the same answer without taking a dependency on this Service — the
+     * two must never disagree, or a model gets trained on one distribution and
+     * served another with nothing reporting an error.
+     */
+    public static function demandSource(): string
+    {
+        $source = (string) config('services.ml.demand_source', self::SOURCE_LEDGER);
+
+        return in_array($source, self::SOURCES, true) ? $source : self::SOURCE_LEDGER;
+    }
+
     /**
      * Column order is the training pipeline's contract — `dataset.py` reads
      * these names, so the two must change together.
@@ -73,10 +97,18 @@ final class MlTrainingDataService
     ];
 
     /**
+     * @param  string  $source  'ledger' (this application's own stock ledger) or
+     *                          'buyabans' (demand synced from the back office)
      * @return array{success: bool, message: string, data?: array{path: string, rows: int, series: int, first_date: ?string, last_date: ?string}}
      */
-    public function export(?string $relativePath = null): array
+    public function export(?string $relativePath = null, ?string $source = null): array
     {
+        $source ??= self::demandSource();
+
+        if (! in_array($source, self::SOURCES, true)) {
+            return ['success' => false, 'message' => "Unknown training data source '{$source}'."];
+        }
+
         $relativePath ??= self::DEFAULT_RELATIVE_PATH;
         $absolutePath = storage_path('app/'.$relativePath);
 
@@ -102,7 +134,11 @@ final class MlTrainingDataService
             $firstDate = null;
             $lastDate = null;
 
-            foreach ($this->snapshotQuery()->cursor() as $row) {
+            $query = $source === self::SOURCE_BUYABANS
+                ? $this->buyabansDemandQuery()
+                : $this->snapshotQuery();
+
+            foreach ($query->cursor() as $row) {
                 // §1h: `snapshot_date` is a 'date'-cast column that stores a
                 // time component, so it is normalised with SQL DATE() in the
                 // query rather than trusted as a bare 'Y-m-d' string here.
@@ -132,15 +168,26 @@ final class MlTrainingDataService
 
                 $rows++;
                 $series[$row->warehouse_id.'-'.$skuId] = true;
-                $firstDate ??= $date;
-                $lastDate = $date;
+
+                // Min/max across the whole export, not the first and last row.
+                // Rows are ordered by series then date, so the first row is one
+                // series' earliest day and the last row is a different series'
+                // latest day — reporting those as the dataset's range makes a
+                // three-year export look like a three-week one.
+                if ($firstDate === null || $date < $firstDate) {
+                    $firstDate = $date;
+                }
+
+                if ($lastDate === null || $date > $lastDate) {
+                    $lastDate = $date;
+                }
             }
 
             fclose($handle);
 
             return [
                 'success' => true,
-                'message' => "Exported {$rows} rows across ".count($series)." series to {$relativePath}",
+                'message' => "Exported {$rows} rows across ".count($series)." series from the '{$source}' source to {$relativePath}",
                 'data' => [
                     'path' => $absolutePath,
                     'rows' => $rows,
@@ -157,6 +204,100 @@ final class MlTrainingDataService
 
             return ['success' => false, 'message' => 'Error exporting ML training data'];
         }
+    }
+
+    /**
+     * The BuyAbans demand feed, shaped into the same column contract as
+     * {@see snapshotQuery()}.
+     *
+     * **What is real here and what is not.** `sold_qty` is genuine, measured
+     * demand — the target, and the reason to prefer this source. The
+     * stock-derived covariates are not: the back office reports a *current*
+     * stock position, not a per-day balance history, so `opening_qty`,
+     * `closing_qty` and `available_qty` all carry that one present-day figure
+     * for every day of the series, and `received_qty`, `adjustment_qty` and
+     * `stockout_minutes` are simply unknown and export as zero.
+     *
+     * This is the same treatment, and the same admission, that price already
+     * gets in this class: a static per-SKU feature standing in for a daily
+     * series the schema does not hold. It is recorded rather than hidden
+     * because a neural model reads those columns as fact — a model trained on
+     * this source is learning calendar, price, promotion, category and brand
+     * effects on real demand, and is *not* learning anything about stock
+     * availability. The statistical baselines are unaffected: they read the
+     * daily series and nothing else.
+     *
+     * `warehouse_id` is the series' location key. At the warehouse grain it is
+     * the real warehouse id; at the channel and national grains no warehouse
+     * exists, so it is a dense rank over `location_code` — stable within an
+     * export, and never mixed, because an export covers one grain.
+     */
+    private function buyabansDemandQuery(): Builder
+    {
+        $grain = (string) config('services.buyabans.grain', 'warehouse');
+
+        // Dense-ranked here rather than in SQL so the mapping is explicit and
+        // the same on every database engine.
+        $locationKey = 'COALESCE(d.warehouse_id, 0)';
+
+        if ($grain !== 'warehouse') {
+            $codes = DB::table('buyabans_daily_demands')
+                ->where('grain', $grain)
+                ->distinct()
+                ->orderBy('location_code')
+                ->pluck('location_code');
+
+            $cases = [];
+
+            foreach ($codes as $index => $code) {
+                $cases[] = 'WHEN '.DB::connection()->getPdo()->quote((string) $code).' THEN '.($index + 1);
+            }
+
+            $locationKey = $cases === []
+                ? '0'
+                : 'CASE d.location_code '.implode(' ', $cases).' ELSE 0 END';
+        }
+
+        return DB::table('buyabans_daily_demands as d')
+            ->join('skus', 'skus.id', '=', 'd.sku_id')
+            ->join('products', 'products.id', '=', 'skus.product_id')
+            ->leftJoin('buyabans_stock_levels as bsl', function ($join) {
+                $join->on('bsl.sku_id', '=', 'd.sku_id')->where('bsl.inventory_source_code', '=', 'default');
+            })
+            ->where('d.grain', $grain)
+            // At the warehouse grain, drop demand that carries no location.
+            // Some orders genuinely have no showroom code, so their demand is
+            // real but unattributed — and ForecastRunService::pairsInScope()
+            // will never forecast such a pair. Exporting it anyway would train
+            // on a series that is never served, which is exactly the
+            // train/serve mismatch this source is supposed to avoid.
+            ->when(
+                $grain === 'warehouse',
+                fn ($query) => $query->whereNotNull('d.warehouse_id')
+            )
+            ->select([
+                DB::raw('DATE(d.demand_date) as date'),
+                DB::raw($locationKey.' as warehouse_id'),
+                'd.sku_id',
+                'products.category_id',
+                'products.brand_id',
+                'd.sold_qty',
+                DB::raw('COALESCE(bsl.qty, 0) as opening_qty'),
+                DB::raw('COALESCE(bsl.qty, 0) as closing_qty'),
+                DB::raw('COALESCE(bsl.qty, 0) as available_qty'),
+                DB::raw('0 as received_qty'),
+                DB::raw('0 as adjustment_qty'),
+                DB::raw('0 as stockout_minutes'),
+                DB::raw('0 as stockout_flag'),
+                // The price actually charged on the day, which this source does
+                // have — unlike the ledger source, where only today's price
+                // exists. Falls back to the SKU's current price on a day the
+                // aggregate reported none.
+                DB::raw('CASE WHEN d.avg_price > 0 THEN d.avg_price ELSE skus.selling_price END as selling_price'),
+            ])
+            ->orderByRaw($locationKey)
+            ->orderBy('d.sku_id')
+            ->orderBy('d.demand_date');
     }
 
     /**

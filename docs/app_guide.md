@@ -7,7 +7,11 @@ For a non-technical management overview, operating procedures, control summary,
 and go-live checklist, see [`management_guide.md`](management_guide.md).
 
 > **Scope note.** This document describes the application **as it currently
-> exists**. All ten phases of `docs/app_plan.md` are now built: catalog
+> exists**. Since 2026-09-04 it is a **prediction system, not a stock
+> manager**: catalog, stock levels and sales history are pulled read-only from
+> the BuyAbans back office over an authenticated API (see "BuyAbans data sync"
+> in §2), and the stock-operation modules, while still present and working,
+> are no longer part of the navigation. All ten phases of `docs/app_plan.md` are now built: catalog
 > (categories, brands, attributes, products, variants, SKUs), warehouses, an
 > inventory ledger with manual stock adjustments and FIFO batch tracking,
 > suppliers, purchase orders, goods receiving, stock transfers, sales
@@ -117,6 +121,77 @@ data the tiles show `—` and the charts render their empty states. This is
 deliberate — the page is ready for a forecasting module to pass `metrics`,
 `demandTrend` and `topMovers` props, and it is honest until one does.
 
+### BuyAbans data sync
+
+`/buyabans-sync`, under the sidebar's **Overview** group.
+
+**This is where the application's data actually comes from.** The app forecasts
+demand — it does not operate stock. The BuyAbans back office is the system of
+record for the catalog, stock levels and sales, and everything shown anywhere
+else in the app is pulled read-only from there through its
+`/api/forecasting` endpoints.
+
+The page shows four tiles (categories, brands, SKUs and warehouses synced), a
+table of how much demand history is held at each location grain, controls for
+running a sync, and the full history of every sync attempt — succeeded or
+failed, what it fetched, what it wrote, how long it took and, when something
+went wrong, why.
+
+| Action | What it does |
+| --- | --- |
+| **Test connection** | Asks the back office what it holds without pulling anything — row counts and the date range of its orders. The quickest way to tell a credentials problem from an empty dataset. |
+| **Sync now** | Runs one stage, or all of them, for a chosen number of days and location grain. Capped at 400 days from this page; a full-history pull belongs on the console command, which has no request timeout to hit. |
+
+The stages run in dependency order — locations, categories, brands, products,
+stock levels, then demand — because demand rows resolve against the catalog
+and locations that come before them. A stage that fails stops the run and is
+recorded as a failed row; the stages that already succeeded are kept.
+
+Syncing is **idempotent**: re-running over a window already covered corrects
+those rows rather than double-counting them. That matters because the nightly
+schedule deliberately re-pulls the last 14 days every night — orders get
+cancelled and refunded after the fact, which changes past days' demand
+retroactively.
+
+**Three location grains.** Demand can be aggregated per warehouse, per selling
+channel, or nationally. All three can be synced and coexist; rows are keyed by
+grain, so they never overwrite each other, and they are never added together —
+each describes the same sales from a different angle.
+
+If a synced SKU has no local counterpart, the demand row is **kept** with the
+SKU code retained and no local SKU linked, and the count is shown on the page.
+Unmatched demand is still real demand.
+
+Nothing on this page writes back to the back office. Every call is a `GET`.
+
+**What this system still writes.** Nothing that counts as data entry. Every
+remaining write is either an operation this application performs on itself, or
+your own account:
+
+| Action | What it is |
+| --- | --- |
+| Run a sync / test the connection | Pulls data in from the back office |
+| Start a forecast run | Queues a prediction job |
+| Score accuracy | Grades forecasts whose horizon has elapsed |
+| Capture a daily snapshot | Materialises one day of the pipeline |
+| Capture supplier performance | Computes last month's lead times from existing history |
+| Generate recommendations, then accept / modify / reject one | The decision engine, and the human decision it exists to record |
+| Profile, password, 2FA, passkeys | Your account |
+
+Suppliers and promotions are **read-only listings** like everything else. Note
+the consequence: supplier lead times and promotion windows have no source in the
+BuyAbans API and no entry point here, so they are whatever is already in the
+database. The reorder engine reads lead times directly, and promotions are a
+forecast covariate — if either needs to change, it needs a source.
+
+**What the forecasts are actually built from** is controlled by
+`FORECAST_DEMAND_SOURCE` (see `server_architecture.md` §4). Set to `buyabans`,
+every forecast — the series sent to the ML service, which pairs get forecast,
+each SKU's maturity classification and the peer averages a cold-start SKU falls
+back to — is computed from synced demand rather than this application's own
+stock ledger. Set to `ledger`, everything behaves exactly as it did before the
+integration existed.
+
 ### Catalog & Inventory (Phase 1 Foundation)
 
 All routes require `auth` + `verified`; no role/permission restrictions exist
@@ -140,6 +215,22 @@ yet (see §7). Listed under the sidebar's **Catalog** and **Inventory** groups.
 Every listing page has search, filters relevant to that module, 20-per-page
 pagination, sortable columns, and (where the module supports writes)
 edit/delete actions with a confirm dialog before delete.
+
+> **This application is read-only.** It displays data; it does not author any.
+> There are no create, edit or delete actions anywhere in it — and no disabled
+> ones either. The routes, the controller methods, the form requests, the create
+> and edit pages and the service write methods behind them were all removed, not
+> hidden, because the BuyAbans back office owns this data and a local edit would
+> be silently undone by the next nightly sync, which upserts every row it
+> fetches.
+>
+> To change a product, a category, a warehouse or a supplier, change it in the
+> back office and run a sync.
+>
+> The stock-operation modules — stock movements, stock transfers, purchase
+> orders, goods receipts, sales orders and sales returns — keep their listings so
+> the history they already hold stays readable, but they are out of the sidebar
+> and have no write path at all: stock is operated in the back office.
 
 ### Purchasing & Sales (Phase 2)
 
@@ -662,8 +753,17 @@ Recorded so nobody assumes otherwise:
   well they recover that seeder's own generative rules — not real demand.
   This is a real test of the pipeline and of the models relative to each
   other; it is **not** evidence of production accuracy and must not be
-  presented as such. The application has no real sales history to train on
-  (the `buyabans_staging3` staging database contains 49 orders in total).
+  presented as such.
+
+  **This has not changed with the BuyAbans integration.** Demand now arrives
+  through a real, authenticated API rather than a cross-database query, and
+  `sold_qty` and the daily price are genuinely measured — but the staging back
+  office held only 55 orders across 14 SKUs, so a multi-year order history was
+  *generated into it* (`ForecastingDemandHistorySeeder`, tagged `FCSTH-`). The
+  data has real structure and exercises the whole pipeline honestly; it is
+  still not real-world demand. SCM, where the real sales live, is not
+  reachable. Nothing derived from this data is evidence about production
+  accuracy.
 - **`forecast_accuracy` has never been populated.** Nothing has ever been
   scored, which means `ModelSelectionService::chooseAlgorithm()` has always
   fallen through to its `ewma` default and its actual comparison branch has

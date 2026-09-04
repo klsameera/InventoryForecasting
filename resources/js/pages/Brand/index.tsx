@@ -1,15 +1,12 @@
-import { Link, router } from '@inertiajs/react';
-import { Pencil, Plus, Trash2 } from 'lucide-react';
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import BrandController from '@/actions/App/Http/Controllers/BrandController';
-import ConfirmDialog from '@/components/confirm-dialog';
 import type { Column } from '@/components/data-table';
 import DataTable from '@/components/data-table';
 import PageHeader from '@/components/page-header';
 import StatusBadge from '@/components/status-badge';
 import TableFilters from '@/components/table-filters';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { create, edit, index } from '@/routes/brand';
+import { index } from '@/routes/brand';
 import type { Brand } from '@/types/catalog';
 import type { Paginated, TableSort } from '@/types/ui';
 
@@ -28,8 +25,6 @@ type Props = {
 export default function BrandIndex({ brands, filters }: Props) {
     const [search, setSearch] = useState(filters.search ?? '');
     const [status, setStatus] = useState(filters.status ?? '');
-    const [deletingId, setDeletingId] = useState<number | null>(null);
-    const [processing, setProcessing] = useState(false);
     const debouncedSearch = useDebouncedValue(search);
 
     const sort: TableSort | null = filters.sort
@@ -87,49 +82,7 @@ export default function BrandIndex({ brands, filters }: Props) {
                 />
             ),
         },
-        {
-            key: 'actions',
-            header: 'Actions',
-            hideLabelOnMobile: true,
-            cell: (row) => (
-                <div className="d-flex justify-content-end gap-2">
-                    <Link
-                        href={edit(row.id)}
-                        className="btn btn-quiet btn-sm btn-icon"
-                        aria-label={`Edit ${row.name}`}
-                    >
-                        <Pencil aria-hidden="true" />
-                    </Link>
-                    <button
-                        type="button"
-                        className="btn btn-quiet-danger btn-sm btn-icon"
-                        aria-label={`Delete ${row.name}`}
-                        onClick={() => setDeletingId(row.id)}
-                    >
-                        <Trash2 aria-hidden="true" />
-                    </button>
-                </div>
-            ),
-        },
     ];
-
-    const deletingBrand = brands.data.find((row) => row.id === deletingId);
-
-    function confirmDelete() {
-        if (deletingId === null) {
-            return;
-        }
-
-        setProcessing(true);
-
-        router.delete(BrandController.delete.url(deletingId), {
-            preserveScroll: true,
-            onFinish: () => {
-                setProcessing(false);
-                setDeletingId(null);
-            },
-        });
-    }
 
     return (
         <>
@@ -137,12 +90,6 @@ export default function BrandIndex({ brands, filters }: Props) {
                 eyebrow="Catalog"
                 title="Brands"
                 description="Product brands used across the catalog."
-                actions={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New brand
-                    </Link>
-                }
             />
 
             <DataTable
@@ -163,13 +110,7 @@ export default function BrandIndex({ brands, filters }: Props) {
                     reload({ per_page: perPage, page: 1 })
                 }
                 emptyTitle="No brands yet"
-                emptyDescription="Add your first brand to start tagging products."
-                emptyAction={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New brand
-                    </Link>
-                }
+                emptyDescription="Brands arrive from the BuyAbans back office — run a sync to load them."
                 toolbar={
                     <TableFilters
                         search={search}
@@ -204,20 +145,6 @@ export default function BrandIndex({ brands, filters }: Props) {
                         </select>
                     </TableFilters>
                 }
-            />
-
-            <ConfirmDialog
-                open={deletingId !== null}
-                onCancel={() => setDeletingId(null)}
-                onConfirm={confirmDelete}
-                title="Delete brand"
-                description={
-                    deletingBrand
-                        ? `This permanently removes "${deletingBrand.name}" from the brand list.`
-                        : undefined
-                }
-                confirmLabel="Delete"
-                processing={processing}
             />
         </>
     );

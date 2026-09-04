@@ -1,5 +1,4 @@
-import { Link, router } from '@inertiajs/react';
-import { Plus } from 'lucide-react';
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import type { Column } from '@/components/data-table';
 import DataTable from '@/components/data-table';
@@ -7,7 +6,7 @@ import PageHeader from '@/components/page-header';
 import StatusBadge from '@/components/status-badge';
 import TableFilters from '@/components/table-filters';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { create, edit, index } from '@/routes/purchase-order';
+import { index } from '@/routes/purchase-order';
 import type { Option } from '@/types/catalog';
 import type {
     PurchaseOrder,
@@ -89,11 +88,7 @@ export default function PurchaseOrderIndex({
             key: 'po_number',
             header: 'PO number',
             sortable: true,
-            cell: (row) => (
-                <Link href={edit(row.id)} className="fw-semibold">
-                    {row.po_number}
-                </Link>
-            ),
+            cell: (row) => <span className="fw-semibold">{row.po_number}</span>,
         },
         {
             key: 'supplier',
@@ -136,13 +131,7 @@ export default function PurchaseOrderIndex({
             <PageHeader
                 eyebrow="Purchasing"
                 title="Purchase orders"
-                description="Orders placed with suppliers, from draft through receiving."
-                actions={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New purchase order
-                    </Link>
-                }
+                description="Purchase order history. Read-only — purchasing happens in the BuyAbans back office."
             />
 
             <DataTable
@@ -163,13 +152,7 @@ export default function PurchaseOrderIndex({
                     reload({ per_page: perPage, page: 1 })
                 }
                 emptyTitle="No purchase orders yet"
-                emptyDescription="Create a purchase order to start buying stock from a supplier."
-                emptyAction={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New purchase order
-                    </Link>
-                }
+                emptyDescription="No purchase orders recorded."
                 toolbar={
                     <TableFilters
                         search={search}

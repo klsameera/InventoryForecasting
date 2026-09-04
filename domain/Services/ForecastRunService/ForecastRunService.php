@@ -15,6 +15,7 @@ use Domain\Facades\MlServiceClientFacade\MlServiceClientFacade;
 use Domain\Facades\ModelSelectionFacade\ModelSelectionFacade;
 use Domain\Services\DemandProfileService\DemandProfileService;
 use Domain\Services\MlServiceClient\MlServiceClient;
+use Domain\Services\MlTrainingDataService\MlTrainingDataService;
 use Domain\Services\ModelSelectionService\ModelSelectionService;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -333,12 +334,28 @@ final class ForecastRunService
     }
 
     /**
+     * Which warehouse/SKU pairs a run covers.
+     *
+     * On the ledger source that is every pair with a stock balance — this
+     * application holds the stock, so it knows the full population. On the
+     * BuyAbans source it is every pair the synced demand actually resolved to a
+     * local SKU and warehouse: this application holds no stock of its own, so a
+     * balance row is not the population, and a pair with no demand history is
+     * nothing to forecast from.
+     *
      * @return array<int, array{warehouse_id: int, sku_id: int}>
      */
     private function pairsInScope(?array $warehouseIds): array
     {
-        return DB::table('inventories')
-            ->when($warehouseIds, fn ($query, $ids) => $query->whereIn('warehouse_id', $ids))
+        $query = MlTrainingDataService::demandSource() === MlTrainingDataService::SOURCE_BUYABANS
+            ? DB::table('buyabans_daily_demands')
+                ->where('grain', config('services.buyabans.grain', 'warehouse'))
+                ->whereNotNull('warehouse_id')
+                ->whereNotNull('sku_id')
+            : DB::table('inventories');
+
+        return $query
+            ->when($warehouseIds, fn ($builder, $ids) => $builder->whereIn('warehouse_id', $ids))
             ->select(['warehouse_id', 'sku_id'])
             ->distinct()
             ->get()

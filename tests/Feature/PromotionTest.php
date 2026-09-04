@@ -3,101 +3,12 @@
 use App\Models\InventoryDailySnapshot;
 use App\Models\Promotion;
 use App\Models\Sku;
-use App\Models\User;
 use Domain\Facades\PromotionFacade\PromotionFacade;
+use Illuminate\Support\Facades\Route;
 
 test('guests are redirected to the login page', function () {
     $response = $this->get(route('promotion.index'));
     $response->assertRedirect(route('login'));
-});
-
-test('authenticated users can view the promotion list, create and edit pages', function () {
-    $user = User::factory()->create();
-    $promotion = Promotion::factory()->create();
-
-    $this->actingAs($user)->get(route('promotion.index'))->assertOk();
-    $this->actingAs($user)->get(route('promotion.create'))->assertOk();
-    $this->actingAs($user)->get(route('promotion.edit', $promotion->id))->assertOk();
-});
-
-test('creating a promotion syncs the selected skus', function () {
-    $user = User::factory()->create();
-    $skuA = Sku::factory()->create();
-    $skuB = Sku::factory()->create();
-
-    $response = $this->actingAs($user)->post(route('promotion.store'), [
-        'name' => 'Summer sale',
-        'discount_type' => 'PERCENTAGE',
-        'discount_value' => 20,
-        'start_date' => now()->addDays(5)->toDateString(),
-        'end_date' => now()->addDays(12)->toDateString(),
-        'sku_ids' => [$skuA->id, $skuB->id],
-    ]);
-
-    $response->assertRedirect();
-    $promotion = Promotion::firstOrFail();
-    expect($promotion->name)->toBe('Summer sale');
-    expect($promotion->skus()->pluck('skus.id')->sort()->values()->all())
-        ->toBe([$skuA->id, $skuB->id]);
-});
-
-test('a percentage discount over 100 is rejected', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->post(route('promotion.store'), [
-        'name' => 'Too much off',
-        'discount_type' => 'PERCENTAGE',
-        'discount_value' => 150,
-        'start_date' => now()->toDateString(),
-        'end_date' => now()->addDays(7)->toDateString(),
-    ]);
-
-    $response->assertSessionHasErrors('discount_value');
-});
-
-test('an end date before the start date is rejected', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->post(route('promotion.store'), [
-        'name' => 'Backwards dates',
-        'discount_type' => 'FIXED',
-        'discount_value' => 10,
-        'start_date' => now()->addDays(10)->toDateString(),
-        'end_date' => now()->toDateString(),
-    ]);
-
-    $response->assertSessionHasErrors('end_date');
-});
-
-test('updating a promotion replaces its sku assignments', function () {
-    $user = User::factory()->create();
-    $promotion = Promotion::factory()->create();
-    $originalSku = Sku::factory()->create();
-    $promotion->skus()->attach($originalSku->id);
-
-    $newSku = Sku::factory()->create();
-
-    $response = $this->actingAs($user)->post(route('promotion.update', $promotion->id), [
-        'name' => $promotion->name,
-        'discount_type' => $promotion->discount_type->value,
-        'discount_value' => $promotion->discount_value,
-        'start_date' => $promotion->start_date->toDateString(),
-        'end_date' => $promotion->end_date->toDateString(),
-        'sku_ids' => [$newSku->id],
-    ]);
-
-    $response->assertRedirect();
-    $promotion->refresh();
-    expect($promotion->skus()->pluck('skus.id')->all())->toBe([$newSku->id]);
-});
-
-test('deleting a promotion soft-deletes it', function () {
-    $user = User::factory()->create();
-    $promotion = Promotion::factory()->create();
-
-    $this->actingAs($user)->delete(route('promotion.delete', $promotion->id));
-
-    $this->assertSoftDeleted('promotions', ['id' => $promotion->id]);
 });
 
 test('impact is not computed until the promotion has actually ended', function () {
@@ -174,4 +85,13 @@ test('impact reports no baseline demand rather than a divide-by-zero when the sk
     $row = $result['data']['skus'][0];
     expect($row['baseline_daily_rate'])->toBe(0.0);
     expect($row['percent_change'])->toBeNull();
+});
+
+test('Promotion has no create, edit or write routes', function () {
+    // This application displays this data; the BuyAbans back office owns it.
+    // These route names are asserted absent rather than asserted forbidden:
+    // the routes were removed, not disabled, so nothing dead is left behind.
+    foreach (['create', 'edit', 'store', 'update', 'delete'] as $action) {
+        expect(Route::has('promotion.'.$action))->toBeFalse();
+    }
 });

@@ -1,5 +1,4 @@
-import { Link, router } from '@inertiajs/react';
-import { Plus } from 'lucide-react';
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import type { Column } from '@/components/data-table';
 import DataTable from '@/components/data-table';
@@ -7,7 +6,7 @@ import PageHeader from '@/components/page-header';
 import StatusBadge from '@/components/status-badge';
 import TableFilters from '@/components/table-filters';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { create, edit, index } from '@/routes/stock-transfer';
+import { index } from '@/routes/stock-transfer';
 import type {
     StatusOption,
     StockTransfer,
@@ -83,9 +82,7 @@ export default function StockTransferIndex({
             header: 'Transfer number',
             sortable: true,
             cell: (row) => (
-                <Link href={edit(row.id)} className="fw-semibold">
-                    {row.transfer_number}
-                </Link>
+                <span className="fw-semibold">{row.transfer_number}</span>
             ),
         },
         {
@@ -128,13 +125,7 @@ export default function StockTransferIndex({
             <PageHeader
                 eyebrow="Inventory"
                 title="Stock transfers"
-                description="Move stock between warehouses, from draft through receiving."
-                actions={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New transfer
-                    </Link>
-                }
+                description="Stock transfer history. Read-only — transfers are executed in the BuyAbans back office."
             />
 
             <DataTable
@@ -155,13 +146,7 @@ export default function StockTransferIndex({
                     reload({ per_page: perPage, page: 1 })
                 }
                 emptyTitle="No stock transfers yet"
-                emptyDescription="Move stock between warehouses to balance availability."
-                emptyAction={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New transfer
-                    </Link>
-                }
+                emptyDescription="No stock transfers recorded."
                 toolbar={
                     <TableFilters
                         search={search}

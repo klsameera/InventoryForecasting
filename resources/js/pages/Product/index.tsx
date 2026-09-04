@@ -1,15 +1,12 @@
-import { Link, router } from '@inertiajs/react';
-import { Pencil, Plus, Trash2 } from 'lucide-react';
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import ProductController from '@/actions/App/Http/Controllers/ProductController';
-import ConfirmDialog from '@/components/confirm-dialog';
 import type { Column } from '@/components/data-table';
 import DataTable from '@/components/data-table';
 import PageHeader from '@/components/page-header';
 import StatusBadge from '@/components/status-badge';
 import TableFilters from '@/components/table-filters';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { create, edit, index } from '@/routes/product';
+import { index } from '@/routes/product';
 import type { Option, Product } from '@/types/catalog';
 import type { Paginated, TableSort } from '@/types/ui';
 
@@ -41,8 +38,6 @@ export default function ProductIndex({
     const [brandId, setBrandId] = useState(filters.brand_id ?? '');
     const [productType, setProductType] = useState(filters.product_type ?? '');
     const [status, setStatus] = useState(filters.status ?? '');
-    const [deletingId, setDeletingId] = useState<number | null>(null);
-    const [processing, setProcessing] = useState(false);
     const debouncedSearch = useDebouncedValue(search);
 
     const sort: TableSort | null = filters.sort
@@ -135,49 +130,7 @@ export default function ProductIndex({
                 />
             ),
         },
-        {
-            key: 'actions',
-            header: 'Actions',
-            hideLabelOnMobile: true,
-            cell: (row) => (
-                <div className="d-flex justify-content-end gap-2">
-                    <Link
-                        href={edit(row.id)}
-                        className="btn btn-quiet btn-sm btn-icon"
-                        aria-label={`Edit ${row.name}`}
-                    >
-                        <Pencil aria-hidden="true" />
-                    </Link>
-                    <button
-                        type="button"
-                        className="btn btn-quiet-danger btn-sm btn-icon"
-                        aria-label={`Delete ${row.name}`}
-                        onClick={() => setDeletingId(row.id)}
-                    >
-                        <Trash2 aria-hidden="true" />
-                    </button>
-                </div>
-            ),
-        },
     ];
-
-    const deletingProduct = products.data.find((row) => row.id === deletingId);
-
-    function confirmDelete() {
-        if (deletingId === null) {
-            return;
-        }
-
-        setProcessing(true);
-
-        router.delete(ProductController.delete.url(deletingId), {
-            preserveScroll: true,
-            onFinish: () => {
-                setProcessing(false);
-                setDeletingId(null);
-            },
-        });
-    }
 
     return (
         <>
@@ -185,12 +138,6 @@ export default function ProductIndex({
                 eyebrow="Catalog"
                 title="Products"
                 description="Simple and configurable products in the catalog."
-                actions={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New product
-                    </Link>
-                }
             />
 
             <DataTable
@@ -211,13 +158,7 @@ export default function ProductIndex({
                     reload({ per_page: perPage, page: 1 })
                 }
                 emptyTitle="No products yet"
-                emptyDescription="Add your first product to the catalog."
-                emptyAction={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New product
-                    </Link>
-                }
+                emptyDescription="Products arrive from the BuyAbans back office — run a sync to load them."
                 toolbar={
                     <TableFilters
                         search={search}
@@ -317,20 +258,6 @@ export default function ProductIndex({
                         </select>
                     </TableFilters>
                 }
-            />
-
-            <ConfirmDialog
-                open={deletingId !== null}
-                onCancel={() => setDeletingId(null)}
-                onConfirm={confirmDelete}
-                title="Delete product"
-                description={
-                    deletingProduct
-                        ? `This permanently removes "${deletingProduct.name}". Products with SKUs can't be deleted.`
-                        : undefined
-                }
-                confirmLabel="Delete"
-                processing={processing}
             />
         </>
     );

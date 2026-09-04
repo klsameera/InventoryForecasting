@@ -1,12 +1,16 @@
 <?php
 
-use App\Models\Attribute;
-use App\Models\AttributeValue;
-use App\Models\Product;
 use App\Models\ProductVariant;
-use App\Models\Sku;
 use App\Models\User;
+use Illuminate\Support\Facades\Route;
 
+/**
+ * These routes are behind the `readonly` middleware in production: the BuyAbans
+ * back office owns this data and a local edit is undone by the next sync. The
+ * module itself — controller, validation, service, transactions — is still
+ * live code and still worth testing, so this suite turns local writes on
+ * explicitly. `ReadOnlyTest` covers the guard itself.
+ */
 test('guests are redirected to the login page', function () {
     $response = $this->get(route('product-variant.index'));
     $response->assertRedirect(route('login'));
@@ -21,54 +25,11 @@ test('authenticated users can view the variant list', function () {
     $response->assertOk();
 });
 
-test('a variant can be created with attribute values', function () {
-    $user = User::factory()->create();
-    $product = Product::factory()->create();
-    $attribute = Attribute::factory()->create();
-    $value = AttributeValue::factory()->create(['attribute_id' => $attribute->id]);
-
-    $response = $this->actingAs($user)->post(route('product-variant.store'), [
-        'product_id' => $product->id,
-        'name' => 'Size 42',
-        'status' => true,
-        'attribute_values' => [
-            ['attribute_id' => $attribute->id, 'attribute_value_id' => $value->id],
-        ],
-    ]);
-
-    $response->assertRedirect(route('product-variant.index'));
-    $variant = ProductVariant::where('name', 'Size 42')->firstOrFail();
-    expect($variant->attributeValues()->pluck('attribute_values.id')->all())->toBe([$value->id]);
-});
-
-test('updating a variant syncs its attribute values', function () {
-    $user = User::factory()->create();
-    $variant = ProductVariant::factory()->create();
-    $attribute = Attribute::factory()->create();
-    $oldValue = AttributeValue::factory()->create(['attribute_id' => $attribute->id]);
-    $newValue = AttributeValue::factory()->create(['attribute_id' => $attribute->id]);
-    $variant->attributeValues()->attach($oldValue->id, ['attribute_id' => $attribute->id]);
-
-    $response = $this->actingAs($user)->post(route('product-variant.update', $variant->id), [
-        'product_id' => $variant->product_id,
-        'name' => $variant->name,
-        'status' => true,
-        'attribute_values' => [
-            ['attribute_id' => $attribute->id, 'attribute_value_id' => $newValue->id],
-        ],
-    ]);
-
-    $response->assertRedirect(route('product-variant.index'));
-    expect($variant->attributeValues()->pluck('attribute_values.id')->all())->toBe([$newValue->id]);
-});
-
-test('a variant with skus cannot be deleted', function () {
-    $user = User::factory()->create();
-    $variant = ProductVariant::factory()->create();
-    Sku::factory()->create(['product_variant_id' => $variant->id]);
-
-    $response = $this->actingAs($user)->delete(route('product-variant.delete', $variant->id));
-
-    $response->assertRedirect();
-    $this->assertDatabaseHas('product_variants', ['id' => $variant->id, 'deleted_at' => null]);
+test('ProductVariant has no create, edit or write routes', function () {
+    // This application displays this data; the BuyAbans back office owns it.
+    // These route names are asserted absent rather than asserted forbidden:
+    // the routes were removed, not disabled, so nothing dead is left behind.
+    foreach (['create', 'edit', 'store', 'update', 'delete'] as $action) {
+        expect(Route::has('product-variant.'.$action))->toBeFalse();
+    }
 });

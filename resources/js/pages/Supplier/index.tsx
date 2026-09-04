@@ -1,15 +1,12 @@
-import { Link, router } from '@inertiajs/react';
-import { Pencil, Plus, Trash2 } from 'lucide-react';
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import SupplierController from '@/actions/App/Http/Controllers/SupplierController';
-import ConfirmDialog from '@/components/confirm-dialog';
 import type { Column } from '@/components/data-table';
 import DataTable from '@/components/data-table';
 import PageHeader from '@/components/page-header';
 import StatusBadge from '@/components/status-badge';
 import TableFilters from '@/components/table-filters';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { create, edit, index } from '@/routes/supplier';
+import { index } from '@/routes/supplier';
 import type { Supplier } from '@/types/sales-purchasing';
 import type { Paginated, TableSort } from '@/types/ui';
 
@@ -28,8 +25,6 @@ type Props = {
 export default function SupplierIndex({ suppliers, filters }: Props) {
     const [search, setSearch] = useState(filters.search ?? '');
     const [status, setStatus] = useState(filters.status ?? '');
-    const [deletingId, setDeletingId] = useState<number | null>(null);
-    const [processing, setProcessing] = useState(false);
     const debouncedSearch = useDebouncedValue(search);
 
     const sort: TableSort | null = filters.sort
@@ -93,64 +88,14 @@ export default function SupplierIndex({ suppliers, filters }: Props) {
                 />
             ),
         },
-        {
-            key: 'actions',
-            header: 'Actions',
-            hideLabelOnMobile: true,
-            cell: (row) => (
-                <div className="d-flex justify-content-end gap-2">
-                    <Link
-                        href={edit(row.id)}
-                        className="btn btn-quiet btn-sm btn-icon"
-                        aria-label={`Edit ${row.name}`}
-                    >
-                        <Pencil aria-hidden="true" />
-                    </Link>
-                    <button
-                        type="button"
-                        className="btn btn-quiet-danger btn-sm btn-icon"
-                        aria-label={`Delete ${row.name}`}
-                        onClick={() => setDeletingId(row.id)}
-                    >
-                        <Trash2 aria-hidden="true" />
-                    </button>
-                </div>
-            ),
-        },
     ];
-
-    const deletingSupplier = suppliers.data.find(
-        (row) => row.id === deletingId,
-    );
-
-    function confirmDelete() {
-        if (deletingId === null) {
-            return;
-        }
-
-        setProcessing(true);
-
-        router.delete(SupplierController.delete.url(deletingId), {
-            preserveScroll: true,
-            onFinish: () => {
-                setProcessing(false);
-                setDeletingId(null);
-            },
-        });
-    }
 
     return (
         <>
             <PageHeader
                 eyebrow="Purchasing"
                 title="Suppliers"
-                description="Vendors you buy stock from, and what they supply."
-                actions={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New supplier
-                    </Link>
-                }
+                description="Vendors and the SKUs they supply, with the lead times the reorder engine plans against. Read-only."
             />
 
             <DataTable
@@ -171,13 +116,7 @@ export default function SupplierIndex({ suppliers, filters }: Props) {
                     reload({ per_page: perPage, page: 1 })
                 }
                 emptyTitle="No suppliers yet"
-                emptyDescription="Add your first supplier to start recording purchase orders."
-                emptyAction={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New supplier
-                    </Link>
-                }
+                emptyDescription="No suppliers recorded."
                 toolbar={
                     <TableFilters
                         search={search}
@@ -212,20 +151,6 @@ export default function SupplierIndex({ suppliers, filters }: Props) {
                         </select>
                     </TableFilters>
                 }
-            />
-
-            <ConfirmDialog
-                open={deletingId !== null}
-                onCancel={() => setDeletingId(null)}
-                onConfirm={confirmDelete}
-                title="Delete supplier"
-                description={
-                    deletingSupplier
-                        ? `This permanently removes "${deletingSupplier.name}" from the supplier list.`
-                        : undefined
-                }
-                confirmLabel="Delete"
-                processing={processing}
             />
         </>
     );

@@ -1,5 +1,4 @@
-import { Link, router } from '@inertiajs/react';
-import { Plus } from 'lucide-react';
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import type { Column } from '@/components/data-table';
 import DataTable from '@/components/data-table';
@@ -7,7 +6,7 @@ import PageHeader from '@/components/page-header';
 import StatusBadge from '@/components/status-badge';
 import TableFilters from '@/components/table-filters';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { create, index } from '@/routes/stock-movement';
+import { index } from '@/routes/stock-movement';
 import type {
     MovementTypeOption,
     Option,
@@ -140,13 +139,7 @@ export default function StockMovementIndex({
             <PageHeader
                 eyebrow="Inventory"
                 title="Stock movements"
-                description="Append-only ledger of every stock change. Never edited or deleted."
-                actions={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        Record adjustment
-                    </Link>
-                }
+                description="Append-only ledger of every stock change. Read-only — nothing in this application writes to it."
             />
 
             <DataTable
@@ -160,13 +153,7 @@ export default function StockMovementIndex({
                     reload({ per_page: perPage, page: 1 })
                 }
                 emptyTitle="No stock movements yet"
-                emptyDescription="Record an adjustment to start the ledger."
-                emptyAction={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        Record adjustment
-                    </Link>
-                }
+                emptyDescription="No stock movements recorded."
                 toolbar={
                     <TableFilters
                         search={search}

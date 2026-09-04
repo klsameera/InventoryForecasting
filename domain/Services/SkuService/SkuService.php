@@ -6,9 +6,6 @@ namespace Domain\Services\SkuService;
 
 use App\Models\Sku;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Throwable;
 
 final class SkuService
 {
@@ -86,100 +83,5 @@ final class SkuService
                 'selling_price' => (float) $sku->selling_price,
             ])
             ->all();
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
-     */
-    public function store(array $data): array
-    {
-        DB::beginTransaction();
-
-        try {
-            $sku = $this->model->create($data);
-
-            DB::commit();
-
-            return [
-                'success' => true,
-                'message' => 'Sku created successfully',
-                'data' => $sku,
-            ];
-        } catch (Throwable $exception) {
-            DB::rollBack();
-
-            Log::error('Failed creating sku', [
-                'exception' => $exception->getMessage(),
-                'data' => $data,
-            ]);
-
-            return ['success' => false, 'message' => 'Error creating SKU'];
-        }
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
-     */
-    public function update(array $data, int $id): array
-    {
-        DB::beginTransaction();
-
-        try {
-            $sku = $this->model->findOrFail($id);
-
-            $sku->update($data);
-
-            DB::commit();
-
-            return [
-                'success' => true,
-                'message' => 'Sku updated successfully',
-                'data' => $sku->fresh(),
-            ];
-        } catch (Throwable $exception) {
-            DB::rollBack();
-
-            Log::error('Failed updating sku', [
-                'exception' => $exception->getMessage(),
-                'id' => $id,
-            ]);
-
-            return ['success' => false, 'message' => 'Error updating SKU'];
-        }
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function delete(int $id): array
-    {
-        DB::beginTransaction();
-
-        try {
-            $sku = $this->model->findOrFail($id);
-
-            if ($sku->inventories()->where('on_hand_qty', '>', 0)->exists()) {
-                DB::rollBack();
-
-                return ['success' => false, 'message' => 'Cannot delete a SKU that still has stock on hand'];
-            }
-
-            $sku->delete();
-
-            DB::commit();
-
-            return ['success' => true, 'message' => 'Sku deleted successfully'];
-        } catch (Throwable $exception) {
-            DB::rollBack();
-
-            Log::error('Failed deleting sku', [
-                'exception' => $exception->getMessage(),
-                'id' => $id,
-            ]);
-
-            return ['success' => false, 'message' => 'Error deleting SKU'];
-        }
     }
 }

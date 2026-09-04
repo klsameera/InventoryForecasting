@@ -1,5 +1,4 @@
-import { Link, router } from '@inertiajs/react';
-import { Plus } from 'lucide-react';
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import type { Column } from '@/components/data-table';
 import DataTable from '@/components/data-table';
@@ -7,7 +6,7 @@ import PageHeader from '@/components/page-header';
 import StatusBadge from '@/components/status-badge';
 import TableFilters from '@/components/table-filters';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { create, edit, index } from '@/routes/sales-order';
+import { index } from '@/routes/sales-order';
 import type {
     SalesOrder,
     SalesOrderStatus as Status,
@@ -82,9 +81,7 @@ export default function SalesOrderIndex({
             header: 'Order number',
             sortable: true,
             cell: (row) => (
-                <Link href={edit(row.id)} className="fw-semibold">
-                    {row.order_number}
-                </Link>
+                <span className="fw-semibold">{row.order_number}</span>
             ),
         },
         {
@@ -128,13 +125,7 @@ export default function SalesOrderIndex({
             <PageHeader
                 eyebrow="Sales"
                 title="Sales orders"
-                description="Orders fulfilled from a warehouse, from draft through confirmation."
-                actions={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New sales order
-                    </Link>
-                }
+                description="Sales order history. Read-only — sales are recorded in the BuyAbans back office."
             />
 
             <DataTable
@@ -155,13 +146,7 @@ export default function SalesOrderIndex({
                     reload({ per_page: perPage, page: 1 })
                 }
                 emptyTitle="No sales orders yet"
-                emptyDescription="Create a sales order to record a sale and deduct stock."
-                emptyAction={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New sales order
-                    </Link>
-                }
+                emptyDescription="No sales orders recorded."
                 toolbar={
                     <TableFilters
                         search={search}

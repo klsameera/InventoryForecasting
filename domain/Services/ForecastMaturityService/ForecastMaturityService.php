@@ -7,6 +7,7 @@ namespace Domain\Services\ForecastMaturityService;
 use App\Enums\ForecastMaturity;
 use App\Enums\MovementType;
 use Domain\Services\InventoryAnalyticsService\InventoryAnalyticsService;
+use Domain\Services\MlTrainingDataService\MlTrainingDataService;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -47,10 +48,7 @@ final class ForecastMaturityService
             return ['maturity' => ForecastMaturity::EndOfLife, 'days_of_history' => null, 'first_sale_at' => null];
         }
 
-        $firstSaleAt = DB::table('stock_movements')
-            ->where('sku_id', $skuId)
-            ->where('movement_type', MovementType::Sale->value)
-            ->min('occurred_at');
+        $firstSaleAt = $this->firstSaleAt($skuId);
 
         if ($firstSaleAt === null) {
             return ['maturity' => ForecastMaturity::ColdStart, 'days_of_history' => null, 'first_sale_at' => null];
@@ -74,6 +72,53 @@ final class ForecastMaturityService
     }
 
     /**
+     * The earliest day this SKU sold anything, read from whichever source
+     * demand currently comes from.
+     *
+     * This has to follow the demand source or the whole classification
+     * collapses: on the BuyAbans source there are no local `stock_movements`
+     * at all, so every SKU would look like it had never sold — and every pair
+     * would be forecast as a cold start regardless of how many years of synced
+     * history it actually has.
+     */
+    private function firstSaleAt(int $skuId): ?string
+    {
+        if (MlTrainingDataService::demandSource() === MlTrainingDataService::SOURCE_BUYABANS) {
+            return DB::table('buyabans_daily_demands')
+                ->where('grain', config('services.buyabans.grain', 'warehouse'))
+                ->where('sku_id', $skuId)
+                ->where('sold_qty', '>', 0)
+                ->min('demand_date');
+        }
+
+        return DB::table('stock_movements')
+            ->where('sku_id', $skuId)
+            ->where('movement_type', MovementType::Sale->value)
+            ->min('occurred_at');
+    }
+
+    /**
+     * Units sold for a SKU between two dates, from the configured source.
+     */
+    private function soldBetween(int $skuId, string $from, ?string $until = null): float
+    {
+        if (MlTrainingDataService::demandSource() === MlTrainingDataService::SOURCE_BUYABANS) {
+            return (float) DB::table('buyabans_daily_demands')
+                ->where('grain', config('services.buyabans.grain', 'warehouse'))
+                ->where('sku_id', $skuId)
+                ->whereDate('demand_date', '>=', $from)
+                ->when($until !== null, fn ($query) => $query->whereDate('demand_date', '<', $until))
+                ->sum('sold_qty');
+        }
+
+        return (float) DB::table('inventory_daily_snapshots')
+            ->where('sku_id', $skuId)
+            ->whereDate('snapshot_date', '>=', $from)
+            ->when($until !== null, fn ($query) => $query->whereDate('snapshot_date', '<', $until))
+            ->sum('sold_qty');
+    }
+
+    /**
      * Trailing {@see TREND_WINDOW_DAYS} vs. the window immediately before it,
      * summed across every warehouse — a meaningful (not marginal) drop is
      * what earns the Declining label, not any decrease at all.
@@ -83,16 +128,8 @@ final class ForecastMaturityService
         $trailingStart = now()->subDays(self::TREND_WINDOW_DAYS)->toDateString();
         $priorStart = now()->subDays(self::TREND_WINDOW_DAYS * 2)->toDateString();
 
-        $trailingQty = (float) DB::table('inventory_daily_snapshots')
-            ->where('sku_id', $skuId)
-            ->whereDate('snapshot_date', '>=', $trailingStart)
-            ->sum('sold_qty');
-
-        $priorQty = (float) DB::table('inventory_daily_snapshots')
-            ->where('sku_id', $skuId)
-            ->whereDate('snapshot_date', '>=', $priorStart)
-            ->whereDate('snapshot_date', '<', $trailingStart)
-            ->sum('sold_qty');
+        $trailingQty = $this->soldBetween($skuId, $trailingStart);
+        $priorQty = $this->soldBetween($skuId, $priorStart, $trailingStart);
 
         if ($priorQty <= 0.0) {
             return false;

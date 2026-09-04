@@ -1,5 +1,4 @@
 import { Link, router } from '@inertiajs/react';
-import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { Column } from '@/components/data-table';
 import DataTable from '@/components/data-table';
@@ -7,7 +6,7 @@ import PageHeader from '@/components/page-header';
 import StatusBadge from '@/components/status-badge';
 import TableFilters from '@/components/table-filters';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { create, edit, impact, index } from '@/routes/promotion';
+import { impact, index } from '@/routes/promotion';
 import type { Promotion } from '@/types/advanced-intelligence';
 import type { SkuOption } from '@/types/catalog';
 import type { Paginated, StatusTone } from '@/types/ui';
@@ -63,14 +62,7 @@ export default function PromotionIndex({
         {
             key: 'name',
             header: 'Name',
-            cell: (row) => (
-                <Link
-                    href={edit.url(row.id)}
-                    className="fw-semibold text-decoration-none"
-                >
-                    {row.name}
-                </Link>
-            ),
+            cell: (row) => <span className="fw-semibold">{row.name}</span>,
         },
         {
             key: 'discount',
@@ -127,12 +119,6 @@ export default function PromotionIndex({
                 eyebrow="Advanced intelligence"
                 title="Promotions"
                 description="Discounts recorded against a set of SKUs — once a promotion has ended, its real effect on demand can be measured against a matching pre-promotion baseline."
-                actions={
-                    <Link href={create.url()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        New promotion
-                    </Link>
-                }
             />
 
             <DataTable
@@ -146,7 +132,7 @@ export default function PromotionIndex({
                     reload({ per_page: perPage, page: 1 })
                 }
                 emptyTitle="No promotions yet"
-                emptyDescription="Record a promotion to start measuring its impact."
+                emptyDescription="No promotions recorded."
                 toolbar={
                     <TableFilters
                         search={search}

@@ -208,16 +208,27 @@ final class MlServiceClient
     public function buildSeries(array $pairs): array
     {
         $since = now()->subDays(self::HISTORY_DAYS)->toDateString();
+        $buyabans = MlTrainingDataService::demandSource() === MlTrainingDataService::SOURCE_BUYABANS;
 
-        return array_map(function (array $pair) use ($since) {
-            $history = DB::table('inventory_daily_snapshots')
-                ->where('warehouse_id', $pair['warehouse_id'])
-                ->where('sku_id', $pair['sku_id'])
-                ->whereDate('snapshot_date', '>=', $since)
-                ->orderBy('snapshot_date')
-                ->pluck('sold_qty')
-                ->map(fn ($qty) => (int) $qty)
-                ->all();
+        return array_map(function (array $pair) use ($since, $buyabans) {
+            $history = $buyabans
+                ? DB::table('buyabans_daily_demands')
+                    ->where('grain', config('services.buyabans.grain', 'warehouse'))
+                    ->where('warehouse_id', $pair['warehouse_id'])
+                    ->where('sku_id', $pair['sku_id'])
+                    ->whereDate('demand_date', '>=', $since)
+                    ->orderBy('demand_date')
+                    ->pluck('sold_qty')
+                    ->map(fn ($qty) => (int) round((float) $qty))
+                    ->all()
+                : DB::table('inventory_daily_snapshots')
+                    ->where('warehouse_id', $pair['warehouse_id'])
+                    ->where('sku_id', $pair['sku_id'])
+                    ->whereDate('snapshot_date', '>=', $since)
+                    ->orderBy('snapshot_date')
+                    ->pluck('sold_qty')
+                    ->map(fn ($qty) => (int) $qty)
+                    ->all();
 
             return [
                 'warehouse_id' => $pair['warehouse_id'],
@@ -257,18 +268,39 @@ final class MlServiceClient
     ): ?array {
         $since = now()->subDays(self::HISTORY_DAYS)->toDateString();
 
-        $snapshots = DB::table('inventory_daily_snapshots')
-            ->where('warehouse_id', $pair['warehouse_id'])
-            ->where('sku_id', $pair['sku_id'])
-            ->whereDate('snapshot_date', '>=', $since)
-            ->orderBy('snapshot_date')
-            ->select([
-                DB::raw('DATE(snapshot_date) as date'),
-                'available_qty',
-                'received_qty',
-                'stockout_minutes',
-            ])
-            ->get();
+        // On the BuyAbans source the stock covariates do not exist as a daily
+        // history — the back office reports a current position, not a balance
+        // per day. They are served as zero, exactly as
+        // {@see MlTrainingDataService::buyabansDemandQuery()} exports them, so
+        // the serving distribution matches the training one. A model trained on
+        // that source learns nothing from these columns either way; what
+        // matters is that the two sides agree.
+        $snapshots = MlTrainingDataService::demandSource() === MlTrainingDataService::SOURCE_BUYABANS
+            ? DB::table('buyabans_daily_demands')
+                ->where('grain', config('services.buyabans.grain', 'warehouse'))
+                ->where('warehouse_id', $pair['warehouse_id'])
+                ->where('sku_id', $pair['sku_id'])
+                ->whereDate('demand_date', '>=', $since)
+                ->orderBy('demand_date')
+                ->select([
+                    DB::raw('DATE(demand_date) as date'),
+                    DB::raw('0 as available_qty'),
+                    DB::raw('0 as received_qty'),
+                    DB::raw('0 as stockout_minutes'),
+                ])
+                ->get()
+            : DB::table('inventory_daily_snapshots')
+                ->where('warehouse_id', $pair['warehouse_id'])
+                ->where('sku_id', $pair['sku_id'])
+                ->whereDate('snapshot_date', '>=', $since)
+                ->orderBy('snapshot_date')
+                ->select([
+                    DB::raw('DATE(snapshot_date) as date'),
+                    'available_qty',
+                    'received_qty',
+                    'stockout_minutes',
+                ])
+                ->get();
 
         if ($snapshots->isEmpty()) {
             return null;

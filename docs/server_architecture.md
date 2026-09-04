@@ -117,6 +117,14 @@ beyond the framework defaults.
 | `ML_SERVICE_TOKEN` | unset | Optional bearer token sent as `Authorization: Bearer …` when set — must match the Python service's own `ML_SERVICE_API_TOKENS`; `services.ml.token` |
 | `ML_SERVICE_TIMEOUT` | `30` | Seconds to wait on `/forecast/run` for a baseline batch; `services.ml.timeout` |
 | `ML_SERVICE_NEURAL_TIMEOUT` | `300` | Seconds to wait when any series requests a trained model. Separate from the above because the work differs by an order of magnitude — a 441-pair TFT run takes ~20s warm and the flat 30s that used to apply to both failed the run outright; `services.ml.neural_timeout` |
+| `BUYABANS_API_URL` | `http://buyabans-backoffice.test` | Base URL of the BuyAbans back office (§10). Every catalog, stock and demand figure this application reasons about comes from there; `services.buyabans.url` |
+| `BUYABANS_CLIENT_ID` | set locally (`7`) | Passport **client-credentials** client id, created on the back office with `php artisan passport:client --client --name="Inventory Forecasting"`; `services.buyabans.client_id` |
+| `BUYABANS_CLIENT_SECRET` | set locally | That client's secret. Leave both empty to run without the integration — the sync page reports "not configured" rather than failing; `services.buyabans.client_secret` |
+| `BUYABANS_GRAIN` | `warehouse` | Location grain demand is synced and modelled at — `warehouse`, `channel` or `national`. Rows are keyed by grain, so several can coexist, but one export/training run covers exactly one; `services.buyabans.grain` |
+| `BUYABANS_HISTORY_DAYS` | `1100` | How far back a full demand sync reaches. The nightly schedule overrides this with a 14-day window; `services.buyabans.history_days` |
+| `BUYABANS_API_TIMEOUT` | `120` | Seconds to wait on one page. Generous because the daily-sales aggregate groups over the whole order book; `services.buyabans.timeout` |
+| `BUYABANS_PAGE_SIZE` | `1000` | Rows per page; the back office caps this at 5000; `services.buyabans.page_size` |
+| `FORECAST_DEMAND_SOURCE` | `buyabans` locally, `ledger` in `.env.example` | Where demand history comes from for **both training and serving** — `ledger` (`inventory_daily_snapshots`, this application's own stock ledger) or `buyabans` (`buyabans_daily_demands`, synced from the back office). One switch governs both deliberately: training on one source and serving from the other conditions a model on one distribution and then feeds it another, and nothing in the stack reports an error. **Changing this invalidates existing checkpoints** — retrain before serving a neural algorithm again. `services.ml.demand_source` |
 | `ML_DEFAULT_ALGORITHM` | `ewma` | Which algorithm an Established SKU uses before it has scored accuracy history to rank algorithms from — `ewma`, `seasonal_naive`, `tft` or `deepar`. **This is the switch that decides whether the trained model is served at all**: accuracy history only exists after a forecast's horizon has elapsed and been scored, so until then every SKU takes this value. An unrecognised name falls back to `ewma`; a neural name the service cannot serve is refused per-series by Python and answered with a baseline. `services.ml.default_algorithm` |
 
 ### Behaviour that changes with `APP_ENV`
@@ -163,20 +171,22 @@ with restart-on-deploy. Nothing supervises it today.
 
 ## 6. Scheduled tasks
 
-Four, registered in `routes/console.php`:
+Six, registered in `routes/console.php`:
 
 | Command | Schedule | Purpose |
 | --- | --- | --- |
+| `app:sync-buyabans all --days=14` | `dailyAt('00:05')`, `withoutOverlapping()` | Pulls locations, catalog, stock levels and demand history from the BuyAbans back office (§10). **First in the nightly sequence**, because everything after it reads what it brings in. Incremental: a 14-day window, not the full history — orders get cancelled and refunded after the fact, which changes past days' demand retroactively, so recent days are always re-pulled and upserted. See `app_architecture.md` §1r. |
 | `app:capture-inventory-snapshots` | `dailyAt('00:15')`, `withoutOverlapping()` | Captures the previous calendar day's `inventory_daily_snapshots` row for every warehouse/SKU pair — opening/closing balance, demand, stockout minutes. See `app_architecture.md` §1h. |
 | `app:score-forecast-accuracy` | `dailyAt('00:30')`, `withoutOverlapping()` | Scores every forecast whose window has elapsed against actual sales from `inventory_daily_snapshots`. Scheduled 15 minutes after the snapshot capture so that day's demand is already recorded. See `app_architecture.md` §1i. |
 | `app:generate-inventory-recommendations` | `dailyAt('00:45')`, `withoutOverlapping()` | Re-runs the inventory decision engine (app_plan.md §40, §84, §85) over every warehouse/SKU pair with a forecast — reorder points, dynamic safety stock, purchase quantities, ageing/overstock-driven reduce-purchase/do-not-reorder/clearance recommendations, and cross-warehouse transfer matching. Scheduled last in the nightly sequence. See `app_architecture.md` §1k, §1l, §1m. |
 | `app:train-forecast-model` | `monthlyOn(1, '02:00')`, `withoutOverlapping()`, `runInBackground()` | Re-exports the modelling dataset and retrains the neural models. **Not an optimisation — a correctness requirement.** The TFT's advantage over the baselines is entirely conditional on the model being recent (~+8% fresh, negative by four months; `app_architecture.md` §1p), and the baselines cannot decay because they re-derive from the trailing 180 days on every call. A trained model left alone becomes the *worse* choice while still returning confident numbers. Monthly keeps the served checkpoint well inside that window. Runs for hours on CPU, hence `runInBackground()`. |
 | `app:capture-supplier-performance` | `monthlyOn(1, '01:00')`, `withoutOverlapping()` | Captures last calendar month's real lead time/fill rate/on-time percentage per supplier from actual purchase-order and goods-receipt dates. Monthly, not nightly — a supplier's lead time needs a real batch of orders to average over. See `app_architecture.md` §1n. |
 
-All four commands also run manually (`php artisan app:capture-inventory-snapshots
+All six commands also run manually (`php artisan app:capture-inventory-snapshots
 {date?}` / `php artisan app:score-forecast-accuracy` /
 `php artisan app:generate-inventory-recommendations` /
-`php artisan app:capture-supplier-performance {month?}`, or their pages'
+`php artisan app:capture-supplier-performance {month?}` /
+`php artisan app:sync-buyabans {stage} --days= --grain=`, or their pages'
 buttons) — the schedule always captures/scores/recommends what's already
 elapsed or currently true, so nothing is measured or recommended before
 it's actually ready.
@@ -376,10 +386,13 @@ deploy time:
   emails go nowhere off-box. A real transport is required for those flows.
 - **Queue worker supervision.** `queue:work` under Supervisor/systemd, restarted
   on deploy.
-- **Cron.** Now required — five scheduled tasks exist (§6). Without the
+- **Cron.** Now required — six scheduled tasks exist (§6). Without the
   cron entry, none of them silently ever run — no error, they just never
-  fire, and `inventory_daily_snapshots`/forecast accuracy/inventory
-  recommendations/supplier performance all quietly go stale.
+  fire, and the BuyAbans sync/`inventory_daily_snapshots`/forecast accuracy/
+  inventory recommendations/supplier performance all quietly go stale.
+  The sync is the worst of these to lose: it fails silently into a stale
+  catalog and a demand history that simply stops, which every forecast
+  downstream then treats as fact.
 - **Production env.** `APP_DEBUG=false`, `APP_ENV=production`, a raised
   `LOG_LEVEL`, and a real `APP_URL`.
 - **Build step.** `npm run build` must run at deploy; `npm run build:ssr` exists
@@ -387,6 +400,12 @@ deploy time:
 - **Filesystem.** `local` disk today; S3 variables are stubbed but empty.
 - **HTTPS / session cookie settings.** `SESSION_ENCRYPT=false` and
   `SESSION_DOMAIN=null` are development defaults; revisit both.
+- **The BuyAbans back office (§10).** A hard runtime dependency, and the only
+  source of catalog, stock and demand data. Production needs: a reachable
+  `BUYABANS_API_URL`, a Passport client-credentials client issued on that
+  system, network access between the two, and an agreement on load — a full
+  history sync walks the whole order book. None of that is arranged; only a
+  local staging client exists today.
 - **The Python ML service (§8).** No hosting, process supervision or private
   networking decided — a second runtime the deploy story doesn't cover at
   all yet. `ML_SERVICE_API_TOKENS`/`ML_SERVICE_TOKEN` must be set to
@@ -394,3 +413,100 @@ deploy time:
 
 Update this section as each is decided, and log the decision in
 [`task_log.md`](task_log.md).
+
+---
+
+## 10. The BuyAbans back office (`/api/forecasting`)
+
+The system of record for catalog, stock and sales, and this application's only
+source of data. The forecasting app operates no stock of its own and authors no
+catalog — it predicts, and everything it predicts on is pulled read-only from
+here.
+
+**Where the code lives** — a separate repository, `c:\laragon\www\Buyabans-backoffice`
+(Bagisto 1.x / Laravel 10 / PHP 8.1+):
+
+| File | Role |
+| --- | --- |
+| `app/Services/ForecastingDataService.php` | Every query behind the feed. Read-only; never writes |
+| `app/Http/Controllers/API/Forecasting/ForecastingDataController.php` | Thin controller, validation, `{status, message, data}` envelope |
+| `routes/api.php` | The `forecasting` route group, behind `client` middleware |
+| `database/seeders/ForecastingDemandHistorySeeder.php` | Generates demand history where real history does not exist |
+
+**Authentication.** Passport **client credentials** (`client` middleware, the
+same guard the existing SCM and omni-channel endpoints use), so the forecasting
+app authenticates as a machine. Issue a client on the back office with:
+
+```
+php artisan passport:client --client --name="Inventory Forecasting"
+```
+
+then set `BUYABANS_CLIENT_ID` / `BUYABANS_CLIENT_SECRET` here (§4). The token is
+minted at `POST /oauth/token` and cached until two minutes before expiry.
+
+**The endpoints**, all `GET`, all under `/api/forecasting`:
+
+| Endpoint | Returns | Paging |
+| --- | --- | --- |
+| `meta` | Row counts, order/demand date ranges | — |
+| `categories` | id, parent, name, slug, status | keyset (`cursor`) |
+| `attributes` | attributes with their options | keyset |
+| `brands` | the brand attribute's option set | — |
+| `products` | sku, name, type, price, brand, categories, optional attributes | keyset |
+| `locations` | warehouses, channels and inventory sources together | — |
+| `inventory` | stock on hand per product per inventory source | keyset |
+| `orders` | raw order lines, for reconciliation | keyset |
+| `sales-daily` | **the training feed** — daily demand per SKU per location | offset |
+
+List endpoints take `limit` (max 5000) and `updated_since` for incremental
+re-syncs. `sales-daily` takes `grain`, `from`, `to` and `sku[]`.
+
+**Keyset paging everywhere except `sales-daily`.** An aggregate has no stable
+single-column key to keyset from, so that one endpoint pages by offset over a
+fully deterministic ordering. Both walkers refuse a non-advancing cursor/offset
+rather than looping forever.
+
+**The three location grains.** `sales-daily` aggregates at whichever is asked
+for, because the two systems disagree about what a "location" is:
+
+| Grain | Source column | Notes |
+| --- | --- | --- |
+| `warehouse` | `orders.omni_channel_showroom_code` → `warehouses.location_code` | The physical location. 15 warehouses exist |
+| `channel` | `orders.channel_name` | Same value domain as `inventory_sources.code` (`default`, `in_store`, `dutyfree`, `onestop`), so this doubles as the inventory-source grain |
+| `national` | none | One series per SKU |
+
+**A collation trap.** `orders.omni_channel_showroom_code` is
+`utf8mb4_general_ci` while `warehouses.location_code` is `utf8mb4_unicode_ci`,
+so joining them without forcing a common collation fails outright with
+"illegal mix of collations" — not a wrong answer, a hard error. Both are plain
+ASCII location codes, so `ForecastingDataService::LOCATION_JOIN` coerces the
+order side and the comparison is unchanged.
+
+**Only real demand counts.** `sales-daily` includes only orders in
+`ForecastingDataService::DEMAND_STATUSES` and nets cancelled and refunded
+quantities out of `sold_qty`. A cancelled order is not demand that was met, and
+counting it would teach a model to expect sales that never happened.
+
+### Seeded demand history
+
+The staging back office holds a full catalog (11,635 products, 371 categories,
+475 attributes) but almost no order history — 55 orders across 14 SKUs, of
+which only 5 were in a demand status. The bulk of real sales lives in SCM,
+which is not reachable from here. A model trained on 55 orders is meaningless,
+so `ForecastingDemandHistorySeeder` generates a realistic multi-year order
+history against the real catalog:
+
+```
+php artisan db:seed --class=ForecastingDemandHistorySeeder
+FORECAST_SEED_FRESH=1 php artisan db:seed --class=ForecastingDemandHistorySeeder   # replace
+```
+
+Every generated order carries the `FCSTH-` prefix in `increment_id`, so seeded
+rows are always distinguishable from genuine ones and `FORECAST_SEED_FRESH=1`
+removes exactly and only what the seeder wrote. It never modifies a row it did
+not create. See `app_architecture.md` §1r for the demand model itself.
+
+**This is generated data, and it stays labelled as such.** It exercises the
+pipeline end to end and carries real structure — seasonality, weekday rhythm,
+festivals, price elasticity, promotions — but it is not evidence about
+real-world demand, and no accuracy figure derived from it should be read as one.

@@ -46,22 +46,4 @@ enum MovementType: string
             self::Damage, self::WriteOff, self::AdjustmentOut => false,
         };
     }
-
-    /**
-     * The only movement types with a manual entry form in this phase. The
-     * rest are reserved for Sales/Purchasing/Transfers modules to write
-     * programmatically once those phases exist.
-     *
-     * @return list<self>
-     */
-    public static function manualEntryCases(): array
-    {
-        return [
-            self::OpeningStock,
-            self::AdjustmentIn,
-            self::AdjustmentOut,
-            self::Damage,
-            self::WriteOff,
-        ];
-    }
 }

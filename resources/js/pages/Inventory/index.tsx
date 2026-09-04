@@ -1,5 +1,4 @@
-import { Link, router } from '@inertiajs/react';
-import { PackagePlus } from 'lucide-react';
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import type { Column } from '@/components/data-table';
 import DataTable from '@/components/data-table';
@@ -7,7 +6,6 @@ import PageHeader from '@/components/page-header';
 import TableFilters from '@/components/table-filters';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { index } from '@/routes/inventory';
-import { create as createMovement } from '@/routes/stock-movement';
 import type { Inventory, Option } from '@/types/catalog';
 import type { Paginated, TableSort } from '@/types/ui';
 
@@ -123,13 +121,7 @@ export default function InventoryIndex({
             <PageHeader
                 eyebrow="Inventory"
                 title="Inventory"
-                description="Current stock balances by warehouse. Derived from the stock movement ledger — record an adjustment to change a balance."
-                actions={
-                    <Link href={createMovement()} className="btn btn-gradient">
-                        <PackagePlus aria-hidden="true" />
-                        Record adjustment
-                    </Link>
-                }
+                description="Current stock balances by warehouse, derived from the stock movement ledger. Read-only — stock is operated in the BuyAbans back office."
             />
 
             <DataTable
@@ -150,13 +142,7 @@ export default function InventoryIndex({
                     reload({ per_page: perPage, page: 1 })
                 }
                 emptyTitle="No inventory yet"
-                emptyDescription="Record a stock adjustment to bring a SKU into a warehouse."
-                emptyAction={
-                    <Link href={createMovement()} className="btn btn-gradient">
-                        <PackagePlus aria-hidden="true" />
-                        Record adjustment
-                    </Link>
-                }
+                emptyDescription="No balances yet."
                 toolbar={
                     <TableFilters
                         search={search}

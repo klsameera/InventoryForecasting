@@ -1,12 +1,11 @@
-import { Link, router } from '@inertiajs/react';
-import { Plus } from 'lucide-react';
+import { router } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import type { Column } from '@/components/data-table';
 import DataTable from '@/components/data-table';
 import PageHeader from '@/components/page-header';
 import TableFilters from '@/components/table-filters';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
-import { create, index } from '@/routes/sales-return';
+import { index } from '@/routes/sales-return';
 import type { SalesReturn } from '@/types/sales-purchasing';
 import type { Paginated } from '@/types/ui';
 
@@ -79,13 +78,7 @@ export default function SalesReturnIndex({ salesReturns, filters }: Props) {
             <PageHeader
                 eyebrow="Sales"
                 title="Sales returns"
-                description="Every return recorded against a confirmed sales order. Immutable once posted."
-                actions={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        Record return
-                    </Link>
-                }
+                description="Sales return history. Read-only — returns are recorded in the BuyAbans back office."
             />
 
             <DataTable
@@ -99,13 +92,7 @@ export default function SalesReturnIndex({ salesReturns, filters }: Props) {
                     reload({ per_page: perPage, page: 1 })
                 }
                 emptyTitle="No sales returns yet"
-                emptyDescription="Record a return against a confirmed sales order."
-                emptyAction={
-                    <Link href={create()} className="btn btn-gradient">
-                        <Plus aria-hidden="true" />
-                        Record return
-                    </Link>
-                }
+                emptyDescription="No sales returns recorded."
                 toolbar={
                     <TableFilters
                         search={search}

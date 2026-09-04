@@ -6,9 +6,6 @@ namespace Domain\Services\CategoryService;
 
 use App\Models\Category;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Throwable;
 
 final class CategoryService
 {
@@ -88,119 +85,5 @@ final class CategoryService
         }
 
         return $ids;
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
-     */
-    public function store(array $data): array
-    {
-        DB::beginTransaction();
-
-        try {
-            $category = $this->model->create($data);
-
-            DB::commit();
-
-            return [
-                'success' => true,
-                'message' => 'Category created successfully',
-                'data' => $category,
-            ];
-        } catch (Throwable $exception) {
-            DB::rollBack();
-
-            Log::error('Failed creating category', [
-                'exception' => $exception->getMessage(),
-                'data' => $data,
-            ]);
-
-            return ['success' => false, 'message' => 'Error creating category'];
-        }
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
-     */
-    public function update(array $data, int $id): array
-    {
-        DB::beginTransaction();
-
-        try {
-            $category = $this->model->findOrFail($id);
-
-            if (isset($data['parent_id']) && (int) $data['parent_id'] === $id) {
-                DB::rollBack();
-
-                return ['success' => false, 'message' => 'A category cannot be its own parent'];
-            }
-
-            if (isset($data['parent_id']) && $data['parent_id'] !== null
-                && in_array((int) $data['parent_id'], $this->descendantIds($id), true)) {
-                DB::rollBack();
-
-                return ['success' => false, 'message' => 'A category cannot be moved under its own descendant'];
-            }
-
-            $category->update($data);
-
-            DB::commit();
-
-            return [
-                'success' => true,
-                'message' => 'Category updated successfully',
-                'data' => $category->fresh(),
-            ];
-        } catch (Throwable $exception) {
-            DB::rollBack();
-
-            Log::error('Failed updating category', [
-                'exception' => $exception->getMessage(),
-                'id' => $id,
-            ]);
-
-            return ['success' => false, 'message' => 'Error updating category'];
-        }
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function delete(int $id): array
-    {
-        DB::beginTransaction();
-
-        try {
-            $category = $this->model->findOrFail($id);
-
-            if ($category->children()->exists()) {
-                DB::rollBack();
-
-                return ['success' => false, 'message' => 'Cannot delete a category that has sub-categories'];
-            }
-
-            if ($category->products()->exists()) {
-                DB::rollBack();
-
-                return ['success' => false, 'message' => 'Cannot delete a category that still has products'];
-            }
-
-            $category->delete();
-
-            DB::commit();
-
-            return ['success' => true, 'message' => 'Category deleted successfully'];
-        } catch (Throwable $exception) {
-            DB::rollBack();
-
-            Log::error('Failed deleting category', [
-                'exception' => $exception->getMessage(),
-                'id' => $id,
-            ]);
-
-            return ['success' => false, 'message' => 'Error deleting category'];
-        }
     }
 }

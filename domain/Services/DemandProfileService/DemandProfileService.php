@@ -7,6 +7,7 @@ namespace Domain\Services\DemandProfileService;
 use App\Enums\ForecastSource;
 use Domain\Services\InventoryAnalyticsService\InventoryAnalyticsService;
 use Domain\Services\MlServiceClient\MlServiceClient;
+use Domain\Services\MlTrainingDataService\MlTrainingDataService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -95,13 +96,22 @@ final class DemandProfileService
     ): ?array {
         $since = now()->subDays($days)->toDateString();
 
-        $query = DB::table('inventory_daily_snapshots')
-            ->join('skus', 'skus.id', '=', 'inventory_daily_snapshots.sku_id')
+        // Peer demand has to come from the same source the forecast is served
+        // from. Reading the ledger while serving synced demand would build the
+        // fallback series out of a different dataset than the one the cold-start
+        // SKU is being compared against.
+        $buyabans = MlTrainingDataService::demandSource() === MlTrainingDataService::SOURCE_BUYABANS;
+        $table = $buyabans ? 'buyabans_daily_demands' : 'inventory_daily_snapshots';
+        $dateColumn = $buyabans ? 'demand_date' : 'snapshot_date';
+
+        $query = DB::table($table)
+            ->join('skus', 'skus.id', '=', $table.'.sku_id')
             ->join('products', 'products.id', '=', 'skus.product_id')
-            ->where('inventory_daily_snapshots.warehouse_id', $warehouseId)
+            ->where($table.'.warehouse_id', $warehouseId)
             ->where('products.category_id', $categoryId)
-            ->where('inventory_daily_snapshots.sku_id', '!=', $excludeSkuId)
-            ->whereDate('inventory_daily_snapshots.snapshot_date', '>=', $since);
+            ->where($table.'.sku_id', '!=', $excludeSkuId)
+            ->when($buyabans, fn ($builder) => $builder->where($table.'.grain', config('services.buyabans.grain', 'warehouse')))
+            ->whereDate($table.'.'.$dateColumn, '>=', $since);
 
         if ($brandId !== null) {
             $query->where('products.brand_id', $brandId);
@@ -112,15 +122,15 @@ final class DemandProfileService
                 ->where('variant_attribute_values.attribute_value_id', $sizeAttributeValueId);
         }
 
-        $peerCount = (int) (clone $query)->distinct()->count('inventory_daily_snapshots.sku_id');
+        $peerCount = (int) (clone $query)->distinct()->count($table.'.sku_id');
 
         if ($peerCount === 0) {
             return null;
         }
 
         $totalsByDate = $query
-            ->selectRaw('DATE(inventory_daily_snapshots.snapshot_date) as bucket_date, SUM(inventory_daily_snapshots.sold_qty) as total_qty')
-            ->groupBy(DB::raw('DATE(inventory_daily_snapshots.snapshot_date)'))
+            ->selectRaw("DATE({$table}.{$dateColumn}) as bucket_date, SUM({$table}.sold_qty) as total_qty")
+            ->groupBy(DB::raw("DATE({$table}.{$dateColumn})"))
             ->pluck('total_qty', 'bucket_date');
 
         $series = [];

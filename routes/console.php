@@ -8,6 +8,15 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
+// Everything this application forecasts on comes from the BuyAbans back
+// office, so the sync runs before any of the jobs that read that data.
+// Incremental by default: a 14-day window re-pulls recent days (orders get
+// cancelled and refunded after the fact, which changes demand retroactively)
+// without re-downloading three years every night.
+Schedule::command('app:sync-buyabans all --days=14')
+    ->dailyAt('00:05')
+    ->withoutOverlapping();
+
 Schedule::command('app:capture-inventory-snapshots')
     ->dailyAt('00:15')
     ->withoutOverlapping();

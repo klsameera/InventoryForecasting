@@ -2989,3 +2989,362 @@ and `types:check`, `lint:check`, and `format:check` could not start because
 `npm.cmd` was denied. These are execution-environment blockers, not passing
 results. No application source was changed; presentation-package validation is
 complete as described above.
+
+## 2026-09-04 — The BuyAbans API: this application stops managing stock and starts consuming it
+
+**Requested:** "this app goal is inventory prediction and forecasting, not
+ordinary stock manage app. so no need any stock operations inside this app. we
+should get data through API. make API inside BuyAbansBackoffice and get all
+needed data from it include products, categories, attributes, orders all
+necessary info. and train data through our system and show output."
+
+Three scope questions were put to the user before any code was written, because
+each changed the work materially and one was destructive:
+
+| Question | Answer given |
+| --- | --- |
+| How far does "no stock operations" go? | **Hide only, change nothing** — do not delete the modules |
+| Where does real sales history come from? | No SCM access; take orders from BuyAbans and **seed enough data into that database** for real forecasting |
+| Which location grain? | **All three** |
+
+### Changed — BuyAbans back office (a separate git repo, `Buyabans-backoffice`)
+
+- **New read-only API** at `/api/forecasting`, nine `GET` endpoints behind the
+  existing Passport `client` middleware: `meta`, `categories`, `attributes`,
+  `brands`, `products`, `locations`, `inventory`, `orders`, `sales-daily`.
+  `app/Services/ForecastingDataService.php` holds every query;
+  `app/Http/Controllers/API/Forecasting/ForecastingDataController.php` is a thin
+  controller matching the envelope the existing API controllers already return.
+- **`ForecastingDemandHistorySeeder`** — generates realistic multi-year order
+  history against the real catalog, because the staging back office held only 55
+  orders across 14 SKUs (5 of them in a demand status) and SCM is unreachable.
+- **Passport signing keys generated** (`php artisan passport:keys`). They did
+  not exist on this install, so `/oauth/token` returned `LogicException: Invalid
+  key supplied` — a pre-existing break that would have failed the existing SCM
+  and omni-channel endpoints identically.
+
+### Changed — InventoryForecasting
+
+- **New module** (`buyabans-sync`): `BuyabansClient` (OAuth, paging),
+  `BuyabansSyncService` + facade, controller, FormRequest, resource, command
+  `app:sync-buyabans`, Inertia page, three tables (`buyabans_sync_runs`,
+  `buyabans_daily_demands`, `buyabans_stock_levels`), 20 feature tests.
+- **`FORECAST_DEMAND_SOURCE`** (`services.ml.demand_source`) switches every
+  demand read between `ledger` and `buyabans`.
+- **Nightly schedule** gains `app:sync-buyabans all --days=14`, first in the
+  sequence at 00:05.
+- **Sidebar**: stock-operation modules removed from navigation; a `BuyAbans
+  sync` entry added under Overview.
+
+### Key decisions
+
+- **Hide, do not delete — and it was the right call for a reason beyond the
+  user's instruction.** This repository is not under version control, so a
+  deletion would have been unrecoverable. Every stock module still routes,
+  still passes its tests, and is still reachable by URL.
+- **Synced data lives in its own tables, never in `inventories` or
+  `inventory_daily_snapshots`.** A snapshot is this application's statement
+  about stock it holds, derived from its own append-only ledger; a synced row is
+  another system's statement about sales. Writing a synced figure into
+  `inventories` would break the invariant every balance there depends on, and
+  the nightly snapshot job would overwrite synced rows on its next pass.
+- **One switch governs training *and* serving.** Training on one source and
+  serving from the other conditions a model on one distribution and feeds it
+  another, with nothing in the stack reporting an error.
+- **`ML_DEFAULT_ALGORITHM` dropped from `tft` to `ewma`.** The checkpoints on
+  disk were trained on the ledger source; serving them against synced demand is
+  exactly the mismatch above. Retraining is required before a neural algorithm
+  is served again.
+- **Rejected: offset paging across the whole demand window.** Measured at ~13k
+  rows/minute and degrading, because MySQL answers a large `OFFSET` by
+  generating and discarding every preceding row. Replaced with a month-at-a-time
+  walk — 2.4x faster immediately and, more importantly, linear rather than
+  quadratic.
+- **Rejected: fabricating stock history for the BuyAbans source.** The back
+  office reports a current position, not a per-day balance. Those columns export
+  as the current figure or zero, the limitation is documented in three places,
+  and `app:export-ml-training-data --source=buyabans` prints it on every run —
+  because once a checkpoint is on disk it is indistinguishable from a
+  ledger-trained one.
+- **Unmatched rows are kept, not dropped.** Demand for an unknown SKU lands with
+  `sku_id` null and the count surfaces in the UI; a product whose category did
+  not resolve attaches to a `bab-uncategorised` placeholder (3,505 of them did).
+
+### Bugs found, each of which produced plausible wrong behaviour
+
+- **`resource` is a reserved property on `JsonResource`.** The sync-run column
+  named `resource` was shadowed by `JsonResource::$resource`, so the API
+  resource serialised the *entire model* under that key and React threw
+  "Objects are not valid as a React child". Column renamed to `stage`.
+  Caught in the browser, not by the tests — the tests never rendered the page.
+- **Maturity classification never followed the demand source.**
+  `ForecastMaturityService` read first-sale from `stock_movements`, which is
+  empty for synced SKUs. The first real run produced **837 cold-start and 12
+  SKU-history forecasts out of 966** despite three years of history per pair.
+  After pointing maturity and `DemandProfileService` at the same source, the
+  identical run produced **966 SKU-history forecasts**. Nothing errored in the
+  broken version; it quietly forecast from category averages.
+- **Collation mismatch on the location join.**
+  `orders.omni_channel_showroom_code` is `utf8mb4_general_ci`,
+  `warehouses.location_code` is `utf8mb4_unicode_ci` — joining them is a hard
+  error, not a wrong answer. Forced to a common collation.
+- **NULL location codes defeat the demand unique index.** MySQL treats NULLs in
+  a unique index as distinct, so the `national` grain would have inserted a
+  fresh row on every nightly sync instead of upserting, multiplying measured
+  demand by the number of syncs. Empty string is used instead. Pinned by a test.
+- **The first seeded dataset was 94% zeros.** Products were selected
+  `ORDER BY price DESC`, which is all high-ticket appliances averaging LKR
+  692,066 — genuinely slow sellers. Average 66.6 non-zero days per SKU out of
+  1,097; a model trained on that correctly learns to predict nothing. Selection
+  re-done across six price bands and the rate curve recalibrated: **877.9
+  non-zero days per SKU, 80% density.**
+- **The export reported a three-week date range for a three-year dataset.** It
+  tracked the first and last *row* rather than min/max, and rows are ordered by
+  series then date. Pre-existing on the ledger source too; now min/max.
+- **`.env` leaked into the test suite.** Setting `FORECAST_DEMAND_SOURCE=buyabans`
+  locally failed 20 tests that build `inventory_daily_snapshots` fixtures.
+  Pinned to `ledger` in `phpunit.xml`, alongside empty API credentials.
+- **A killed sync stayed `running` forever.** A crashed process cannot close its
+  own row. Starting the same stage now closes out abandoned runs.
+- **`wayfinder:generate` was run without `--with-form`**, dropping the `.form()`
+  variants and breaking 25 existing pages' type-checks. The project configures
+  `formVariants: true` in `vite.config.ts`; the CLI needs the flag explicitly.
+
+### Verification (all against real data, not fixtures)
+
+- **Seeder:** 271,666 orders / 510,620 order items, 2023-09-04 to 2026-09-04,
+  161 SKUs, 877.9 non-zero days per SKU. All tagged `FCSTH-`; removable with
+  `FORECAST_SEED_FRESH=1`.
+- **API over real HTTP** with a Passport client-credentials token: all nine
+  endpoints return. The three grains reconcile — warehouse `DPS45` 5 + `DPS69` 3
+  + others = channel `default` 10 + `in_store` 2 = national 12 for the same
+  SKU-day.
+- **Sync:** 15 locations, 371 categories (369 parents linked), 164 brands,
+  10,982 products/SKUs, 33,850 stock levels, and **480,403 demand rows across
+  500 pages with 0 unmatched SKUs**, covering 2023-08-31 to 2026-09-04.
+- **Training export:** 480,400 rows across 966 series, 24 MB.
+- **Forecast run:** 966 forecasts, **all `SKU_HISTORY`**, mean predicted 53.75
+  units/30d, mean confidence 66.9. Verified in the browser on `/forecast`
+  against real product names.
+- Pest **274/274** (was 254; +20 new). Pint clean. `types:check` and
+  `lint:check` clean. `format:check` still fails on the same 8 pre-existing SCSS
+  files, untouched by this work.
+
+### Still open
+
+- **The demand history is generated, not real.** It has genuine structure —
+  seasonality, weekday rhythm, festivals, price elasticity, promotions — and it
+  exercises the pipeline honestly, but no accuracy figure derived from it is
+  evidence about real-world demand. SCM remains unreachable.
+- **No neural checkpoint has been trained on the BuyAbans source.** `ewma` is
+  serving. `app:train-forecast-model` must be re-run before `tft`/`deepar` are
+  switched back on.
+- **Only the `warehouse` grain has been synced.** `channel` and `national` are
+  implemented, tested and reconcile against the API, but hold no local rows yet.
+- **Stock covariates are absent on this source** (see `app_architecture.md`
+  section 1r). A model trained here learns nothing about availability.
+- **3,505 synced products have no resolvable category** and sit under
+  `bab-uncategorised`.
+- Production needs a reachable back office, a Passport client issued there, and
+  an agreement on sync load — none of which is arranged
+  (`server_architecture.md` section 9).
+- The dashboard's KPI tiles still receive no metrics (unchanged, unrelated).
+
+## 2026-09-04 — Closing the read-only boundary: the catalog stops being editable
+
+**Requested:** the Products page still showed a "New product" button —
+"still has this kind actions in the system.. remove them. we show data in this
+system but not create and edit any data."
+
+The previous entry hid the stock modules from navigation but left every catalog
+page offering New / Edit / Delete, and left all those write endpoints live.
+
+**Changed:**
+
+- **`app/Http/Middleware/ReadOnlyResource.php`** (aliased `readonly` in
+  `bootstrap/app.php`) — aborts 403 with an explanation of where to make the
+  change instead.
+- **Attached to every write route for back-office-owned data**: the seven
+  catalog/location modules (`product`, `product-variant`, `sku`, `category`,
+  `brand`, `attribute`, `warehouse`) and the six stock-operation modules
+  (`purchase-order`, `goods-receipt`, `stock-transfer`, `sales-order`,
+  `sales-return`) plus the manual `stock-movement` adjustment entry —
+  `create`, `edit`, `store`, `update`, `delete` and the status transitions.
+- **Stripped every write affordance from thirteen listing pages**: the New
+  button, the empty-state New button, the Actions column with its Edit/Delete
+  controls, and the `ConfirmDialog` with its delete state and handler.
+- **Empty-state copy rewritten** on the seven catalog pages — "Add your first
+  product to the catalog" is wrong when you cannot; it now points at the sync.
+- **`BUYABANS_ALLOW_LOCAL_WRITES`** (`services.buyabans.allow_local_writes`,
+  default false) lifts the guard.
+- **`tests/Feature/ReadOnlyTest.php`** — 55 tests pinning the boundary.
+
+**Key decisions:**
+
+- **Guard the routes, do not just hide the buttons.** Removing only the UI would
+  have left a system that still accepts `POST /product/store` — which does not
+  match "we show data in this system but not create and edit any data". The UI
+  and the HTTP layer now agree.
+- **Guard rather than delete.** Same reasoning as the previous entry: no version
+  control, so deletion is unrecoverable. Every controller, service, FormRequest,
+  page and test survives, and the decision is a one-line revert.
+- **The rule is "data the back office owns", not "all writes".** A blanket ban
+  would have broken things nothing else can supply. Kept writable, deliberately:
+  - **Suppliers and their SKU terms** — lead time, MOQ and order multiple have
+    **no source in the BuyAbans API**, and `InventoryRecommendationService`
+    reads them directly. Guarding these would have permanently broken reorder
+    points with no way to fix it from inside the app.
+  - **Promotions** — a known-future covariate the business plans and the model
+    consumes, not something the back office reports.
+  - **Forecast runs, snapshot capture, accuracy scoring, supplier-performance
+    capture, sync triggers** — operations, not data entry.
+  - **Recommendation accept / modify / reject** — the human decision the whole
+    decision engine exists to record.
+  - **Profile, password, 2FA, passkeys** — the user's own account.
+
+  This is flagged for the user rather than assumed settled: if suppliers and
+  promotions should also be read-only, it is one line each.
+- **The config switch exists for the tests, and is honest about it.** Fifty-four
+  existing tests exercised the write routes. They encode exactly the behaviour
+  this task changed, so per `.ai/rules/workflow.md` they were adapted rather
+  than left failing — and saying so is the rule's requirement. Rather than
+  rewrite fourteen suites to call facades (losing the controller, validation and
+  FormRequest coverage), each sets `allow_local_writes` true in a `beforeEach`
+  with the reason recorded. The stack behind those routes is still live code;
+  closing the door does not make the code correct by itself. `ReadOnlyTest`
+  deliberately has no such `beforeEach` — it runs against the production
+  default, which is the thing being verified.
+
+**Bugs and traps hit:**
+
+- **Dead code left by the strip.** Removing the affordances orphaned
+  `deletingId` state, `confirmDelete` handlers, `ConfirmDialog` imports and
+  `Pencil`/`Trash2`/`Plus` icons across thirteen pages — the residue that
+  compiles fine and rots. Cleaned by driving off `eslint --format json`'s own
+  `no-unused-vars` report rather than by eye.
+- **`types:check` caught what the lint pass could not.** In three files the
+  `deletingX = data.find(...)` const was prettier-wrapped across lines, so a
+  single-line removal left an orphaned `(row) => row.id === deletingId,);`
+  fragment — a parse error, fixed explicitly.
+
+**Affected files:** `app/Http/Middleware/ReadOnlyResource.php` (new),
+`bootstrap/app.php`, `config/services.php`, `routes/modules.php`,
+`routes/sales_purchasing.php`, thirteen `resources/js/pages/*/index.tsx`,
+fourteen `tests/Feature/*Test.php`, `tests/Feature/ReadOnlyTest.php` (new),
+`.env.example`, `docs/app_guide.md`, `docs/app_architecture.md` (§1s),
+`docs/server_architecture.md`, `docs/task_log.md`.
+
+**Verification:** Pest **329/329** (was 274; +55). Pint clean, `types:check`
+and `lint:check` clean; `format:check` still fails only on the same 8
+pre-existing SCSS files. Verified in the browser: `/product` renders the synced
+catalog with no New button and no Actions column; `/product/create` returns
+**403** with the explanatory message; `/supplier` still offers New/Edit/Delete
+as intended.
+
+**Still open:** unchanged from the previous entry. Additionally, whether
+suppliers and promotions should also become read-only is the user's call — both
+are one line.
+
+## 2026-09-04 — Deleting the write paths: the application becomes genuinely read-only
+
+**Requested:** the Inventory page still offered "Record adjustment" and
+Suppliers still offered New/Edit/Delete — "still some actions available.. check
+with full system and remove all of them.. clean the full system. I don't want
+keep any unused code also."
+
+The previous entry guarded the write routes with middleware and left everything
+behind them intact. That left exactly the dead weight this asks to remove: 78
+routes that only ever returned 403, the controller methods behind them, 27 form
+requests, 27 unreachable create/edit pages, and the service methods nothing
+could call.
+
+**Changed — everything below was deleted, not disabled:**
+
+| Layer | Removed |
+| --- | --- |
+| Routes | 78 across 15 modules — `create`, `edit`, `store`, `update`, `delete`, and the purchase-order / transfer / sales-order status transitions |
+| Controllers | The matching methods. Every data controller is now `index` / `all` / `get` only |
+| Form requests | 27 files |
+| Pages | 27 `create.tsx` / `edit.tsx` files |
+| Services | `store` / `update` / `delete` / transition methods, plus the private helpers they orphaned (`totals`, `transition`, `syncValues`, `pivotData`, `syncSupplierSkus`) |
+| Middleware | `ReadOnlyResource` and `BUYABANS_ALLOW_LOCAL_WRITES` — nothing left to guard |
+| Enum | `MovementType::manualEntryCases()` |
+
+~4,200 lines of PHP. Also removed the last write affordances in the UI
+(Inventory's "Record adjustment", Suppliers' New/Edit/Delete, Promotions' New),
+unlinked the PO / sales-order / transfer number columns that pointed at the
+deleted edit pages, and rewrote the page copy that still told users to add
+things they no longer can.
+
+**Key decisions:**
+
+- **Delete rather than guard.** A guarded route still appears in `route:list`,
+  still generates a Wayfinder helper, and still has a controller, a request and
+  a page behind it. It reads as live code to the next person. The reason it was
+  dead does not change, so neither does its uselessness.
+- **The boundary is data entry, not writes.** What survives is operations —
+  syncing, starting a forecast run, scoring accuracy, capturing a snapshot or
+  supplier performance, generating recommendations and recording an
+  accept/modify/reject — plus the user's own account.
+- **Suppliers and promotions became read-only too**, reversing the previous
+  entry's exception now that the instruction was explicit. **This has a
+  consequence worth stating:** supplier lead times and promotion windows have no
+  source in the BuyAbans API and no entry point here, so they are frozen at
+  whatever the database already holds. The reorder engine reads lead times
+  directly and promotions are a forecast covariate; if either needs to change,
+  it needs a source. Flagged for the user rather than assumed settled.
+- **`StockMovementService::post()` kept deliberately.** It is the ledger's write
+  primitive and nothing in the app calls it, but it wrote the history the
+  `ledger` demand source still reads, and `InventoryDailySnapshotTest` builds
+  fixtures with it. Its sibling `store()` — the manual-adjustment entry with the
+  negative-stock guard — went with the route that reached it.
+- **Listings, models, migrations and tables all survive.** The history in those
+  tables stays readable. Deleting the stock-operation *modules* wholesale is a
+  further product decision, not cleanup, and was left to the user.
+- **77 tests removed, 4 recovered, 15 added.** The removed ones exercised the
+  removed routes — `.ai/rules/workflow.md` requires saying that out loud. Four
+  covered logic that survived (FIFO consumption and weighted-average costing
+  through `post()`), so they moved to a new `StockLedgerTest` calling the Facade
+  directly rather than being lost with the route. Every module suite gained a
+  test asserting its write routes do not exist, which is what stops them
+  quietly returning.
+
+**Bugs and traps hit:**
+
+- **Brace-counting over raw PHP is unsafe here.** The first method-stripper
+  matched braces over raw text; an apostrophe inside a comment ("don't") opened
+  a phantom string and the matcher ran past the method's real end, silently
+  emptying `StockTransferService`, `SalesOrderService`, `GoodsReceiptService` and
+  `SalesReturnService` of *every* method including `all()` and `get()`. Caught by
+  inspecting the remaining method list rather than by any test. Restored from the
+  backup and rewritten on PHP's own `token_get_all()`, which knows code from
+  comment.
+- **The same trap in JSX.** The promotions listing had a column keyed
+  `'actions'` that held a read-only *View impact* link, not write actions. A
+  name match removed it; restored after checking the backup.
+- **A latent bug surfaced by removing the callers.** `StockMovementService::post()`
+  writes the ledger row before applying the balance and opens no transaction of
+  its own — every caller it had wrapped it. Called bare, a refused movement
+  leaves the row behind. `StockLedgerTest` now asserts that as the contract,
+  because it is what any future caller inherits.
+- **`types:check` caught what eslint could not**, again: three pages where a
+  prettier-wrapped multi-line `const` left an orphaned continuation after the
+  single-line removal.
+- **Stale page copy.** Removing the buttons left descriptions like "record an
+  adjustment to change a balance" and "Add your first supplier" — instructions
+  for actions that no longer exist. Rewritten across nine pages.
+
+**Verification:** Pest **230/230**. Pint, `types:check` and `lint:check` clean;
+`format:check` still fails only on the same 8 pre-existing SCSS files. Source
+sweep confirms zero create/edit/delete affordances remain in any page, and the
+only surviving `router.post` calls are the seven operations listed above plus
+auth and settings. Verified in the browser: `/inventory` and `/supplier` render
+read-only with corrected copy.
+
+**A restore point** for everything deleted was taken first (370 files) and is
+outside the repository, since this project is not under version control.
+
+**Still open:** unchanged from the previous entries, plus — whether to delete the
+stock-operation modules entirely (models, migrations, tables, listings) rather
+than keep them as read-only history, and where supplier lead times and promotion
+windows should come from now that neither can be entered.

@@ -1777,6 +1777,211 @@ every number still looking plausible.
   `TimeSeriesDataSet` fills by interpolation — inventing history rather than
   forecasting.
 
+### 1r. The BuyAbans integration — where the data actually comes from
+
+> **This reframes the application.** Every phase above builds machinery that
+> reasons about demand; §1o's seeders filled it from a cross-database
+> `DB::select()` against `buyabans_staging3`, which was a local convenience,
+> not an integration. This section replaces that with a real, authenticated,
+> read-only API — and settles what this application is: a **prediction system**,
+> not a stock manager. The BuyAbans back office owns the catalog, the stock and
+> the orders. This application forecasts them.
+
+**The layers.**
+
+| Layer | Path | Responsibility |
+| --- | --- | --- |
+| Client | `domain/Services/BuyabansClient/` | HTTP, OAuth token, page walking. Knows nothing about meaning |
+| Service | `domain/Services/BuyabansSyncService/` | Maps the feed onto local records; owns idempotence |
+| Facade | `domain/Facades/BuyabansSyncFacade/` | Entry point |
+| Controller | `app/Http/Controllers/BuyabansSyncController.php` | Index, probe, manual run |
+| Command | `app/Console/Commands/SyncBuyabansData.php` | `app:sync-buyabans {stage}` |
+| Page | `resources/js/pages/BuyabansSync/index.tsx` | Sync history, demand summary, triggers |
+
+The back-office side is documented in `server_architecture.md` §10.
+
+**Idempotence is the whole design.** The sync runs nightly, gets re-run by hand
+after a failure, and deliberately overlaps windows it has already covered. So
+every write is an upsert keyed on something stable and externally meaningful:
+
+| Local record | Keyed on |
+| --- | --- |
+| `Category` | `code` = `bab-c{buyabans id}` |
+| `Brand` | `code` = `bab-b{option id}` |
+| `Warehouse` | `code` = the real `location_code` |
+| `Sku` / `Product` | `skus.sku` = the back-office SKU code |
+| `BuyabansDailyDemand` | grain + location + SKU + date |
+| `BuyabansStockLevel` | SKU + inventory source |
+
+Prefixed synthetic codes rather than raw ids because `code` is user-visible and
+unique: a bare `92` tells nobody anything, and would collide the first time
+somebody created a category by hand.
+
+**A MySQL null trap the tests now pin.** The demand unique index spans
+`location_code`, and MySQL treats NULLs there as distinct — so the `national`
+grain, which genuinely has no location, would have inserted a *fresh row every
+night* instead of upserting, silently multiplying measured demand by the number
+of syncs. The sync writes an empty string instead of null.
+
+**Three new tables, and why none of them is an existing one.**
+
+`buyabans_daily_demands`, `buyabans_stock_levels` and `buyabans_sync_runs` are
+deliberately separate from `inventory_daily_snapshots` and `inventories`:
+
+- A snapshot (§1h) is *this* application's statement about stock it holds,
+  derived from its own append-only ledger. A synced demand row is *another*
+  system's statement about sales it recorded. Merging them makes it impossible
+  to say which number came from where.
+- The nightly snapshot job would overwrite synced rows on its next pass.
+- `inventories.on_hand_qty` is derived from `stock_movements`. Writing a synced
+  figure into it that no movement produced breaks the invariant every balance
+  there depends on — silently, and only visibly much later.
+
+Failures are rows in `buyabans_sync_runs`, not just log lines, because a sync
+that quietly stopped succeeding is the failure mode that rots every forecast
+downstream while nothing visibly breaks.
+
+**Unmatched rows are kept, not dropped.** Demand for a SKU with no local
+counterpart still lands, with `sku_id` null and the SKU code retained, and the
+count surfaces on the page. The same applies to products whose category did not
+resolve: `products.category_id` is NOT NULL, so they attach to a
+`bab-uncategorised` placeholder rather than being discarded. A product that
+sells is worth forecasting whether or not its categorisation came across
+cleanly.
+
+**Training on synced demand — and what it honestly contains.**
+`MlTrainingDataService::export()` now takes a `source`: `ledger` (unchanged,
+§1p) or `buyabans`. The BuyAbans query fills the same column contract, but the
+columns are not equally real:
+
+| Column | On the `buyabans` source |
+| --- | --- |
+| `sold_qty` | **Real.** Measured demand, net of cancellations and refunds — the target, and the reason to prefer this source |
+| `selling_price` | **Real, and better than the ledger source** — the price actually charged that day, which §1p explicitly could not provide |
+| `category_id`, `brand_id`, calendar | Real |
+| `opening_qty`, `closing_qty`, `available_qty` | **Not a history.** The back office reports a *current* stock position, so today's figure repeats for every day of the series |
+| `received_qty`, `adjustment_qty`, `stockout_minutes`, `stockout_flag` | **Unknown**, exported as zero |
+
+This is the same admission §1p already makes about price, in the other
+direction. It is recorded rather than hidden because a neural model reads those
+columns as fact: **a model trained on this source learns calendar, price,
+promotion, category and brand effects on real demand, and learns nothing about
+stock availability.** The statistical baselines are unaffected — they read the
+daily series and nothing else. `app:export-ml-training-data --source=buyabans`
+prints that warning on every run, because once a checkpoint is on disk it is
+indistinguishable from a ledger-trained one.
+
+**`warehouse_id` is a location key, not always a warehouse.** At the
+`warehouse` grain it is the real id; at `channel` and `national` no warehouse
+exists, so it is a dense rank over `location_code`. Stable within an export,
+and never mixed, because an export covers exactly one grain.
+
+**Five call sites follow the source, not four.** Switching demand sources is not
+just a training-data change — every place that reads a demand series has to
+follow, or the pipeline silently disagrees with itself:
+
+| Reader | What it needs the source for |
+| --- | --- |
+| `MlTrainingDataService::export()` | the training CSV |
+| `MlServiceClient::buildSeries()` | the daily series sent for inference |
+| `MlServiceClient::buildNeuralFeatures()` | the covariate block |
+| `ForecastRunService::pairsInScope()` | which pairs a run covers |
+| `ForecastMaturityService` | first sale date, and the decline check |
+| `DemandProfileService` | the peer series a cold-start SKU falls back to |
+
+The last two were found by running it, not by reading it. `ForecastMaturityService`
+took its first-sale date from `stock_movements` — a table that is *empty* for
+synced SKUs, because this application records no stock movements of its own any
+more. The first real run against synced demand produced **837 cold-start and 12
+SKU-history forecasts out of 966**, despite every pair having three years of
+history: each SKU looked like it had never sold. After pointing maturity and the
+peer profile at the same source, the identical run produced **966 SKU-history
+forecasts**. Nothing errored in the broken version — it just quietly forecast
+from category averages instead of real demand, which is exactly the class of
+failure a source switch invites.
+
+**The training export excludes what the serving path will not forecast.** At the
+warehouse grain, demand whose order carried no location code is real but
+unattributed, and `pairsInScope()` will never forecast such a pair — so
+`buyabansDemandQuery()` drops it too rather than training on a series that is
+never served.
+
+**The stock-operation modules are still here, and still work.** Purchase
+orders, goods receipts, stock transfers, sales orders, sales returns, stock
+movements and manual adjustments were **not** removed — every route, service,
+test and page is intact and passing. They are simply no longer navigation
+(`app-sidebar.tsx`), because operating stock is the back office's job. This was
+a deliberate choice over deletion: the repository is not under version control,
+so a deletion would have been unrecoverable, and the recommendation engine's
+accept-path still refers to the PO and transfer workflows.
+
+### 1s. The read-only boundary — the write paths are gone, not guarded
+
+This application authors nothing. Not "authors nothing by default", not "refuses
+writes with a 403" — the create, edit, store, update and delete paths for every
+data module were **deleted**.
+
+**Why deletion rather than a guard.** A guarded route is still a route: it
+appears in `route:list`, Wayfinder still generates a helper for it, the
+controller method and form request still sit there, and a create page still
+exists that nothing can reach. That is dead weight that reads as live code to
+the next person. The rule that made it dead — the back office owns this data,
+and a local edit is silently undone by the next sync, which upserts every row it
+fetches — does not change, so neither does the code's uselessness.
+
+**What went.**
+
+| Layer | Removed |
+| --- | --- |
+| Routes | 78 write routes across 15 modules — `create`, `edit`, `store`, `update`, `delete`, and the PO/transfer/sales-order status transitions |
+| Controllers | The matching methods; every data controller is now `index` / `all` / `get` only |
+| Form requests | 27 files — every `Create*Request` / `Update*Request` for those modules |
+| Pages | 27 `create.tsx` / `edit.tsx` files |
+| Services | The `store` / `update` / `delete` / transition methods, plus the private helpers left orphaned by them (`totals`, `transition`, `syncValues`, `pivotData`, `syncSupplierSkus`) |
+| Middleware | `ReadOnlyResource` and `BUYABANS_ALLOW_LOCAL_WRITES` — with the routes gone there is nothing left to guard |
+| Enum | `MovementType::manualEntryCases()`, which only the deleted manual-adjustment path used |
+
+Roughly 4,200 lines of PHP.
+
+**What survives, and why.** Every listing, every `index` / `all` / `get`, every
+model, migration and table — the history already in those tables stays readable.
+Plus the writes that are operations rather than data entry: syncing, starting a
+forecast run, scoring accuracy, capturing a snapshot or supplier performance,
+generating recommendations and recording an accept/modify/reject, and the user's
+own account.
+
+**`StockMovementService::post()` is the one deliberate survivor.** It is the
+ledger's write primitive, and nothing in the application calls it any more. It
+stays because it wrote the history the `ledger` demand source still reads, and
+because {@see InventoryDailySnapshotTest} builds its fixtures with it. Its
+sibling `store()` — the manual-adjustment entry point, with the
+negative-stock guard — was deleted with the route that reached it.
+
+**A latent bug that only became visible once the callers were gone.** `post()`
+writes the ledger row *before* applying the balance, and opens no transaction of
+its own — every caller it ever had wrapped it. Called bare, a refused movement
+leaves the row behind. `StockLedgerTest` asserts that as the contract rather
+than wishing it away, because it is what any future caller inherits.
+
+**Tests: 77 removed, 4 recovered, 15 added.** The deleted tests exercised the
+deleted routes, and `.ai/rules/workflow.md` requires saying so out loud. But
+four of them covered logic that survived — FIFO batch consumption and
+weighted-average costing through `post()` — so they moved to `StockLedgerTest`
+and call the Facade directly instead of being lost with the route. Each module
+suite gained a test asserting its write routes do not exist, which is what stops
+them quietly coming back.
+
+**Two traps worth recording.** Removing methods by brace-counting over raw text
+is unsafe in this codebase: an apostrophe inside a comment ("don't") opens a
+phantom string and the matcher runs past the method's real end, silently
+swallowing every method after it — it emptied four services before being caught.
+The rewrite uses PHP's own `token_get_all()`, which knows code from comment. And
+the JSX equivalent bit too: a column keyed `'actions'` on the promotions page
+held a read-only *View impact* link, not write actions, and was removed by a
+name match before being restored.
+
+---
+
 ---
 
 ## 2. Models

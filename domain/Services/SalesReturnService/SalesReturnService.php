@@ -4,17 +4,11 @@ declare(strict_types=1);
 
 namespace Domain\Services\SalesReturnService;
 
-use App\Enums\MovementType;
-use App\Enums\ReturnCondition;
 use App\Enums\SalesOrderStatus;
 use App\Models\SalesReturn;
 use Domain\Facades\SalesOrderFacade\SalesOrderFacade;
-use Domain\Facades\StockMovementFacade\StockMovementFacade;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
-use Throwable;
 
 /**
  * Immutable, posted-on-create — no update()/delete(), matching the ledger
@@ -113,116 +107,5 @@ final class SalesReturnService
             ->filter(fn ($item) => $item['remaining_qty'] > 0)
             ->values()
             ->all();
-    }
-
-    /**
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
-     */
-    public function store(array $data): array
-    {
-        DB::beginTransaction();
-
-        try {
-            $lines = $data['items'] ?? [];
-            unset($data['items']);
-
-            $salesOrder = SalesOrderFacade::get((int) $data['sales_order_id']);
-
-            if ($salesOrder === null) {
-                DB::rollBack();
-
-                return ['success' => false, 'message' => 'Sales order not found'];
-            }
-
-            if ($salesOrder->status !== SalesOrderStatus::Confirmed) {
-                DB::rollBack();
-
-                return ['success' => false, 'message' => 'Only confirmed sales orders can have returns recorded against them'];
-            }
-
-            $data['warehouse_id'] = $salesOrder->warehouse_id;
-
-            $data['return_number'] = 'SR-'.Str::upper(Str::random(10));
-            $return = $this->model->create($data);
-            $return->update(['return_number' => 'SR-'.str_pad((string) $return->id, 6, '0', STR_PAD_LEFT)]);
-
-            foreach ($lines as $line) {
-                $orderItem = $salesOrder->items->firstWhere('id', $line['sales_order_item_id']);
-
-                if ($orderItem === null) {
-                    DB::rollBack();
-
-                    return ['success' => false, 'message' => 'That line does not belong to this sales order'];
-                }
-
-                $alreadyReturned = DB::table('sales_return_items')->where('sales_order_item_id', $orderItem->id)->sum('quantity');
-
-                if ($alreadyReturned + $line['quantity'] > $orderItem->quantity) {
-                    DB::rollBack();
-
-                    return ['success' => false, 'message' => "Cannot return more than the {$orderItem->quantity} units sold on that line"];
-                }
-
-                $condition = $line['condition'] instanceof ReturnCondition ? $line['condition'] : ReturnCondition::from($line['condition']);
-
-                $return->items()->create([
-                    'sales_order_item_id' => $orderItem->id,
-                    'sku_id' => $orderItem->sku_id,
-                    'quantity' => $line['quantity'],
-                    'condition' => $condition,
-                ]);
-
-                $returnResult = StockMovementFacade::post([
-                    'warehouse_id' => $return->warehouse_id,
-                    'sku_id' => $orderItem->sku_id,
-                    'movement_type' => MovementType::SaleReturn,
-                    'quantity' => $line['quantity'],
-                    'unit_cost' => $orderItem->cost !== null ? (float) $orderItem->cost : null,
-                    'reference_type' => 'sales_return',
-                    'reference_id' => $return->id,
-                ]);
-
-                if (! $returnResult['success']) {
-                    DB::rollBack();
-
-                    return $returnResult;
-                }
-
-                if ($condition === ReturnCondition::Damaged) {
-                    $damageResult = StockMovementFacade::post([
-                        'warehouse_id' => $return->warehouse_id,
-                        'sku_id' => $orderItem->sku_id,
-                        'movement_type' => MovementType::Damage,
-                        'quantity' => $line['quantity'],
-                        'reference_type' => 'sales_return',
-                        'reference_id' => $return->id,
-                    ]);
-
-                    if (! $damageResult['success']) {
-                        DB::rollBack();
-
-                        return $damageResult;
-                    }
-                }
-            }
-
-            DB::commit();
-
-            return [
-                'success' => true,
-                'message' => 'Sales return recorded successfully',
-                'data' => $return->fresh('items'),
-            ];
-        } catch (Throwable $exception) {
-            DB::rollBack();
-
-            Log::error('Failed recording sales return', [
-                'exception' => $exception->getMessage(),
-                'data' => $data,
-            ]);
-
-            return ['success' => false, 'message' => 'Error recording sales return'];
-        }
     }
 }

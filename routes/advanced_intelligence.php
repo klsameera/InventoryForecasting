@@ -35,13 +35,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('/promotion')->group(function () {
         Route::get('/', [PromotionController::class, 'index'])->name('promotion.index');
-        Route::get('/create', [PromotionController::class, 'create'])->name('promotion.create');
         Route::get('/all', [PromotionController::class, 'all'])->name('promotion.all');
-        Route::get('/{id}/edit', [PromotionController::class, 'edit'])->name('promotion.edit');
         Route::get('/{id}/get', [PromotionController::class, 'get'])->name('promotion.get');
         Route::get('/{id}/impact', [PromotionController::class, 'impact'])->name('promotion.impact');
-        Route::post('/store', [PromotionController::class, 'store'])->name('promotion.store');
-        Route::post('/{id}/update', [PromotionController::class, 'update'])->name('promotion.update');
-        Route::delete('/{id}/delete', [PromotionController::class, 'delete'])->name('promotion.delete');
     });
 });

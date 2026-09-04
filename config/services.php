@@ -53,6 +53,22 @@ return [
         'default_algorithm' => env('ML_DEFAULT_ALGORITHM', 'ewma'),
 
         /*
+         * Where demand history comes from, for both training and serving:
+         *
+         *   'ledger'   — this application's own stock ledger, via
+         *                `inventory_daily_snapshots`. What every phase up to
+         *                Phase 10 was built against.
+         *   'buyabans' — demand synced from the BuyAbans back office, via
+         *                `buyabans_daily_demands`.
+         *
+         * One switch governs both deliberately. Training on one source and
+         * serving from the other would condition a model on one distribution
+         * and then feed it another, and nothing in the stack would report an
+         * error — it would just quietly forecast worse.
+         */
+        'demand_source' => env('FORECAST_DEMAND_SOURCE', 'ledger'),
+
+        /*
          * Seconds to wait on /forecast/run. Two values because the work differs
          * by an order of magnitude: a baseline batch is arithmetic and returns
          * in well under a second, while a neural batch loads a checkpoint on
@@ -60,6 +76,43 @@ return [
          */
         'timeout' => env('ML_SERVICE_TIMEOUT', 30),
         'neural_timeout' => env('ML_SERVICE_NEURAL_TIMEOUT', 300),
+    ],
+
+    /*
+     * The BuyAbans back office — the system of record for catalog, stock and
+     * sales. This application forecasts; it does not operate stock, and it
+     * authors none of this data itself. Everything is pulled read-only from
+     * that system's /api/forecasting endpoints.
+     *
+     * Authentication is Passport client credentials, so this application
+     * authenticates as a machine. Create the client on the back office with:
+     *   php artisan passport:client --client --name="Inventory Forecasting"
+     */
+    'buyabans' => [
+        'url' => env('BUYABANS_API_URL', 'http://buyabans-backoffice.test'),
+        'client_id' => env('BUYABANS_CLIENT_ID'),
+        'client_secret' => env('BUYABANS_CLIENT_SECRET'),
+
+        /*
+         * Seconds to wait on a single page. Generous, because the daily-sales
+         * aggregate groups over the whole order book and a wide date window is
+         * genuinely expensive on the back office's side.
+         */
+        'timeout' => env('BUYABANS_API_TIMEOUT', 120),
+
+        /* Rows per page. The back office caps this at 5000. */
+        'page_size' => env('BUYABANS_PAGE_SIZE', 1000),
+
+        /*
+         * Which location grain demand is synced at — 'warehouse', 'channel' or
+         * 'national'. Syncing more than one is supported and they coexist:
+         * rows are keyed by grain, so they never overwrite each other.
+         */
+        'grain' => env('BUYABANS_GRAIN', 'warehouse'),
+
+        /* How many days of sales history a full sync reaches back for. */
+        'history_days' => env('BUYABANS_HISTORY_DAYS', 1100),
+
     ],
 
 ];

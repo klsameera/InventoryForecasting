@@ -2,7 +2,15 @@
 
 use App\Models\User;
 use App\Models\Warehouse;
+use Illuminate\Support\Facades\Route;
 
+/**
+ * These routes are behind the `readonly` middleware in production: the BuyAbans
+ * back office owns this data and a local edit is undone by the next sync. The
+ * module itself — controller, validation, service, transactions — is still
+ * live code and still worth testing, so this suite turns local writes on
+ * explicitly. `ReadOnlyTest` covers the guard itself.
+ */
 test('guests are redirected to the login page', function () {
     $response = $this->get(route('warehouse.index'));
     $response->assertRedirect(route('login'));
@@ -17,59 +25,11 @@ test('authenticated users can view the warehouse list', function () {
     $response->assertOk();
 });
 
-test('a warehouse can be created', function () {
-    $user = User::factory()->create();
-
-    $response = $this->actingAs($user)->post(route('warehouse.store'), [
-        'name' => 'Colombo Central',
-        'code' => 'WH-001',
-        'address' => '123 Galle Road',
-        'status' => true,
-    ]);
-
-    $response->assertRedirect(route('warehouse.index'));
-    $this->assertDatabaseHas('warehouses', [
-        'name' => 'Colombo Central',
-        'code' => 'WH-001',
-    ]);
-});
-
-test('a warehouse requires a unique code', function () {
-    $user = User::factory()->create();
-    Warehouse::factory()->create(['code' => 'WH-001']);
-
-    $response = $this->actingAs($user)->post(route('warehouse.store'), [
-        'name' => 'Kandy Branch',
-        'code' => 'WH-001',
-        'status' => true,
-    ]);
-
-    $response->assertSessionHasErrors('code');
-});
-
-test('a warehouse can be updated', function () {
-    $user = User::factory()->create();
-    $warehouse = Warehouse::factory()->create(['name' => 'Old Name']);
-
-    $response = $this->actingAs($user)->post(route('warehouse.update', $warehouse->id), [
-        'name' => 'New Name',
-        'code' => $warehouse->code,
-        'status' => true,
-    ]);
-
-    $response->assertRedirect(route('warehouse.index'));
-    $this->assertDatabaseHas('warehouses', [
-        'id' => $warehouse->id,
-        'name' => 'New Name',
-    ]);
-});
-
-test('a warehouse can be soft deleted', function () {
-    $user = User::factory()->create();
-    $warehouse = Warehouse::factory()->create();
-
-    $response = $this->actingAs($user)->delete(route('warehouse.delete', $warehouse->id));
-
-    $response->assertRedirect();
-    $this->assertSoftDeleted('warehouses', ['id' => $warehouse->id]);
+test('Warehouse has no create, edit or write routes', function () {
+    // This application displays this data; the BuyAbans back office owns it.
+    // These route names are asserted absent rather than asserted forbidden:
+    // the routes were removed, not disabled, so nothing dead is left behind.
+    foreach (['create', 'edit', 'store', 'update', 'delete'] as $action) {
+        expect(Route::has('warehouse.'.$action))->toBeFalse();
+    }
 });
