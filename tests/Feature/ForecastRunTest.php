@@ -295,3 +295,109 @@ test('a run scoped to no warehouses with no inventory completes with zero foreca
     expect($run->status)->toBe(ForecastRunStatus::Completed);
     expect($run->forecasts()->count())->toBe(0);
 });
+
+test('a refused series produces no forecast at all', function () {
+    // The model declines; nothing is substituted in its place. Before this,
+    // the service answered a refusal with EWMA under its own name — accurate
+    // bookkeeping, but it meant asking for a trained model and receiving
+    // arithmetic, with the refusal hidden behind a plausible number.
+    Http::fake([
+        '*/forecast/run' => Http::response([
+            'status' => 'partial',
+            'results' => [],
+            'refusals' => [[
+                'warehouse_id' => 1,
+                'sku_id' => 1,
+                'algorithm' => 'tft',
+                'reason' => 'sku 1 was not in the training data',
+            ]],
+        ], 200),
+    ]);
+
+    $warehouse = Warehouse::factory()->create();
+    $sku = Sku::factory()->create();
+    Inventory::factory()->create(['warehouse_id' => $warehouse->id, 'sku_id' => $sku->id]);
+
+    // No explicit processRun() here: store() dispatches RunDemandForecast and
+    // the suite runs on the sync queue, so the batch has already executed by
+    // the time store() returns. Calling it again runs the whole thing twice.
+    $result = ForecastRunFacade::store(['horizon_days' => 30]);
+
+    $run = $result['data']->fresh();
+
+    expect(Forecast::where('forecast_run_id', $run->id)->count())->toBe(0);
+    // Nothing served at all is a failure — the operator asked for an algorithm
+    // and got none of it — and the reason has to survive to the page.
+    expect($run->status)->toBe(ForecastRunStatus::Failed);
+    expect($run->error_message)->toContain('tft');
+    expect($run->error_message)->toContain('not in the training data');
+});
+
+test('a partial refusal keeps the served forecasts and still reports the refusal', function () {
+    // One unservable series must not cost the rest their answers: a real run
+    // covers thousands of pairs and a handful may be too new for a trained
+    // model. The run completes, and the message is what surfaces the hole.
+    $warehouse = Warehouse::factory()->create();
+    $served = Sku::factory()->create();
+    $refused = Sku::factory()->create();
+
+    foreach ([$served, $refused] as $sku) {
+        Inventory::factory()->create(['warehouse_id' => $warehouse->id, 'sku_id' => $sku->id]);
+    }
+
+    Http::fake([
+        '*/forecast/run' => Http::response([
+            'status' => 'partial',
+            'results' => [[
+                'warehouse_id' => $warehouse->id,
+                'sku_id' => $served->id,
+                'predicted_qty' => 30.0,
+                'lower_qty' => 20.0,
+                'upper_qty' => 40.0,
+                'confidence_score' => 55,
+                'forecast_source' => 'SKU_HISTORY',
+                'algorithm' => 'tft',
+            ]],
+            'refusals' => [[
+                'warehouse_id' => $warehouse->id,
+                'sku_id' => $refused->id,
+                'algorithm' => 'tft',
+                'reason' => 'needs at least 45 days of history',
+            ]],
+        ], 200),
+    ]);
+
+    $result = ForecastRunFacade::store(['horizon_days' => 30]);
+
+    $run = $result['data']->fresh();
+
+    expect($run->status)->toBe(ForecastRunStatus::Completed);
+    expect(Forecast::where('forecast_run_id', $run->id)->pluck('sku_id')->all())->toBe([$served->id]);
+    expect($run->error_message)->toContain('45 days');
+});
+
+test('retry starts a fresh run with the original settings', function () {
+    Http::fake(['*/forecast/run' => Http::response(['status' => 'completed', 'results' => []], 200)]);
+
+    $user = User::factory()->create();
+    $warehouse = Warehouse::factory()->create();
+
+    $first = ForecastRunFacade::store([
+        'horizon_days' => 60,
+        'warehouse_ids' => [$warehouse->id],
+    ])['data'];
+
+    $response = $this->actingAs($user)->post(route('forecast-run.retry', $first->id));
+
+    $response->assertRedirect();
+
+    // A new record beside the first, not an edit of it: a run is a
+    // point-in-time record of what was asked and what happened, including a
+    // refusal, and retrying must not erase the attempt that failed.
+    $latest = MlForecastRun::query()->orderByDesc('id')->first();
+
+    expect($latest->id)->not->toBe($first->id);
+    expect($latest->horizon_days)->toBe(60);
+    expect($latest->warehouse_ids)->toBe([$warehouse->id]);
+    expect(MlForecastRun::find($first->id))->not->toBeNull();
+});

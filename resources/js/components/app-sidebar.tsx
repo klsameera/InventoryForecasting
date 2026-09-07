@@ -20,6 +20,7 @@ import {
     Replace,
     SlidersHorizontal,
     Sparkles,
+    Stethoscope,
     Split,
     Swords,
     Tags,
@@ -61,6 +62,7 @@ import { index as promotionIndex } from '@/routes/promotion';
 import { index as skuIndex } from '@/routes/sku';
 import { index as supplierIndex } from '@/routes/supplier';
 import { index as supplierPerformanceIndex } from '@/routes/supplier-performance';
+import { index as systemHealthIndex } from '@/routes/system-health';
 import { index as warehouseIndex } from '@/routes/warehouse';
 import type { NavItem } from '@/types';
 
@@ -96,6 +98,11 @@ const navGroups: NavGroup[] = [
                 title: 'BuyAbans sync',
                 href: buyabansSyncIndex(),
                 icon: CloudDownload,
+            },
+            {
+                title: 'System health',
+                href: systemHealthIndex(),
+                icon: Stethoscope,
             },
         ],
     },

@@ -15,6 +15,7 @@ from app.schemas import (
     ForecastResponse,
     ForecastResult,
     SeriesInput,
+    SeriesRefusal,
 )
 
 logger = logging.getLogger(__name__)
@@ -30,12 +31,6 @@ app = FastAPI(
     ),
     version="0.2.0",
 )
-
-# The algorithm a series falls back to when the one it asked for cannot run.
-# EWMA because it needs nothing but the series itself: it is the one algorithm
-# that can always answer.
-FALLBACK_ALGORITHM = "ewma"
-
 
 def _run_baseline(series: SeriesInput, horizon_days: int) -> BaselineForecast:
     return run_baseline_forecast(series.daily_sold_qty, horizon_days)
@@ -55,44 +50,48 @@ def _result(
     series: SeriesInput,
     outcome: BaselineForecast,
     algorithm: str,
-    fallback_reason: str | None = None,
 ) -> ForecastResult:
     return ForecastResult(
         warehouse_id=series.warehouse_id,
         sku_id=series.sku_id,
         algorithm=algorithm,
-        fallback_reason=fallback_reason,
         **outcome.__dict__,
     )
 
 
-def _fall_back(series: SeriesInput, horizon_days: int, reason: str) -> ForecastResult:
-    """Answer with a baseline, recording what was really run and why.
+def _refusal(series: SeriesInput, algorithm: str, reason: str) -> SeriesRefusal:
+    """Report that the requested algorithm declined this series.
 
-    A neural model refuses a series it cannot honestly serve — an unknown SKU,
-    too little history, a horizon longer than its decoder, a missing checkpoint.
-    That refusal is a correct answer, not an error, so the request still
-    succeeds. Laravel stamps the forecast row from the echoed algorithm, so a
-    fallback is never filed under the neural model's name and never pollutes
-    that model's accuracy history.
+    **Nothing is substituted.** A neural model refuses a series it cannot
+    honestly serve — an unknown SKU, too little history, a horizon longer than
+    its decoder, a missing checkpoint — and that refusal is returned as itself
+    rather than quietly answered by EWMA.
+
+    The substitution it replaces was recorded accurately, but accurate
+    bookkeeping is not the same as the right behaviour: asking for one model and
+    receiving another model's number is a surprise, and a run that reports
+    success while containing results nobody requested hides that surprise. An
+    operator who wanted a trained model would rather be told it could not run.
     """
     logger.info(
-        "falling back to %s for warehouse=%s sku=%s: %s",
-        FALLBACK_ALGORITHM,
+        "%s declined warehouse=%s sku=%s: %s",
+        algorithm,
         series.warehouse_id,
         series.sku_id,
         reason,
     )
 
-    return _result(
-        series,
-        _BASELINES[FALLBACK_ALGORITHM](series, horizon_days),
-        FALLBACK_ALGORITHM,
-        reason,
+    return SeriesRefusal(
+        warehouse_id=series.warehouse_id,
+        sku_id=series.sku_id,
+        algorithm=algorithm,
+        reason=reason,
     )
 
 
-def _run_batch(payload: ForecastRequest) -> list[ForecastResult]:
+def _run_batch(
+    payload: ForecastRequest,
+) -> tuple[list[ForecastResult], list[SeriesRefusal]]:
     """Run every series, grouping the neural ones so each model runs **once**.
 
     The baselines are per-series arithmetic and cost nothing to loop over. A
@@ -103,6 +102,7 @@ def _run_batch(payload: ForecastRequest) -> list[ForecastResult]:
     forward pass, and results are written back into their original positions.
     """
     results: list[ForecastResult | None] = [None] * len(payload.series)
+    refusals: list[SeriesRefusal] = []
     neural_batches: dict[str, list[int]] = {}
 
     for position, series in enumerate(payload.series):
@@ -121,13 +121,14 @@ def _run_batch(payload: ForecastRequest) -> list[ForecastResult]:
         outcomes = neural.forecast_many(batch, payload.horizon_days, algorithm=algorithm)
 
         for position, series, outcome in zip(positions, batch, outcomes):
-            results[position] = (
-                _fall_back(series, payload.horizon_days, str(outcome))
-                if isinstance(outcome, neural.UnsupportedSeries)
-                else _result(series, outcome, algorithm)
-            )
+            if isinstance(outcome, neural.UnsupportedSeries):
+                refusals.append(_refusal(series, algorithm, str(outcome)))
 
-    return [result for result in results if result is not None]
+                continue
+
+            results[position] = _result(series, outcome, algorithm)
+
+    return [result for result in results if result is not None], refusals
 
 
 def get_settings() -> Settings:
@@ -201,4 +202,10 @@ def models() -> dict[str, object]:
     dependencies=[Depends(require_service_token)],
 )
 def run_forecast(payload: ForecastRequest) -> ForecastResponse:
-    return ForecastResponse(status="completed", results=_run_batch(payload))
+    results, refusals = _run_batch(payload)
+
+    return ForecastResponse(
+        status="completed" if not refusals else "partial",
+        results=results,
+        refusals=refusals,
+    )

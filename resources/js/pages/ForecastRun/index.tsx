@@ -1,12 +1,12 @@
 import { Link, router } from '@inertiajs/react';
-import { Plus } from 'lucide-react';
+import { Plus, RotateCcw } from 'lucide-react';
 import { useState } from 'react';
 import type { Column } from '@/components/data-table';
 import DataTable from '@/components/data-table';
 import PageHeader from '@/components/page-header';
 import StatusBadge from '@/components/status-badge';
 import TableFilters from '@/components/table-filters';
-import { create, index } from '@/routes/forecast-run';
+import { create, index, retry } from '@/routes/forecast-run';
 import type { ForecastRun, ForecastRunStatus } from '@/types/forecasting';
 import type { Paginated, StatusTone } from '@/types/ui';
 
@@ -76,6 +76,41 @@ export default function ForecastRunIndex({ runs, filters }: Props) {
             key: 'created_at',
             header: 'Queued',
             cell: (row) => row.created_at ?? '—',
+        },
+        {
+            key: 'error_message',
+            header: 'Outcome',
+            cell: (row) =>
+                row.error_message ? (
+                    <div className="d-flex flex-column align-items-start gap-2">
+                        {/* A refused run produces no substitute figures, so the
+                            only useful next step is to ask again once the cause
+                            is fixed. */}
+                        <span className="app-text-muted small">
+                            {row.error_message}
+                        </span>
+                        <button
+                            type="button"
+                            className="btn btn-soft-warning btn-sm"
+                            onClick={() =>
+                                router.post(
+                                    retry.url({ id: row.id }),
+                                    {},
+                                    { preserveScroll: true },
+                                )
+                            }
+                        >
+                            <RotateCcw aria-hidden="true" />
+                            Try again
+                        </button>
+                    </div>
+                ) : (
+                    <span className="app-text-muted small">
+                        {(row.forecasts_count ?? 0) > 0
+                            ? 'All series forecast'
+                            : '—'}
+                    </span>
+                ),
         },
     ];
 

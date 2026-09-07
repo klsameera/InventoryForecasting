@@ -4343,3 +4343,344 @@ noticing until the totals drifted.
 grain for the dashboard, forecasting and training, and it stays `warehouse`;
 rows of different grains describe the same sales, so anything that summed across
 them would double-count. The other two are synced and available, not wired in.
+
+## 2026-09-04 — Re-audited management presentation for the BuyAbans prediction system
+
+**Requested:** Re-analyse the full updated system and rebuild the presentation
+for a team and management audience, with process-infographic images and enough
+explanation to present the complete application.
+
+**Changed:**
+
+- Replaced the 3 September presentation story, which described this repository
+  as an end-to-end stock operating system, with a current 22-slide story that
+  reflects the BuyAbans integration and the application's read-only prediction
+  boundary.
+- Rebuilt the editable PowerPoint and matching PDF around the current flow:
+  BuyAbans system of record -> Passport-protected GET API -> ordered/idempotent
+  sync -> catalog and demand normalization -> dense daily series -> algorithm
+  selection and Python inference -> management dashboard / forecast evidence ->
+  governed human decision.
+- Added eleven newly rendered 1600x900 PNG infographics: end-to-end system flow,
+  responsibility boundary, sync stages, three-grain reconciliation, catalog
+  normalization, sparse-demand correction, forecast governance, recommendation
+  input gap, automation, technical architecture and the five management
+  decisions.
+- Rewrote the presenter notes with 10/25/45-minute routes, a full slide-by-slide
+  talk track, likely management questions, an eight-minute demonstration route
+  and a pre-meeting checklist. All 22 slides also contain embedded speaker
+  notes.
+- Rewrote `docs/management_guide.md` so it no longer instructs users to perform
+  stock operations removed from the product. It now documents the live sync,
+  dashboard, forecast experience, algorithm evidence, data lineage, the stale
+  recommendation input and the current production decisions.
+- Split the generator into a stable documented entry point and a current
+  PowerPoint-COM builder so the same command continues to rebuild every
+  deliverable.
+
+**Current evidence represented in the deck:**
+
+- All three four-year grains reconcile at 1,826,136 units and 535 SKUs, with
+  zero unmatched demand SKUs; warehouse remains the active serving grain.
+- The corrected local catalog contains 363 configurable parents, 1,857 linked
+  variants, 9,035 standalone products, 10,892 SKUs and 1,929 normalized axis
+  values; 475 source attributes normalize to 52 local attributes.
+- Dense-series reconstruction corrected one comparable 30-day total from
+  51,919 to 27,952 against 27,132 actual, and the training export now contains
+  941,116 gap-free rows.
+- The current saved cross-model evaluation still selects EWMA (19.6% WAPE), so
+  `.env` correctly retains `ML_DEFAULT_ALGORITHM=ewma`. The later 365-day neural
+  artifacts are shown separately and explicitly labelled as generated-data
+  evidence.
+- A widened run completed 2,300 forecasts in 2m22s; the dashboard was measured
+  at 2.5s after query/index work and the forecast page at 0.9s.
+- The recommendation limitation is now a dedicated management slide: the
+  engine reads 441 legacy inventory rows across 149 SKUs / six warehouses,
+  only four current forecast pairs overlap, and the 197 existing
+  recommendations must not be presented as current BuyAbans decisions.
+
+**Key decisions:**
+
+- The presentation leads with the product boundary — BuyAbans is operational
+  truth, Inventory Forecasting is a read-only analytical and prediction layer —
+  because the earlier deck's transaction/ledger story is no longer the user
+  workflow.
+- No current UI screenshot was invented. The available PNG captures predate the
+  integration; current Playwright artifacts are accessibility snapshots rather
+  than images. Current pages are therefore represented as editable vector
+  management views, while the talk track uses measured values from the current
+  documentation and saved model artifacts.
+- Model training evidence and cross-model evaluation are kept separate. The
+  default is not promoted merely because newer checkpoints exist.
+- Data lineage is part of the main narrative, not a footnote: Dashboard and
+  Forecast use the BuyAbans path, while recommendations and multiple advanced
+  views still read legacy or frozen inputs.
+- The closing ask is five decisions: production connectivity, stock mapping,
+  access control, real-history model validation and reliable production
+  operation.
+- No PHP, React, TypeScript, SCSS, route, database, configuration or runtime
+  behavior changed. `app_guide.md`, `app_architecture.md` and
+  `server_architecture.md` remain the application truth and were not changed by
+  this presentation-only task.
+
+**Affected files:**
+
+- `docs/presentations/inventory-forecasting-management-presentation.pptx`
+- `docs/presentations/inventory-forecasting-management-presentation.pdf`
+- `docs/presentations/inventory-forecasting-presenter-notes.md`
+- `docs/presentations/build-management-presentation.ps1`
+- `docs/presentations/build-management-presentation-current.ps1`
+- `docs/presentations/images/*.png`
+- `docs/presentations/slide-previews/*.png`
+- `docs/management_guide.md`
+- `docs/task_log.md`
+
+**Verification:** The PowerPoint contains 22 slide parts and 22 meaningful notes
+parts; the PDF has a valid `%PDF-1.7` signature. All 22 previews and all eleven
+infographics are 1600x900. Every preview was visually inspected with no clipping,
+overlap or unreadable text, and all local links in the management guide and
+presenter notes resolve.
+
+The repository's required application checks were attempted. Pint and Pest
+could not start because the Laragon PHP 8.3 executable is denied by this host.
+`types:check`, `lint:check` and `format:check` could not start because the
+Laragon `npm.cmd` executable is also denied. These are execution-environment
+blocks, not passing results. No application source was changed; the generated
+presentation package was validated independently as described above.
+
+## 2026-09-04 — System health page
+
+**Requested:** "add health monitor page for the system. we can show server
+statistics and AI model and all needed information inside this."
+
+**Not built as a CRUD module.** `module-checklist.md` covers modules with a
+table; this owns nothing and writes nothing. It follows the `DashboardService` /
+`InventoryAnalyticsService` precedent instead — computed report, no migration,
+no model, no FormRequests, no create/edit pages, index route only.
+
+**Files:** `domain/Services/SystemHealthService/`,
+`domain/Facades/SystemHealthFacade/`, `app/Http/Controllers/SystemHealthController.php`,
+`routes/system_health.php`, `resources/js/pages/SystemHealth/index.tsx`,
+`tests/Feature/SystemHealthTest.php`, sidebar entry under Overview.
+
+**What it reports:** dependency probes with latency; every algorithm the ML
+service offers with how far behind the demand its checkpoint is; the last
+training run's scores and the last backtest's; all three demand grains with a
+cross-grain reconciliation verdict; the latest run of each sync stage; the
+forecast pipeline; queue depth and the age of the oldest waiting job; runtime;
+and the largest tables.
+
+**Design decisions:**
+
+- **A slow dependency is not a down one.** The first probe budget of 5s turned
+  the back office's ordinary ~2.2s cold response into a red "unreachable". A
+  health page that cries wolf gets ignored, so the budget is 8s and latency is
+  reported next to the verdict. **A 401 from the back office counts as a pass** —
+  it is probed unauthenticated on purpose, because the question is "is the host
+  answering", and minting a token per page view would answer a different one.
+- **Probes never throw.** Every one is wrapped: a page that dies when its
+  dependency dies is useless exactly when it is needed.
+- **Absent, not zero.** Table sizes come from `information_schema`, which SQLite
+  does not have, so on any other driver the section is null and the page says
+  the driver cannot report sizes. Zeroes would read as an empty database.
+- **`behind demand` is the number to read on a model.** A checkpoint trained on
+  an older catalogue does not degrade gracefully — its embeddings were sized for
+  the id space it saw, and a later id crashes the forward pass. `/models`
+  reports such a checkpoint as `available: true`, so the staleness is computed
+  and shown beside it.
+
+**Three performance problems, found by measuring:**
+
+1. **`COUNT(*)` combined with `MIN`/`MAX` in one SELECT cost 15.31s; split into
+   three queries it costs 0.778s** (0.776 + 0.0008 + 0.0012). Pairing a count
+   with the two extremes loses MySQL's index min/max optimisation and
+   degenerates into a full scan of the grain; alone, each extreme is an index
+   seek. Across three grains that was 29.6s of a 36s page.
+2. The cross-grain reconciliation summed `sold_qty` over all four years.
+   `sold_qty` is in no index, so every row was read. The property holds over any
+   window or none, so it is checked over 90 days and the column says so.
+3. **`overview()`: 36.1s → 6.3s**, of which ~2s is deliberate network probing.
+
+**A test that passed for the wrong reason.** `an unreachable dependency is
+reported, not thrown` threw an unqualified `ConnectionException`, which resolved
+to a non-existent global class — the probe caught the resulting `Error` and the
+assertion passed without ever exercising a connection failure. Imported the real
+class so it tests what it claims.
+
+**It earned its keep on first load.** The models table immediately showed `tft`
+and `deepar` **15 days behind demand**, trained through 2026-08-20 — because the
+ML service has not been restarted since training finished and is still serving
+the previous checkpoints. Checkpoint files on disk are dated today at 19:53 and
+19:01. Nothing is broken by it (`ML_DEFAULT_ALGORITHM=ewma`), but it is exactly
+the class of drift that is invisible without this page.
+
+**Verification:** Pest **259/259** (+6). Pint, `types:check`, `lint:check`
+clean; `format:check` back to the same 8 pre-existing SCSS files. Rendered and
+inspected in dark mode against live data.
+
+## 2026-09-07 — Full verification sweep: checks, live routes, and data integrity
+
+**Requested:** "test everything and confirm all functions working and data is
+correct."
+
+**Changed:** No application code. One stale factual claim corrected in
+`docs/management_guide.md` §"Current evidence" (see below). Everything else in
+this entry is verification evidence, not a change.
+
+### Check suite — all green
+
+| Check | Result |
+| --- | --- |
+| `php artisan test --compact` | **262 passed**, 783 assertions, 23.2s |
+| `vendor/bin/pint --dirty` | passed |
+| `npm run types:check` | passed |
+| `npm run lint:check` | passed |
+| `npm run format:check` | same **8 pre-existing SCSS files**, no regression |
+| `ml-service` pytest | **63 passed**, 15.5s |
+| `npm run build` | passed (11.3s) **with PHP 8.3 on PATH** |
+
+Test count is 262, up from the 259 recorded on 2026-09-04; the three added tests
+are in the uncommitted ForecastRun work.
+
+**`npm run build` fails on a bare shell** — the `@laravel/vite-plugin-wayfinder`
+plugin shells out to whichever `php` is on PATH, and that is 8.2.16 here, which
+trips `platform_check.php`. This is the environment quirk already recorded in
+`CLAUDE.md`, not a build defect. Export the Laragon 8.3 path first and it builds
+clean.
+
+### Every GET route exercised against the live database
+
+All **70** parameterless GET routes were dispatched in-process as an
+authenticated user against the live MySQL `inventory` database: **70 OK, 0
+failed** (200, or a correct 302 for login/register/2FA/passkey routes). Timings
+were recorded; the four slowest are `/product-relationship/successors` (23.7s),
+`/buyabans-sync` (13.3s, it probes the back office live), `/system-health`
+(5.7s) and `/price-elasticity` (3.7s). `/dashboard` measured 2.5s, matching the
+figure already documented.
+
+### Data integrity — verified correct
+
+- **Three-grain reconciliation holds exactly.** warehouse 942,873 rows / channel
+  571,362 / national 348,937, each **1,826,136 units** and **535 SKUs** over
+  2022-09-04..2026-09-04. `SystemHealthService`'s own 90-day check also agrees
+  (91,270 units per grain).
+- **Demand invariants clean:** 0 NULL `location_code` on national (all 348,937
+  are empty string, which is what keeps the unique index upserting rather than
+  inserting duplicates nightly), 0 duplicate `grain+location+sku+date` keys, 0
+  negative or NULL `sold_qty`.
+- **Catalog matches the recorded sync summary exactly:** 363 configurable
+  parents, 9,035 standalone, 1,857 variants, 10,892 SKUs, 1,929 variant axis
+  values. 0 orphan SKUs, 0 orphan variants, 0 duplicate SKU codes, 0 orphan
+  `variant_attribute_values`. All **535 demand SKUs match the local catalog**
+  (`unmatched: 0`).
+- **Forecasts sane:** 10,133 rows — 0 negative predictions, 0 rows with
+  `lower > predicted` or `upper < predicted`, 0 NULL predictions, and 0
+  confidence scores outside [0,100].
+- **Dashboard arithmetic verified against raw data:** reported `unitsSold`
+  30,445 for 2026-08-06..2026-09-04 equals the raw `buyabans_daily_demands` sum
+  at the serving (warehouse) grain to the unit, and `revenue / orders` equals
+  the reported AOV of 16,970.80 exactly.
+- **ML path works live:** a 3-series `MlServiceClientFacade::send()` returned in
+  0.12s with bounds ordered correctly, and each prediction equalled the series
+  mean × 30 to within rounding.
+
+**`confidence_score` is a 0–100 integer, not a 0–1 fraction** —
+`unsignedTinyInteger`, `@property int`, factory `numberBetween(40, 95)`. An
+initial [0,1] bounds check flagged all 10,133 rows; the check was wrong, the
+data is correct. Recorded here so the next person does not re-raise it.
+
+### Findings — three things that are not right
+
+**1. `products.brand_id` is NULL for 100% of 9,398 products**, although 188
+brands are synced and every product has a category. Root cause traced end to
+end: `BuyabansSyncService::resolveBrandId()` resolves only `$item['brand_name']`,
+and in the back office `product_flat` that column is **empty for all 11,564
+rows**. The sibling `brand` column (the Bagisto attribute option id) *is*
+populated, on 1,054 products across 62 distinct brands, and every value resolves
+to a real `attribute_options` row. Local `brands` has no `external_id` column,
+so resolving by option id would need a schema addition as well as a sync change.
+
+Two consequences, both confirmed against the data:
+
+- `/product-relationship/successors` **can never return a row**. It pairs a
+  declining SKU with a new one in the same category *and brand*, and skips any
+  SKU whose `brand_id` is null — which is all of them. It spends ~20s (measured
+  twice: 19.4s, 22.6s) classifying every SKU's maturity to return 0 rows. The
+  ~20s cost is a documented N+1 tradeoff in that method's own docblock ("filter
+  by `category_id` to keep this bounded"); the empty result is not.
+- `ForecastSource::BrandCategory` is unreachable. `DemandProfileService`
+  degrades gracefully to the coarser Category tier, so cold-start forecasts
+  still work — but no forecast row has ever carried `BRAND_CATEGORY` (or
+  `CATEGORY_SIZE`); the only sources persisted are SKU_HISTORY 9,089,
+  COLD_START 837, CATEGORY 117 and HYBRID 90.
+
+The products sync summary counts nine things and none of them is unresolved
+brands, which is why 100% NULL went unnoticed.
+
+**2. The BuyAbans sync cannot currently run.** Every `/api/forecasting/*`
+endpoint returns the back office **admin Sign In HTML with HTTP 200** instead of
+JSON — products, brands, categories, locations, attributes, stock and demand
+alike. OAuth is fine (token mints, HTTP 200, 979 chars); the routes simply do
+not exist on the branch the back office is checked out on. `Buyabans-backoffice`
+is on `ageing-report-chnage`; the forecasting API was added in commit
+`df92431b` which exists only on `stock-forcasting-connect`. Nothing is wrong in
+this repository — the upstream working copy is on the wrong branch. This is also
+why every sync stage now reports `stale` (71–85 hours since the 2026-09-04 run).
+
+Note that `SystemHealthService` reports "BuyAbans API answering (HTTP 200)"
+here, which is correct and by its own documented definition — it asks whether
+the host answers, deliberately unauthenticated — but it does not and cannot tell
+you the data endpoints are serving login pages.
+
+**3. `docs/management_guide.md` §"Current evidence" was stale** — the one thing
+changed in this task. It stated a cross-model evaluation of EWMA 19.6% (Best) /
+seasonal naive 27.6% / DeepAR 29.2% / TFT 111.9%. The saved artifact
+`ml-service/models/evaluation.json` (11 windows, written 2026-09-04 22:55) now
+records `"best": "seasonal_naive"` with pooled-horizon-total WAPE of seasonal
+naive 30.66%, EWMA 32.22%, DeepAR 47.02%, TFT 47.22%. The old figures appear in
+neither `pooled_horizon_total` nor `pooled_per_day` — they are from a superseded
+run. Table corrected to the artifact's values, and the sentence that concluded
+"therefore keeps `ML_DEFAULT_ALGORITHM=ewma`" now says plainly that the
+evaluation places EWMA second by 1.6 points and the default has not been
+revisited since. **`.env` still sets `ML_DEFAULT_ALGORITHM=ewma`** — left alone;
+which default to serve is a decision, not a typo, and 1.6 points on generated
+demand is not evidence enough to flip it silently.
+
+The neural training-summary claims in the same section were checked and are
+**correct** (TFT 98.3% WAPE / -2.4% bias, DeepAR 102.0% / +12.6%).
+
+### Things that are stale but were deliberately left alone
+
+- The 2026-09-04 log entry says "only four current forecast pairs overlap"
+  between inventory and forecasts. That is no longer true — run #10 widened
+  coverage and **all 441 inventory pairs (149 SKUs, 6 warehouses) now have
+  forecasts**. The log is append-only, so the earlier entry stands as what was
+  true when written; this entry is the correction.
+- The substantive recommendation gap is unchanged and still real:
+  `InventoryRecommendationService` reads the legacy `inventories` table (441
+  rows) while current BuyAbans stock lives in `buyabans_stock_levels` (33,685
+  rows), which only the sync, dashboard and training data service read. All 197
+  recommendations are still `NEW`, dated 2026-09-04.
+- Forecast run **#3** shows `status=completed` carrying a cURL-28 timeout
+  message. The current code cannot produce that — a timeout throws and the catch
+  sets `Failed`. It is a historical row from before the timeout was made
+  configurable (the incident described in `MlServiceClient::timeoutFor()`'s
+  docblock), not a live defect.
+
+**Also observed:** queue clean (0 pending, 0 failed); `forecast_accuracy` empty,
+so `scoredForecasts` is 0 and the dashboard's forecast-accuracy metric has no
+input yet; `tft`/`deepar` checkpoints report **15 days behind demand** (trained
+through 2026-08-20), exactly the drift the system health page was built to
+surface; six scheduled commands are registered and due.
+
+**Affected files:**
+- `docs/management_guide.md` — corrected the stale cross-model evaluation table
+  and the sentence justifying the configured default
+- `docs/task_log.md` — this entry
+
+**Implementation details:** The route sweep was run from a throwaway script in
+the session scratchpad that boots the HTTP kernel and dispatches each GET route
+as user 1; it was not added to the repository, since `tests/Feature` already
+covers these paths with fixtures and a sweep against live data is a diagnostic,
+not a test. Nothing else in the working tree was touched — the uncommitted
+SystemHealth and ForecastRun work was verified as-is, not modified.

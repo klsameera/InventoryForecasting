@@ -15,6 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [ForecastRunController::class, 'index'])->name('forecast-run.index');
         Route::get('/create', [ForecastRunController::class, 'create'])->name('forecast-run.create');
         Route::post('/store', [ForecastRunController::class, 'store'])->name('forecast-run.store');
+        Route::post('/{id}/retry', [ForecastRunController::class, 'retry'])->name('forecast-run.retry');
     });
 
     Route::prefix('/forecast')->group(function () {

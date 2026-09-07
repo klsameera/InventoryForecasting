@@ -1,368 +1,421 @@
-# Inventory Forecasting presentation notes
+# Inventory Forecasting — presenter notes
 
 Use these notes with
 [`inventory-forecasting-management-presentation.pptx`](inventory-forecasting-management-presentation.pptx).
-The same notes are embedded in the PowerPoint file. A PDF handout and reusable
-infographic PNGs are in this folder.
+The same notes are embedded in the PowerPoint. The PDF handout and eleven
+reusable 1600×900 process infographics are in this folder.
+
+This version reflects the re-audited system on **4 September 2026**.
 
 ## Recommended delivery
 
-- **Management version (20-25 minutes):** slides 1-5, 8, 10-21, then Q&A.
-- **Team version (30-40 minutes):** present all slides and run the live demo on
-  slide 22.
-- **Short executive version (10 minutes):** slides 1-4, 11-13, 18-21.
-- Keep repeating the central message: the application converts real operations
-  into trusted history, then forecasts, then controlled human decisions.
-- Say “generated” or “seeded” whenever showing the current model results or UI
-  figures. They validate the pipeline, not production business performance.
+- **Management version, 20–25 minutes:** slides 1–4, 6–7, 9–15, 18–21.
+- **Team version, 35–45 minutes:** all slides, then the live demo on slide 22.
+- **Executive version, 10 minutes:** slides 1–4, 7, 11, 13, 15, 21.
+- Repeat the core boundary: **BuyAbans is operational truth; this application
+  reads, explains and predicts.**
+- Say **generated** whenever presenting current volumes or accuracy. The data
+  validates integration and modelling behavior, not real business performance.
+- Do not present the current recommendation quantities as BuyAbans decisions.
+  Their workflow is implemented, but their stock input still comes from the
+  legacy local ledger.
 
 ## Slide-by-slide talk track
 
 ### 1. Inventory Forecasting
 
-“This is more than a forecast screen. It is an end-to-end inventory operating
-system: transactions create an audited history, that history supports analytics
-and forecasts, and the forecast becomes a controlled action. Ten planned phases
-are functionally delivered. People still retain approval, and production
-controls remain a separate go-live decision.”
-
-Transition: “First, let me summarize the business value in three verbs.”
-
-### 2. A single operating system for stock decisions
-
-“The system helps us observe, understand, and act. Observe means current stock,
-incoming stock, FIFO cost, and every movement are visible by warehouse.
-Understand means analytics, daily history, forecasts, and seven intelligence
-views explain what is happening. Act means the engine recommends buying less or
-more, stopping reorder, moving stock, or clearing it—but a person accepts,
-changes, or rejects the proposal.”
+“The system has changed materially. It is no longer positioned as a second
+stock-management application. BuyAbans remains the system of record. This app
+connects to it, curates the data, predicts demand and presents governed
+decisions without writing business data back.”
 
-Call out the amber banner: this is a functional-completeness statement, not a
-production-readiness statement.
-
-### 3. Full system overview
-
-Read the diagram left to right:
-
-1. Master data defines products, SKUs, suppliers, and warehouses.
-2. Purchases, receipts, transfers, sales, returns, and adjustments create real
-   transactions.
-3. The append-only ledger and nightly snapshots create trusted history.
-4. Analytics, forecasting, and intelligence interpret the history.
-5. The decision engine proposes one of five inventory actions.
-6. Human review remains mandatory.
+Set expectations: this deck describes the current system as audited on
+4 September 2026, including limitations.
 
-### 4. Daily operations to management action
-
-“Setup happens first and is maintained as the business changes. The daily loop
-then moves through buying, receiving, warehouse control, selling, and returns.
-Those actions build the history used by forecasting and recommendations. An
-accepted recommendation is executed through the normal purchase-order or
-transfer workflow; the engine never bypasses operational controls.”
-
-### 5. What the application contains
-
-Use this as the module map:
-
-- **Catalog:** categories, brands, attributes, products, variants, and SKUs.
-- **Inventory:** warehouses, balances, movement ledger, adjustments, FIFO
-  batches, transfers, analytics, and daily snapshots.
-- **Purchasing:** suppliers, supplier-SKU terms, purchase orders, and receipts.
-- **Sales:** draft/confirmed sales orders and sellable/damaged returns.
-- **Forecasting:** runs, forecasts, scoring, recommendations, and central
-  allocation.
-- **Advanced intelligence:** supplier performance, lost sales, anomalies,
-  product relationships, elasticity, and promotions.
-
-Important: all business pages require an authenticated, verified user, but the
-application does not yet restrict modules or actions by role.
+### 2. The system now has a clear job
 
-### 6. The decision workspace users see
-
-Point to the columns: SKU, warehouse, recommendation type, current stock,
-incoming stock, 30-day forecast, recommended quantity, reason/risk, status, and
-actions. Users can filter the queue and then Accept, Modify, or Reject. A
-modification requires a reason so the decision remains explainable.
-
-The screenshot contains seeded local data. Do not present the figures as live
-company results.
+Explain the four verbs:
 
-### 7. Intelligence remains traceable
+1. **Read** — authenticated catalog, current stock and sales data.
+2. **Trust** — idempotent synchronization, catalog normalization and grain
+   reconciliation.
+3. **Predict** — dense daily series, four algorithms, uncertainty and evidence.
+4. **Govern** — EWMA remains the default, and people retain decisions.
 
-“These are examples of the intelligence screens. Supplier performance derives
-actual lead time, on-time percentage, and fill rate from purchase-order and
-receipt dates. Promotion impact compares demand during the promotion with an
-equal window immediately before it. Every intelligence view exposes evidence
-at row level rather than returning a hidden score.”
-
-### 8. Every stock change follows one controlled path
+The amber boundary matters: forecasting uses current synced demand;
+recommendations and some advanced views still read legacy local data.
 
-“Users never edit the inventory balance directly. Opening stock, adjustments,
-receipts, transfer dispatch/receipt, confirmed sales, and returns create ledger
-events. The same database transaction updates the balance and the FIFO batch
-record. Outbound movement is rejected if it would make stock negative. The
-nightly snapshot converts the audited history into the daily data forecasting
-needs.”
+### 3. End-to-end: source data to human decision
 
-Useful distinction:
-
-- The current balance uses weighted average cost for valuation.
-- Confirmed sales consume FIFO batches and store the actual cost sold.
+Walk from left to right:
 
-### 9. Operational workflows protect stock integrity
+- BuyAbans supplies catalog, current stock and order outcomes.
+- Nine `GET` endpoints are protected by Passport client credentials.
+- The sync processes dependencies in order and normalizes the catalog.
+- A sparse sales feed is rebuilt into a complete daily time series.
+- Laravel selects EWMA, seasonal naive, TFT or DeepAR per SKU.
+- The dashboard and forecast page turn the output into understandable evidence.
 
-“Status is a business control. A purchase order is editable only while Draft;
-receipt is posted separately and is immutable. A transfer removes stock at
-Dispatch and adds it at Receipt. A confirmed sale consumes FIFO and cannot be
-cancelled as if nothing happened; a return must record the reversal. Damaged
-returns are logged in and immediately out, preserving the audit trail without
-increasing available stock.”
+The data path is one-way. There is no catalog, stock or order write-back.
 
-### 10. Analytics turns inventory into management questions
+### 4. One system of record; one prediction layer
 
-- Velocity: how quickly the SKU sells.
-- Days of stock: how long availability should last.
-- Turnover: how productively inventory is moving.
-- FIFO age: how long cash has been tied up.
-- ABC class: relative revenue importance.
-- Mover class: fast, slow, or dead.
-- Reorder point: expected demand during supplier lead time plus safety days.
-
-“This page is deterministic and read-only. It recalculates from current history
-and does not depend on the ML service.”
-
-### 11. How the forecast is produced today
-
-“The system first chooses the right demand history. A mature SKU uses its own
-history. A cold-start SKU uses the most specific peer group available—category
-plus size, brand plus category, or category. An early SKU blends peer and own
-history. The selector then chooses EWMA, seasonal naive, TFT, or DeepAR per SKU.
-The row records the algorithm that actually ran, the quantity, uncertainty
-range, confidence, and source.”
-
-“Accuracy is scored only after the forecast horizon has elapsed. Until enough
-scored history exists, `ML_DEFAULT_ALGORITHM` controls the default and currently
-remains EWMA. A neural model that lacks sufficient history, a known SKU, the
-required covariates, or a supported horizon returns a safe baseline rather than
-a misleading neural result.”
-
-### 12. The model is operational; accuracy is not yet proven
-
-This is the slide to handle carefully.
-
-“The neural path works end to end: a seeded run processed 441 warehouse/SKU
-pairs in about 20 seconds when warm, producing 404 TFT forecasts and 37 safe
-fallbacks. That proves integration and serving performance.”
-
-“It does not prove business accuracy. On the current checkpoint’s only honest
-30-day scoring window, EWMA had the best WAPE at 32.14%, followed by seasonal
-naive at 32.43%, TFT at 35.35%, and DeepAR at 37.49%. A broader rolling
-experiment found a freshly trained TFT about 7.8% ahead of the best baseline in
-the first three windows, but all of this history was generated by the project
-seeder. Therefore EWMA remains the default until real sales history supports a
-different decision.”
-
-If asked, WAPE means total absolute forecast error divided by total actual
-demand. Lower is better. Bias is tracked separately to expose systematic over-
-or under-forecasting.
-
-### 13. Five controlled actions
-
-Inputs include forecast, current and incoming stock, supplier lead time,
-dynamic safety stock, MOQ/order multiple, FIFO age, overstock risk, and stock in
-other warehouses.
+“Business corrections belong in BuyAbans. The forecasting application has no
+create, edit or delete route for business data — the old write paths were
+removed, not hidden.”
 
-Outputs:
-
-- Purchase
-- Reduce purchase
-- Do not reorder
-- Transfer stock
-- Clearance
+The local database still records the application's own operations: sync runs,
+forecast runs and results, later accuracy scores, recommendation decisions and
+account security changes.
 
-“The action is a recommendation, not an accounting entry. Accepting it records
-the decision. The team still creates and approves the purchase order or transfer
-through the normal workflow.”
-
-### 14. Optimize across warehouses before buying
-
-“The system checks owned stock before committing more capital. A transfer is
-proposed when one source warehouse can cover the receiving warehouse’s full
-need. Remaining purchase recommendations for the same SKU across two or more
-warehouses are consolidated in Central Allocation with the warehouse breakdown
-preserved.”
-
-Current boundary: it does not split one need across multiple source warehouses
-and does not optimize transport cost, route, capacity, or service level.
-
-### 15. Seven advanced signals
-
-Describe each as a prompt for investigation:
-
-- Supplier performance: actual lead time, on-time delivery, and fill rate.
-- Lost sales: estimated demand missed during observed stockouts.
-- Demand anomalies: dates far from a SKU’s normal demand distribution.
-- Product similarity: comparable items derived from product characteristics.
-- Cannibalization/successor: products moving against or replacing one another.
-- Price elasticity: demand movement across observed price points.
-- Promotion impact: before-versus-during demand change.
-
-“Availability of a metric is not the same as statistical certainty. Small
-sample counts—especially price points—must be interpreted cautiously.”
-
-### 16. Automation timeline
-
-“At 00:15 the scheduler captures the previous day’s snapshot. At 00:30 it scores
-forecasts whose horizons have elapsed. At 00:45 it refreshes recommendations.
-On the first day of each month, supplier performance is captured at 01:00 and
-the neural models retrain at 02:00 in the background.”
-
-Operational consequence: production needs a host cron, a supervised queue
-worker, and a supervised Python service. Manual actions remain available for
-backfill and controlled testing.
-
-### 17. One product across two runtimes
-
-“React and Inertia provide the browser experience. Laravel owns validation,
-business rules, transactions, and persistence through Form Request, thin
-Controller, Facade, Service, and Model layers. MySQL stores operational truth.
-The database queue handles forecast jobs. The scheduler maintains the data and
-model cadence. Python FastAPI serves the four algorithms through a narrow HTTP
-contract.”
-
-Python receives compact daily series and covariates, not raw transaction tables.
-It runs separately from `composer dev`. Before any network exposure it must be
-privately hosted and protected with matching bearer tokens.
-
-### 18. Controls delivered and still required
-
-Delivered account controls include email verification, password reset,
-password confirmation, TOTP 2FA, passkeys, and throttling. Delivered data
-controls include immutable posted records, transactional stock writes,
-negative-stock protection, server-calculated PO totals, and FIFO sale cost.
-
-The primary production blocker is authorization. Management must define and
-the application must enforce who can maintain master data, post operations,
-approve recommendations, and administer accounts. Production also needs real
-mail, HTTPS/cookie policy, backups, monitoring, supervised processes, and
-Python token protection.
-
-### 19. Delivery evidence
-
-“The current source contains 33 models, 38 migrations, 31 Facade/Service module
-pairs, and 71 React pages. The latest fully logged suites passed 254 Pest tests
-and 62 Python tests. The integrated seeded run processed 441 pairs and generated
-197 recommendations.”
-
-These counts demonstrate coverage and integration, not user adoption or model
-accuracy. The dashboard KPI shell is still unconnected and deliberately shows
-empty states; use detailed module pages in the demo.
-
-### 20. What is delivered versus go-live work
-
-“The left side is functional delivery: authenticated access, immutable stock
-history, negative-stock protection, FIFO costing, transactional updates, daily
-snapshots, forecast scoring, and human decisions. The right side is go-live
-work: roles, controlled registration, hosting/backups, mail, worker/scheduler
-supervision, private Python hosting, monitoring, and release validation.”
-
-Ask management to treat every unchecked item as either a required action or an
-explicitly accepted risk.
-
-### 21. Operating rhythm and management decisions
-
-Daily reviews should be exception-led. Weekly reviews should cover decisions,
-open purchase orders, lost sales, and anomalies. Monthly reviews should cover
-suppliers, model accuracy, promotions, and data quality.
-
-The five decisions required now are:
-
-1. Name data owners, transaction operators, and recommendation approvers.
-2. Implement roles and decide how accounts are provisioned.
-3. Choose production hosting, database/cache/queue, backups, mail, and
-   monitoring.
-4. Operate the queue, scheduler, Python service, and retraining cadence.
-5. Validate forecasts on real sales history before promoting a neural default.
+Suppliers and promotions are also read-only. They have no source in the current
+BuyAbans API, so their values are frozen until a source is agreed.
+
+### 5. What users can see and do today
+
+Use this as the navigation map:
+
+- **Overview:** Dashboard and BuyAbans Sync.
+- **Catalog:** Products, Variants, SKUs, Categories, Brands and Attributes.
+- **Inventory views:** current Inventory, Analytics, Batches, Daily Snapshots
+  and Warehouses.
+- **Supply:** read-only Suppliers.
+- **Forecasting:** Forecasts, Runs, Recommendations and Central Allocation.
+- **Advanced intelligence:** supplier, demand, product, price and promotion
+  views.
+
+Historical stock-operation listings remain reachable by direct URL, but they
+are not navigation and have no write routes.
+
+### 6. How a BuyAbans sync becomes usable data
+
+The stages run in dependency order: locations, categories, brands, attributes,
+products, current stock, then demand.
+
+- **Authenticated:** a machine identity obtains and caches an OAuth token.
+- **Idempotent:** the same period is corrected, never double-counted.
+- **Recoverable:** a failed stage is recorded with its reason; completed stages
+  remain.
+
+The nightly job re-pulls 14 days at 00:05 because cancellations and refunds can
+change earlier demand. “Test connection” diagnoses access without importing;
+“Sync now” runs one stage or all stages.
+
+### 7. All three demand views reconcile to the unit
+
+The current four-year synchronized history is:
+
+| Grain | Rows | Locations | SKUs | Units |
+| --- | ---: | ---: | ---: | ---: |
+| Warehouse | 942,873 | 11 | 535 | 1,826,136 |
+| Channel | 571,362 | 4 | 535 | 1,826,136 |
+| National | 348,937 | 1 | 535 | 1,826,136 |
+
+All cover 2022-09-04 through 2026-09-04 and contain zero unmatched demand
+SKUs. The identical unit total is the reconciliation control.
+
+The active training and serving grain is **warehouse**. The three grains are
+alternative aggregations of the same sales and must never be added together.
+
+### 8. The sync rebuilds a usable product tree
+
+The earlier integration flattened Bagisto child variants into ordinary
+products. The current sync uses three passes: create parents and standalone
+products, link variants, then remove orphans.
+
+Current local shape:
+
+- 363 configurable parents
+- 1,857 linked variants
+- 9,035 standalone products
+- 10,892 SKUs
+- 1,929 normalized variant-axis values
+
+The source defines Color, Size and Capacity separately for many configurable
+products. The sync collapses 475 source attributes into 52 usable local
+attributes, including three common forecast axes.
+
+Source conflicts remain visible: 151 duplicate SKU claims and one childless
+parent are reported instead of silently churned.
+
+### 9. A missing row means zero sales — not a missing day
+
+The BuyAbans aggregate contains a row only on days that sold something. That is
+a faithful integration record but an incomplete time series.
+
+Before the correction, the system treated selling days as consecutive days and
+forecast 51,919 units against 27,132 observed — 91% too high. After rebuilding
+the calendar with zero-demand days, the forecast was 27,952, within 3%.
+
+The training export now has 941,116 rows, a median 1,096 days per series, 51%
+non-zero observations and no calendar gaps. Series end on the last synchronized
+day, never today, because unsynchronized future days are unknown rather than
+zero.
+
+### 10. The dashboard is now a management briefing
+
+The headline 30-day view includes revenue, units, orders and average order
+value, each with trends and comparison. Stock tiles show retail stock value,
+days of cover, lines out of stock and pending recommendation alerts.
+
+Charts explain weekly units and revenue, revenue by category and warehouse,
+top movers and cover health. Forecast health shows the latest run, coverage and
+accuracy status.
+
+Important interpretation rules:
+
+- Every window ends on the last synchronized demand date.
+- Missing values render as “—”, not zero.
+- Stock value is labelled **retail** because cost exists for only 149 of 10,892
+  SKUs.
+- Forecast accuracy stays absent until a forecast horizon has elapsed and the
+  actual outcome has been scored.
+- The page was reduced from 70.4 seconds to about 2.5 seconds on current data.
+
+### 11. The forecast page answers “what happens next?”
+
+The latest logged example states:
+
+- expected: 31,365 units over 30 days;
+- preceding period: 30,445 units;
+- likely range: 19,314–44,287;
+- coverage: 533 products;
+- confidence: Low.
+
+The wide range is a useful answer for an intermittent-demand catalog. The chart
+draws the forecast total as a weekly average because the model produces one
+30-day total, not four separate weekly predictions. The table uses business
+questions: Expected to sell, Over, How sure, Based on and How it turned out.
+
+These are generated-data figures, not production demand.
+
+### 12. How one forecast is produced and governed
+
+1. Read the configured source and one location grain.
+2. Build a dense 180-day daily series.
+3. Classify maturity and choose own history or the most specific peer fallback.
+4. Select a scored winner only when comparable accuracy history exists;
+   otherwise use configuration.
+5. Run EWMA, seasonal naive, TFT or DeepAR.
+6. Persist quantity, lower/upper range, confidence, source and the algorithm
+   that actually ran.
+
+Once the horizon ends, the system compares actual demand and calculates WAPE,
+MAE and bias. A neural refusal is persisted as the baseline that actually ran,
+so a model never receives accuracy credit it did not earn.
+
+### 13. EWMA remains the evidence-based default
+
+In the latest saved 30-day cross-model evaluation, lower WAPE was:
+
+| Algorithm | WAPE |
+| --- | ---: |
+| EWMA | 19.6% |
+| Seasonal naive | 27.6% |
+| DeepAR | 29.2% |
+| TFT | 111.9% |
+
+Actual demand was 26,592 units; EWMA predicted 28,753.
+
+The final neural training artifacts were regenerated with a 365-day holdout.
+That training summary records TFT at 98.3% WAPE with -2.4% bias and DeepAR at
+102.0% WAPE with +12.6% bias.
+
+The datasets are generated. These results prove the training and serving path,
+not real-world accuracy. `ML_DEFAULT_ALGORITHM=ewma` is therefore the correct
+current policy.
+
+### 14. The widened dataset is usable at operating scale
+
+Current measured evidence includes:
+
+- 1.826 million synchronized units at each reconciled grain;
+- 2,300 forecasts completed in 2m22s from 2,259 request pairs;
+- Dashboard: 70.4s to 2.5s;
+- Forecast page: 19.5s to 0.9s;
+- distinct-SKU query: 8.92s to 0.44s.
+
+The important operational discovery was the queue timeout. A 60-second
+`queue:listen` child limit killed a full forecast silently and left the run at
+Processing. The job and local listener now allow 1,800 seconds. Production
+still needs a stale-run alarm.
+
+### 15. Recommendation workflow exists; its stock input is not current
+
+The fresh forecast run produced 2,300 predictions. The recommendation engine,
+however, iterates `inventories`, a legacy table with 441 rows across 149 SKUs
+and six warehouses. Only four current forecast pairs overlap it.
+
+BuyAbans current stock is stored by inventory source, not by warehouse. There
+is no honest automatic mapping between the two, so mapping is a business design
+decision rather than a technical rename.
+
+Safe claims:
+
+- Purchase / reduce / stop / transfer / clearance logic exists.
+- Accept, Modify and Reject are implemented and auditable.
+- Nothing automatically creates a purchase order or transfer.
+
+Unsafe claim: the current 197 recommendations or reorder-alert count represent
+current BuyAbans stock decisions. They do not.
+
+### 16. Not every screen is on the same freshness path yet
+
+**Current BuyAbans path:** dashboard trade metrics and charts, forecast training
+and serving, maturity and peer profiles, catalog, variants, attributes and
+current stock.
+
+**Legacy or frozen input path:** inventory analytics, recommendations, lost
+sales, anomalies, supplier performance, product relationships, price
+elasticity and promotion impact.
+
+Those latter screens are functionally implemented, but their source tables are
+not replenished by the BuyAbans sync. Demonstrate their capability and state
+their lineage; do not imply all figures share live synchronized data.
+
+### 17. The daily and monthly operating cycle
+
+- 00:05 — synchronize the latest 14 days from BuyAbans.
+- 00:15 — capture the previous day's inventory snapshot.
+- 00:30 — score forecasts whose horizon has ended.
+- 00:45 — refresh recommendations.
+- First day, 01:00 — capture supplier performance.
+- First day, 02:00 — retrain neural models in the background.
+
+Production needs host cron, a supervised queue worker, a supervised Python
+service and alerts. Snapshot and recommendation jobs still follow the legacy
+inventory path until stock mapping is resolved.
+
+### 18. Two applications, two runtimes, one analytical experience
+
+- React 19 + Inertia v3 provide the browser experience.
+- Laravel 13 owns authentication, orchestration, persistence, queue and
+  scheduling through Controller → Facade → Service → Model.
+- MySQL stores synchronized data, forecasts, scores, runs and decisions.
+- The BuyAbans Laravel/Bagisto application exposes the Passport-protected API.
+- Python FastAPI serves EWMA, seasonal naive, TFT and DeepAR on port 8090.
+
+Production must secure, supervise and monitor both external connections.
+
+### 19. Strong boundaries are delivered; authorization is not
+
+Delivered account controls: email verification, reset and confirmation,
+TOTP 2FA, passkeys and throttling.
+
+Delivered data controls: read-only business routes, OAuth machine identity,
+idempotent sync with run history, grain isolation and reconciliation, named
+neural fallback and human decision records.
+
+Open: role-based permissions, controlled account provisioning, real mail,
+production cookie policy, secret rotation, API token protection, backups,
+monitoring and release validation. Today, every authenticated and verified user
+has broad visibility and can run operational triggers.
+
+### 20. What has been verified
+
+- Latest logged Pest suite: 253/253.
+- Last fully logged Python suite: 62/62.
+- Current source: 36 models, 43 migrations, 34 services, 33 facades and 45
+  React pages.
+- All three demand grains reconcile exactly with zero unmatched demand SKUs.
+- A widened 2,300-forecast run completed in 2m22s.
+- Dashboard and forecast-page performance were measured after indexing.
+
+Counts show breadth, not adoption. Generated history is not production demand;
+training orchestration is not a CI test; recommendation inputs are legacy; and
+production roles and operations remain unverified.
+
+### 21. Five decisions turn the demo into a production service
+
+1. **Connect:** production BuyAbans URL, Passport client, network access and an
+   agreed synchronization load.
+2. **Map stock:** define inventory-source-to-location truth, then rebuild the
+   recommendation inputs.
+3. **Control access:** roles, module permissions, operational triggers and
+   account provisioning.
+4. **Validate models:** use real history and completed scoring horizons, with a
+   formal rule for changing the default.
+5. **Operate:** hosting, database/cache, backups, mail, workers, cron, Python,
+   monitoring and release validation.
+
+Current position: ready for a management demo or controlled pilot, not
+production decision automation.
 
 ### 22. Eight-minute live demo route
 
-Use this sequence if the app is running:
+1. **Dashboard** — show management coverage and date anchoring.
+2. **BuyAbans Sync** — prove provenance, stage order and run history.
+3. **Products + Variants** — show the reconstructed tree and normalized axes.
+4. **Forecasts** — show headline, comparison, range, confidence and basis.
+5. **Forecast Runs** — show the queued/completed batch and evidence.
+6. **Recommendations** — demonstrate Accept/Modify/Reject, then state the stock
+   mapping gap clearly.
 
-1. **Products** — show the catalog hierarchy and SKU identity.
-2. **Inventory** — show warehouse balance, incoming stock, and average cost.
-3. **Stock movements** — prove the append-only audit trail.
-4. **Forecasts** — show source, range, confidence, and actual algorithm.
-5. **Recommendations** — show risks and Accept/Modify/Reject.
-6. **Supplier performance or Promotion impact** — close with a management
-   signal.
+Close with:
 
-Avoid opening the dashboard because its KPI props are not connected. End with:
-
-> Transactions become trusted history; history becomes forecasts; forecasts
-> become controlled action.
+> BuyAbans remains operational truth. This application turns that truth into
+> visible performance, explainable forecasts and governed decisions.
 
 ## Likely management questions
 
-### “Is this really AI or machine learning?”
+### Is this a stock-management system?
 
-It supports four algorithms: two statistical baselines and two trained neural
-models, TFT and DeepAR. The app can serve all four, but EWMA remains the default
-until real sales history proves a neural model is more accurate. Advanced
-intelligence also includes transparent statistical and rule-based signals.
+No. It retains read-only historical modules, but the current product is a
+prediction and analytics layer. Catalog, current stock and orders are maintained
+in BuyAbans and pulled through a read-only API.
 
-### “Can we deploy it now?”
+### Does it use real company sales?
 
-The business functionality is substantially complete, but production should
-wait for role-based permissions, controlled registration, hosting and backups,
-real mail, supervised queue/scheduler/Python processes, monitoring, token
-protection, and release validation.
+The integration and full catalog are real, but the four-year order history used
+for the current model evidence was generated in the staging back office because
+the actual SCM history is unavailable. Generated rows carry a recognizable
+prefix and are removable. Current accuracy figures are not production evidence.
 
-### “Does it order stock automatically?”
+### Why is EWMA still the default when neural models exist?
 
-No. It generates recommendations and records Accept/Modify/Reject decisions.
-The accepted action is then executed through a normal purchase-order or stock-
-transfer workflow. This is deliberate human governance.
+Because the latest saved cross-model evaluation favors EWMA, and all available
+evaluation data is generated. The system can serve TFT and DeepAR, but changing
+the default needs real completed-horizon evidence.
 
-### “What happens for a new product with no history?”
+### Are recommendations ready to use?
 
-The system uses the most specific peer group with real history—category plus
-size, brand plus category, then category. Early products blend peer and own
-history. If no history exists anywhere relevant, it returns an honest zero.
+The decision workflow and formulas exist, but the current engine reads a legacy
+warehouse inventory table. BuyAbans stock is grouped by inventory source, so a
+mapping or redesign is required before recommendation quantities represent the
+current business.
 
-### “Can stock go negative?”
+### Does the app change BuyAbans data?
 
-Outbound movement that would make stock negative is rejected, and the entire
-transaction is rolled back. Users cannot edit the balance directly.
+No. Its forecasting integration uses `GET` endpoints only. Business-data create,
+edit and delete routes were removed from this application.
 
-### “Why is the forecast default still EWMA after building TFT?”
+### Can it be deployed now?
 
-Because model availability and model accuracy are separate decisions. The TFT
-serving path works, but the available evidence comes from generated history and
-the most recent honest window favors EWMA. Promotion should be based on scored
-real-company demand.
+It can support a controlled demo or pilot. Production needs source connectivity,
+stock mapping for recommendations, role-based authorization, real-data model
+validation, and supervised infrastructure with backups and monitoring.
 
-### “What data quality matters most?”
+### What happens if the ML service cannot serve a neural model?
 
-Correct SKU and warehouse setup, supplier lead times/MOQs/order multiples,
-timely goods receipts, confirmed sales, returns, adjustments, and uninterrupted
-daily snapshots. Forecast quality cannot exceed transaction-history quality.
+It returns a safe baseline and names the fallback. Laravel stores the algorithm
+that actually ran, so the neural model never receives false accuracy credit.
 
-### “What is not included?”
+### Why are there three demand grains?
 
-The major gaps are RBAC, production deployment/operations, connected dashboard
-KPIs, automated alerts/exports, customer master data, purchase returns, stock
-reservation workflow, supplier-quality capture, and advanced transport-cost
-optimization.
+Warehouse, channel and national views support different business questions.
+They describe the same sales, so the app isolates one grain at a time. Exact
+unit reconciliation detects missing or duplicated data.
 
 ## Pre-presentation checklist
 
-- Open the PowerPoint in Slide Show mode and confirm the local Segoe UI font
-  renders correctly.
-- If doing a live demo, start Laravel, the queue worker, Vite, and the Python
-  service before the meeting.
-- Use a verified demo account; do not expose a production or personal password.
-- Pre-open the six demo pages from slide 22.
-- Confirm that the current database contains the records you plan to show.
-- Keep the PDF available in case the meeting-room computer changes formatting.
-- Do not quote seeded quantities, WAPE, supplier figures, or promotion results
-  as company performance.
+- Regenerate the deck if the system changes:
+  `powershell -ExecutionPolicy Bypass -File docs/presentations/build-management-presentation.ps1`.
+- Open the PowerPoint once and confirm fonts and animations are not needed.
+- Confirm the app, queue worker and Python service are running.
+- Log in with a verified demonstration user.
+- Open Dashboard, BuyAbans Sync, Products, Variants, Forecasts, Forecast Runs
+  and Recommendations in separate tabs.
+- Run no full-history synchronization or model training during the meeting.
+- Label every current number as generated-data evidence.
+- Do not claim current recommendations are fed by BuyAbans stock.
+- End with the five decisions on slide 21.

@@ -124,7 +124,10 @@ final class MlServiceClient
             throw new RuntimeException("ML service returned HTTP {$response->status()}");
         }
 
-        return $response->json('results') ?? [];
+        return [
+            'results' => $response->json('results') ?? [],
+            'refusals' => $response->json('refusals') ?? [],
+        ];
     }
 
     /**

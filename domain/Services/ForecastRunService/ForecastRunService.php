@@ -100,6 +100,30 @@ final class ForecastRunService
     }
 
     /**
+     * Queue a fresh run with an earlier run's settings.
+     *
+     * The original is never re-opened. A run is a point-in-time record of what
+     * was asked for and what happened — including a refusal — so a retry is a
+     * new record beside it rather than an edit that erases the first attempt.
+     *
+     * @return array{success: bool, message: string, data?: MlForecastRun}
+     */
+    public function retry(int $runId, ?int $userId = null): array
+    {
+        $previous = $this->model->find($runId);
+
+        if ($previous === null) {
+            return ['success' => false, 'message' => 'That forecast run no longer exists.'];
+        }
+
+        return $this->store([
+            'horizon_days' => $previous->horizon_days,
+            'warehouse_ids' => $previous->warehouse_ids,
+            'created_by' => $userId,
+        ]);
+    }
+
+    /**
      * The actual forecasting work — called from the queued job, not the
      * controller. Not wrapped in a single outer transaction: partial
      * progress (some forecasts persisted before a later failure) is more
@@ -123,35 +147,19 @@ final class ForecastRunService
 
             [$series, $sourceByPair, $algorithmByPair] = $this->prepareSeries($pairs, $run->horizon_days);
 
-            $results = MlServiceClientFacade::send($series, $run->horizon_days);
+            ['results' => $results, 'refusals' => $refusals] = MlServiceClientFacade::send($series, $run->horizon_days);
 
             $algorithmTally = [];
 
             foreach ($results as $result) {
                 $key = $result['warehouse_id'].'-'.$result['sku_id'];
 
-                // The algorithm the service actually RAN, which is not always
-                // the one requested: a trained model refuses a series it cannot
-                // honestly serve (unknown SKU, too little history, horizon
-                // beyond its decoder) and the service answers with a baseline,
-                // echoing what it really used. Stamping the requested algorithm
-                // instead would file a baseline number under the neural model's
-                // name and poison exactly the accuracy history
-                // ModelSelectionService reads to choose next time.
+                // The algorithm the service ran, which is now always the one
+                // that was asked for — nothing is substituted, so a row under
+                // this name really came from this algorithm.
                 $algorithm = $result['algorithm']
                     ?? $algorithmByPair[$key]
                     ?? ModelSelectionService::DEFAULT_ALGORITHM;
-
-                if (! empty($result['fallback_reason'])) {
-                    Log::info('ML service fell back to a baseline', [
-                        'run_id' => $runId,
-                        'warehouse_id' => $result['warehouse_id'],
-                        'sku_id' => $result['sku_id'],
-                        'requested' => $algorithmByPair[$key] ?? null,
-                        'used' => $algorithm,
-                        'reason' => $result['fallback_reason'],
-                    ]);
-                }
 
                 $algorithmTally[$algorithm] = ($algorithmTally[$algorithm] ?? 0) + 1;
 
@@ -172,8 +180,28 @@ final class ForecastRunService
             arsort($algorithmTally);
             $primaryAlgorithm = array_key_first($algorithmTally) ?? ModelSelectionService::DEFAULT_ALGORITHM;
 
+            if ($refusals !== []) {
+                Log::warning('A model declined part of a forecast run', [
+                    'run_id' => $runId,
+                    'refused' => count($refusals),
+                    'served' => count($results),
+                    'reasons' => array_slice(array_values(array_unique(
+                        array_column($refusals, 'reason')
+                    )), 0, 5),
+                ]);
+            }
+
             $run->update([
-                'status' => ForecastRunStatus::Completed,
+                // Nothing served at all is a failed run: the operator asked for
+                // an algorithm and received none of it. A partial refusal still
+                // completes — the pairs that were served hold real forecasts
+                // from the algorithm that was actually requested — but carries
+                // the refusal message so the page can offer a retry rather than
+                // report a clean success over a hole in the results.
+                'status' => $results === [] && $refusals !== []
+                    ? ForecastRunStatus::Failed
+                    : ForecastRunStatus::Completed,
+                'error_message' => $this->refusalMessage($refusals),
                 'finished_at' => now(),
                 // Informational only — each Forecast row's own
                 // model_version_id (set above, per pair) is authoritative.
@@ -361,5 +389,41 @@ final class ForecastRunService
             ->get()
             ->map(fn ($row) => ['warehouse_id' => (int) $row->warehouse_id, 'sku_id' => (int) $row->sku_id])
             ->all();
+    }
+
+    /**
+     * A one-line account of what the model declined, for the run row.
+     *
+     * **Refused pairs get no forecast at all.** The service used to answer a
+     * refusal with EWMA, so a run always came back full; asking for a trained
+     * model and receiving arithmetic under its own name was accurate
+     * bookkeeping but a surprise, and it hid the refusal behind a number. The
+     * pairs are simply absent now, and this says how many and why so the
+     * absence is visible and can be retried.
+     *
+     * @param  list<array<string, mixed>>  $refusals
+     */
+    private function refusalMessage(array $refusals): ?string
+    {
+        if ($refusals === []) {
+            return null;
+        }
+
+        $algorithm = (string) ($refusals[0]['algorithm'] ?? 'the model');
+        $reasons = array_slice(array_values(array_unique(
+            array_filter(array_column($refusals, 'reason'))
+        )), 0, 3);
+
+        return sprintf(
+            '%s declined %d %s and no forecast was produced for %s. %s',
+            $algorithm,
+            count($refusals),
+            count($refusals) === 1 ? 'series' : 'series',
+            count($refusals) === 1 ? 'it' : 'them',
+            $reasons === [] ? 'No reason was given.' : implode(' ', array_map(
+                fn (string $reason): string => rtrim($reason, '.').'.',
+                $reasons,
+            )),
+        );
     }
 }

@@ -50,4 +50,22 @@ final class ForecastRunController extends Controller
 
         return $result['success'] ? to_route('forecast-run.index') : back()->withInput();
     }
+
+    /**
+     * Run the same request again.
+     *
+     * A run whose model declined some or all of its series produces no
+     * substitute figures, so the answer to a refusal is to fix the cause and
+     * ask again — not to accept a number from an algorithm nobody chose. This
+     * starts a fresh run with the original horizon and warehouses; the failed
+     * run stays as its own record of what happened.
+     */
+    public function retry(Request $request, int $id): RedirectResponse
+    {
+        $result = ForecastRunFacade::retry($id, $request->user()?->id);
+
+        Inertia::flash('toast', ['type' => $result['success'] ? 'success' : 'error', 'message' => $result['message']]);
+
+        return back();
+    }
 }

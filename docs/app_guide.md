@@ -111,6 +111,23 @@ Account deletion requires the current password (`ProfileDeleteRequest`), logs
 the user out, deletes the record, invalidates the session, and redirects to `/`.
 Passkeys cascade-delete with the user.
 
+### System health
+
+`/system-health` (requires `auth` + `verified`), under the sidebar's **Overview**
+group. Everything on it is measured when the page loads; nothing is cached.
+
+| Section | What it tells you |
+| --- | --- |
+| Dependencies | Database, ML service and BuyAbans API, each probed with a GET, with latency. **A 401 from the back office is a pass** — it is probed unauthenticated, so the question is only "is the host answering". |
+| Forecasting models | Every algorithm the ML service offers, which one is being served, and **how far behind the demand each trained checkpoint is**. A stale checkpoint is reported by `/models` as `available: true` but will crash a forward pass, so the gap is shown rather than left to be noticed. |
+| Last training run | Each model against its own held-out data, read from `training_summary.json`. |
+| Last backtest | Every algorithm on the same held-out windows, from `evaluation.json` — the only comparison that says which to serve. |
+| Demand data | All three grains, with a verdict on whether their unit totals agree. They describe the same sales, so disagreement is a fault, not rounding. Checked over the trailing 90 days. |
+| Sync stages | The most recent run of each stage, flagged when overdue. |
+| Forecast pipeline | The last batch, its duration, and what is awaiting a decision. |
+| Queue | Depth, failures, and **the age of the oldest waiting job** — a forecast batch killed by a worker timeout leaves nothing in `failed_jobs`, so an old waiting job is the only symptom. |
+| Runtime / Largest tables | What is actually running, and where the data sits. Table sizes need MySQL; on another driver the section says so rather than showing zeroes. |
+
 ### Dashboard
 
 `/dashboard` (requires `auth` + `verified`). Eight KPI tiles in two rows, five

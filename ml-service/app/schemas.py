@@ -98,17 +98,34 @@ class ForecastResult(BaseModel):
     confidence_score: int = Field(ge=0, le=100)
     forecast_source: str = "SKU_HISTORY"
 
-    # The algorithm that ACTUALLY ran, which is not always the one requested —
-    # see SeriesInput.algorithm. Laravel stamps each forecast row's
-    # model_version_id from this field, so a fallback is recorded as the
-    # algorithm it really was.
+    # The algorithm that ran. It is now always the one that was requested:
+    # nothing is ever silently substituted, so a result under this name really
+    # came from this algorithm.
     algorithm: Algorithm = "ewma"
 
-    # Set only when the requested algorithm could not run, so an operator can
-    # see why the neural model declined without reading the service's logs.
-    fallback_reason: str | None = None
+
+class SeriesRefusal(BaseModel):
+    """A series the requested algorithm declined, and why.
+
+    **No prediction accompanies it, deliberately.** The service used to answer a
+    refusal with EWMA and echo which algorithm it really ran. That was honest
+    about its own substitution, but it meant asking for one model and receiving
+    a number from another — so a run could report success while quietly
+    containing results nobody asked for.
+
+    A refusal is now returned as itself. The caller decides what to do about it,
+    and the operator is told rather than served a stand-in.
+    """
+
+    warehouse_id: int
+    sku_id: int
+    algorithm: Algorithm
+    reason: str
 
 
 class ForecastResponse(BaseModel):
     status: str = "completed"
     results: list[ForecastResult]
+
+    # Series the requested algorithm could not serve. Empty on a clean run.
+    refusals: list[SeriesRefusal] = []

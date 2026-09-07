@@ -156,12 +156,17 @@ def test_missing_checkpoint_raises_unsupported_not_a_crash():
         neural._load("no-such-model")
 
 
-# --- fallback through the API ------------------------------------------------
+# --- refusal through the API -------------------------------------------------
 
 
-def test_neural_request_without_features_falls_back_to_ewma():
-    """The whole point of the fallback: a request the model cannot serve still
-    gets a real answer, and the response says which algorithm produced it."""
+def test_neural_request_without_features_is_refused_not_substituted():
+    """A series the model cannot serve comes back as a refusal and nothing else.
+
+    It used to come back as an EWMA number labelled `ewma`, which was honest
+    bookkeeping but the wrong behaviour: asking for a trained model and
+    receiving arithmetic is a surprise, and it let a run report success while
+    holding results nobody requested. **No result is produced at all now.**
+    """
     response = client.post(
         "/forecast/run",
         json={
@@ -178,21 +183,27 @@ def test_neural_request_without_features_falls_back_to_ewma():
     )
 
     assert response.status_code == 200
-    result = response.json()["results"][0]
+    body = response.json()
 
-    # EWMA over a flat series of 5/day for a 30-day horizon.
-    assert result["predicted_qty"] == 150.0
-    assert result["algorithm"] == "ewma"
+    # Nothing was substituted: EWMA over a flat 5/day series would have been
+    # 150.0, and that number must not appear anywhere in this response.
+    assert body["results"] == []
+    assert body["status"] == "partial"
+
+    refusal = body["refusals"][0]
+    assert refusal["algorithm"] == "tft"
+    assert refusal["warehouse_id"] == 1
+    assert refusal["sku_id"] == 1
 
     # The reason text depends on whether this checkout has a trained
     # checkpoint — without one the refusal comes from loading, with one it
     # comes from the missing feature block. Both are correct refusals, so this
     # asserts that a reason was recorded, not which one. The specific refusal
     # rules are pinned individually above against a stub model.
-    assert result["fallback_reason"]
+    assert refusal["reason"]
 
 
-def test_baseline_request_never_reports_a_fallback():
+def test_a_baseline_request_still_answers_and_refuses_nothing():
     response = client.post(
         "/forecast/run",
         json={
@@ -201,10 +212,49 @@ def test_baseline_request_never_reports_a_fallback():
         },
     )
 
-    result = response.json()["results"][0]
+    body = response.json()
 
-    assert result["algorithm"] == "ewma"
-    assert result["fallback_reason"] is None
+    assert body["status"] == "completed"
+    assert body["refusals"] == []
+    assert body["results"][0]["algorithm"] == "ewma"
+    assert body["results"][0]["predicted_qty"] == 150.0
+
+
+def test_a_refused_series_does_not_take_the_servable_ones_with_it():
+    """One unservable series must not cost the whole batch its answers.
+
+    A run covers thousands of pairs and a handful may be too new for a trained
+    model. Failing all of them over those few would be its own kind of wrong,
+    so the servable series are still returned — beside an explicit refusal for
+    the one that was not.
+    """
+    response = client.post(
+        "/forecast/run",
+        json={
+            "horizon_days": 30,
+            "series": [
+                {
+                    "warehouse_id": 1,
+                    "sku_id": 1,
+                    "daily_sold_qty": [5] * 60,
+                    "algorithm": "ewma",
+                },
+                {
+                    "warehouse_id": 1,
+                    "sku_id": 2,
+                    "daily_sold_qty": [5] * 60,
+                    "algorithm": "tft",
+                },
+            ],
+        },
+    )
+
+    body = response.json()
+
+    assert len(body["results"]) == 1
+    assert body["results"][0]["sku_id"] == 1
+    assert len(body["refusals"]) == 1
+    assert body["refusals"][0]["sku_id"] == 2
 
 
 def test_unknown_algorithm_is_rejected_by_validation():
@@ -247,16 +297,21 @@ def test_a_mixed_batch_keeps_every_series_in_its_own_position():
     )
 
     assert response.status_code == 200
-    results = response.json()["results"]
+    body = response.json()
+    results = body["results"]
 
-    assert [r["sku_id"] for r in results] == [10, 20, 30, 40]
+    # The two tft rows are refused (no features), so only the baselines answer —
+    # and they keep their own order and their own numbers. Position is what this
+    # test guards: a drift in the write-back would hand SKU 10 SKU 30's figure,
+    # and both would still look entirely plausible.
+    assert [r["sku_id"] for r in results] == [10, 30]
+    assert results[0]["predicted_qty"] == 60.0     # 2/day x 30
+    assert results[1]["predicted_qty"] == 270.0    # 9/day x 30
 
-    # Each result must reflect its own series, not a neighbour's. Both tft rows
-    # fall back here (no features), so all four are EWMA/seasonal totals over
-    # their own flat series.
-    assert results[0]["predicted_qty"] == 60.0    # 2/day
-    assert results[1]["predicted_qty"] == 150.0   # 5/day
-    assert results[3]["predicted_qty"] == 30.0    # 1/day
+    # The refused pair is reported in its own order, and nothing was invented
+    # for either: 150.0 and 30.0 are what EWMA would have substituted.
+    assert [r["sku_id"] for r in body["refusals"]] == [20, 40]
+    assert all(r["algorithm"] == "tft" for r in body["refusals"])
 
 
 def test_a_duplicated_pair_in_one_batch_is_refused_not_silently_merged():

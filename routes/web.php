@@ -18,3 +18,4 @@ require __DIR__.'/pipeline.php';
 require __DIR__.'/forecasting.php';
 require __DIR__.'/inventory_optimization.php';
 require __DIR__.'/advanced_intelligence.php';
+require __DIR__.'/system_health.php';
